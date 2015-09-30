@@ -22,7 +22,7 @@ namespace ConsoleMenu
 			menu.AddMenuItem (new CMenuItem ("hello", s => Console.WriteLine ("Hello world!")));
 
 			// Add command with behavior defined in separate method.
-			menu.AddMenuItem (new CMenuItem ("complex", s => Complex (s)));
+			menu.AddMenuItem (new CMenuItem ("len", s => Len (s)));
 
 			// Add alternative way to stop processing input (by default, "quit" is provided).
 			menu.AddMenuItem (new CMenuItem ("exit", s => MenuResult.Quit));
@@ -39,7 +39,7 @@ namespace ConsoleMenu
 			Console.WriteLine ("Finished!");
 		}
 
-		private static void Complex (string s)
+		private static void Len (string s)
 		{
 			Console.WriteLine ("String \"" + s + "\" has length " + s.Length);
 		}
