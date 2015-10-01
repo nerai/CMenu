@@ -57,7 +57,12 @@ namespace ConsoleMenu
 			else {
 				var it = GetMenuItem (cmd, true);
 				if (it != null) {
-					Console.WriteLine (it.HelpText);
+					if (it.HelpText == null) {
+						Console.WriteLine ("No help available for " + it.Selector);
+					}
+					else {
+						Console.WriteLine (it.HelpText);
+					}
 				}
 			}
 		}
@@ -79,21 +84,72 @@ namespace ConsoleMenu
 				+ "help [command]\n"
 				+ "Displays a help text for the specified command, or\n"
 				+ "Displays a list of all available commands.\n";
-			AddMenuItem (new CMenuItem ("help", s => DisplayHelp (s), helphelp));
+			Add (new CMenuItem ("help", s => DisplayHelp (s), helphelp));
 
 			var helpquit = ""
 				+ "quit\n"
 				+ "Quits menu processing.\n";
-			AddMenuItem (new CMenuItem ("quit", s => MenuResult.Quit, helpquit));
+			Add (new CMenuItem ("quit", s => MenuResult.Quit, helpquit));
+		}
+
+		// todo desc
+		// todo key null
+		public CMenuItem this[string key]
+		{
+			get
+			{
+				var item = _Menu.FirstOrDefault (it => it.Selector.Equals (key, StringComparison.InvariantCultureIgnoreCase));
+				if (item == null) {
+					item = new CMenuItem (key);
+					_Menu.Add (item);
+				}
+				return item;
+			}
+			set
+			{
+				var old = this[key];
+				if (old != null) {
+					_Menu.Remove (old);
+				}
+				_Menu.Add (value);
+			}
 		}
 
 		/// <summary>
-		/// Add new command. Internal structure and abbreviations are updated automatically.
+		/// Add new command.
+		///
+		/// The menu's internal structure and abbreviations are updated automatically.
 		/// </summary>
 		/// <param name="it">Command to add.</param>
-		public void AddMenuItem (CMenuItem it)
+		public void Add (CMenuItem it)
 		{
 			_Menu.Add (it);
+		}
+
+		/// <summary>
+		/// Adds a new command from keyword, behavior and help.
+		/// </summary>
+		/// <param name="selector">Keyword</param>
+		/// <param name="execute">Behavior when selected. The behavior provides feedback to the menu.</param>
+		/// <param name="help">Descriptive help text</param>
+		public CMenuItem Add (string selector, Func<string, MenuResult> execute, string help = null)
+		{
+			var it = new CMenuItem (selector, execute, help);
+			Add (it);
+			return it;
+		}
+
+		/// <summary>
+		/// Creates a new CMenuItem from keyword, behavior and help text.
+		/// </summary>
+		/// <param name="selector">Keyword</param>
+		/// <param name="execute">Behavior when selected.</param>
+		/// <param name="help">Descriptive help text</param>
+		public CMenuItem Add (string selector, Action<string> execute, string help = null)
+		{
+			var it = new CMenuItem (selector, execute, help);
+			Add (it);
+			return it;
 		}
 
 		private string GetAbbreviation (string s)
@@ -109,7 +165,11 @@ namespace ConsoleMenu
 
 		private CMenuItem GetMenuItem (string cmd, bool complain)
 		{
-			var its = _Menu.Where (it => it.Selector.StartsWith (cmd, StringComparison.InvariantCultureIgnoreCase)).ToArray ();
+			var its = _Menu
+				.Where (it => it.Execute != null)
+				.Where (it => it.Selector.StartsWith (cmd, StringComparison.InvariantCultureIgnoreCase))
+				.OrderBy (it => it.Selector)
+				.ToArray ();
 			if (its.Length == 1) {
 				return its[0];
 			}
@@ -119,7 +179,9 @@ namespace ConsoleMenu
 					Console.WriteLine ("Unknown command: " + cmd);
 				}
 				else {
-					Console.WriteLine ("Command <" + cmd + "> not unique.");
+					Console.WriteLine (
+						"Command <" + cmd + "> not unique. Candidates: " +
+						string.Join (", ", its.Select (it => it.Selector)));
 				}
 			}
 

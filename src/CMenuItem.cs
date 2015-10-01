@@ -23,14 +23,14 @@ namespace ConsoleMenu
 		public readonly string Selector;
 
 		/// <summary>
-		/// Behavior upon selection.
-		/// </summary>
-		public readonly Func<string, MenuResult> Execute;
-
-		/// <summary>
 		/// Descriptive help text.
 		/// </summary>
 		public string HelpText;
+
+		/// <summary>
+		/// Behavior upon selection.
+		/// </summary>
+		internal Func<string, MenuResult> Execute;
 
 		/// <summary>
 		/// Creates a new CMenuItem from keyword, behavior and help text.
@@ -38,42 +38,62 @@ namespace ConsoleMenu
 		/// <param name="selector">Keyword</param>
 		/// <param name="execute">Behavior when selected. The behavior provides feedback to the menu.</param>
 		/// <param name="help">Descriptive help text</param>
-		public CMenuItem (string selector, Func<string, MenuResult> execute, string help)
+		public CMenuItem (string selector, Func<string, MenuResult> execute, string help = null)
 		{
 			Selector = selector;
-			Execute = execute;
 			HelpText = help;
+			SetAction (execute);
 		}
 
 		/// <summary>
 		/// Creates a new CMenuItem from keyword, behavior and help text.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
-		/// <param name="execute">Behavior when selected. The behavior provides no feedback to the menu.</param>
+		/// <param name="execute">Behavior when selected.</param>
 		/// <param name="help">Descriptive help text</param>
-		public CMenuItem (string selector, Action<string> execute, string help)
-			: this (
-			selector,
-			s => { execute (s); return MenuResult.Normal; },
-			help)
+		public CMenuItem (string selector, Action<string> execute, string help = null)
+		{
+			Selector = selector;
+			HelpText = help;
+			SetAction (execute);
+		}
+
+		/// <summary>
+		/// Creates a new CMenuItem from keyword.
+		/// </summary>
+		/// <param name="selector">Keyword</param>
+		public CMenuItem (string selector)
+			: this (selector, (Func<string, MenuResult>) null)
 		{ }
 
 		/// <summary>
-		/// Creates a new CMenuItem from keyword and behavior.
+		/// Sets the behavior upon selection
 		/// </summary>
-		/// <param name="selector">Keyword</param>
-		/// <param name="execute">Behavior when selected. The behavior provides feedback to the menu.</param>
-		public CMenuItem (string selector, Func<string, MenuResult> execute)
-			: this (selector, execute, "No help available.")
-		{ }
+		/// <param name="action">
+		/// Behavior when selected. The behavior provides feedback to the menu.
+		/// </param>
+		public void SetAction (Func<string, MenuResult> action)
+		{
+			Execute = action;
+		}
 
 		/// <summary>
-		/// Creates a new CMenuItem from keyword and behavior.
+		/// Sets the behavior upon selection
 		/// </summary>
-		/// <param name="selector">Keyword</param>
-		/// <param name="execute">Behavior when selected. The behavior provides no feedback to the menu.</param>
-		public CMenuItem (string selector, Action<string> execute)
-			: this (selector, execute, "No help available.")
-		{ }
+		/// <param name="action">
+		/// Behavior when selected.
+		/// </param>
+		public void SetAction (Action<string> action)
+		{
+			if (action == null) {
+				Execute = null;
+			}
+			else {
+				Execute = s => {
+					action (s);
+					return MenuResult.Normal;
+				};
+			}
+		}
 	}
 }
