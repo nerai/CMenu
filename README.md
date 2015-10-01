@@ -11,25 +11,25 @@ Example:
 	var menu = new CMenu ();
 
 	// Add simple Hello World command.
-	menu.AddMenuItem (new CMenuItem ("hello", s => Console.WriteLine ("Hello world!")));
+	menu.Add ("hello", s => Console.WriteLine ("Hello world!"));
 
 	// Add command with behavior defined in separate method.
-	menu.AddMenuItem (new CMenuItem ("len", s => Len (s)));
+	menu.Add ("len", s => PrintLen (s));
 
 	// Add alternative way to stop processing input (by default, "quit" is provided).
-	menu.AddMenuItem (new CMenuItem ("exit", s => MenuResult.Quit));
+	menu.Add ("exit", s => MenuResult.Quit);
 
 	// Add menu item with help text.
-	menu.AddMenuItem (new CMenuItem (
+	menu.Add (
 		"time",
 		s => Console.WriteLine (DateTime.UtcNow),
-		"time\nWrites the current time (UTC)."));
+		"time\nWrites the current time (UTC).");
 
 	// Run menu. The menu will run until quit by the user.
 	menu.Run ();
 	
 	[...]
-	static void Len (string s)
+	static void PrintLen (string s)
 	{
 		Console.WriteLine ("String \"" + s + "\" has length " + s.Length);
 	}
@@ -39,7 +39,7 @@ While running, CMenu will prompt the user for input, then feeds it to the respec
 	$ len 54321
 	String "54321" has length 5
 
-CMenu keeps an index of all available commands and lists them upon user request via typing "help". Moreover, it also automatically assigns abbreviations to all commands and keeps them up-to-date when you later add new commands with similar keywords.
+CMenu keeps an index of all available commands and lists them upon user request via typing "help". Moreover, it also automatically assigns abbreviations to all commands (if useful) and keeps them up-to-date when you later add new commands with similar keywords.
 
 	$ help
 	Available commands:
@@ -60,3 +60,10 @@ The builtin command "help" also displays usage information of individual command
 	help [command]
 	Displays a help text for the specified command, or
 	Displays a list of all available commands.
+
+Commands can by entered abbreviated, as long as it is clear which one was intended. If it is not clear, then the possible options will be displayed. Commands are always case INsensitive.
+
+	$ hel
+	Command <hel> not unique. Candidates: hello, help
+	$ hell
+	Hello world!
