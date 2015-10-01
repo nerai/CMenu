@@ -96,7 +96,15 @@ namespace ConsoleMenu
 			Add (new CMenuItem ("quit", s => MenuResult.Quit, helpquit));
 		}
 
-		// todo desc
+		/// <summary>
+		/// Gets or sets the CMenuItem associated with the specified keyword.
+		/// </summary>
+		/// <param name="key">
+		/// Keyword of the CMenuItem. The selector must match perfectly (i.e. is not an abbreviation of the keyword).
+		/// </param>
+		/// <returns>
+		/// The menu item associated with the specified keyword.
+		/// </returns>
 		public CMenuItem this[string key]
 		{
 			get
