@@ -28,6 +28,7 @@ namespace ConsoleMenu
 		}
 
 		private readonly List<CMenuItem> _Menu = new List<CMenuItem> ();
+		private readonly Queue<string> _InputQueue = new Queue<string> ();
 
 		private void DisplayHelp (string command)
 		{
@@ -226,20 +227,38 @@ namespace ConsoleMenu
 		{
 			while (true) {
 				Console.Write ("$ ");
-				var line = Console.ReadLine ();
-				var cmd = SplitFirstWord (ref line);
+				string input;
+
+				if (_InputQueue.Count > 0) {
+					input = _InputQueue.Dequeue ();
+				}
+				else {
+					input = Console.ReadLine ();
+				}
+				var cmd = SplitFirstWord (ref input);
 
 				var it = GetMenuItem (cmd, true);
 				if (it == null) {
 					continue;
 				}
 
-				var result = it.Execute (line);
+				var result = it.Execute (input);
 
 				if (result == MenuResult.Quit) {
 					break;
 				}
 			}
+		}
+
+		/// <summary>
+		/// Add line to input queue.
+		/// </summary>
+		/// <param name="line">
+		/// The line to add to the input queue.
+		/// </param>
+		public void Buffer (string line)
+		{
+			_InputQueue.Enqueue (line);
 		}
 	}
 }
