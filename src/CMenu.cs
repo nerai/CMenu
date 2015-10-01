@@ -29,9 +29,13 @@ namespace ConsoleMenu
 
 		private readonly List<CMenuItem> _Menu = new List<CMenuItem> ();
 
-		private void DisplayHelp (string s)
+		private void DisplayHelp (string command)
 		{
-			var cmd = SplitFirstWord (ref s);
+			if (command == null) {
+				throw new ArgumentNullException ("command");
+			}
+
+			var cmd = SplitFirstWord (ref command);
 			if (cmd == "") {
 				var cmds = _Menu
 					.Select (it => {
@@ -93,11 +97,14 @@ namespace ConsoleMenu
 		}
 
 		// todo desc
-		// todo key null
 		public CMenuItem this[string key]
 		{
 			get
 			{
+				if (key == null) {
+					throw new ArgumentNullException ("key");
+				}
+
 				var item = _Menu.FirstOrDefault (it => it.Selector.Equals (key, StringComparison.InvariantCultureIgnoreCase));
 				if (item == null) {
 					item = new CMenuItem (key);
@@ -107,6 +114,10 @@ namespace ConsoleMenu
 			}
 			set
 			{
+				if (key == null) {
+					throw new ArgumentNullException ("key");
+				}
+
 				var old = this[key];
 				if (old != null) {
 					_Menu.Remove (old);
@@ -123,6 +134,10 @@ namespace ConsoleMenu
 		/// <param name="it">Command to add.</param>
 		public void Add (CMenuItem it)
 		{
+			if (it == null) {
+				throw new ArgumentNullException ("it");
+			}
+
 			_Menu.Add (it);
 		}
 
@@ -152,19 +167,27 @@ namespace ConsoleMenu
 			return it;
 		}
 
-		private string GetAbbreviation (string s)
+		private string GetAbbreviation (string cmd)
 		{
-			for (int i = 1; i <= s.Length; i++) {
-				var sub = s.Substring (0, i);
+			if (cmd == null) {
+				throw new ArgumentNullException ("cmd");
+			}
+
+			for (int i = 1; i <= cmd.Length; i++) {
+				var sub = cmd.Substring (0, i);
 				if (GetMenuItem (sub, false) != null) {
 					return sub;
 				}
 			}
-			return s;
+			return cmd;
 		}
 
 		private CMenuItem GetMenuItem (string cmd, bool complain)
 		{
+			if (cmd == null) {
+				throw new ArgumentNullException ("cmd");
+			}
+
 			var its = _Menu
 				.Where (it => it.Execute != null)
 				.Where (it => it.Selector.StartsWith (cmd, StringComparison.InvariantCultureIgnoreCase))
