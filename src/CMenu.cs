@@ -57,7 +57,12 @@ namespace ConsoleMenu
 			else {
 				var it = GetMenuItem (cmd, true);
 				if (it != null) {
-					Console.WriteLine (it.HelpText);
+					if (it.HelpText == null) {
+						Console.WriteLine ("No help available for " + it.Selector);
+					}
+					else {
+						Console.WriteLine (it.HelpText);
+					}
 				}
 			}
 		}

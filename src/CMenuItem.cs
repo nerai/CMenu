@@ -38,7 +38,7 @@ namespace ConsoleMenu
 		/// <param name="selector">Keyword</param>
 		/// <param name="execute">Behavior when selected. The behavior provides feedback to the menu.</param>
 		/// <param name="help">Descriptive help text</param>
-		public CMenuItem (string selector, Func<string, MenuResult> execute, string help)
+		public CMenuItem (string selector, Func<string, MenuResult> execute, string help = null)
 		{
 			Selector = selector;
 			HelpText = help;
@@ -51,7 +51,7 @@ namespace ConsoleMenu
 		/// <param name="selector">Keyword</param>
 		/// <param name="execute">Behavior when selected.</param>
 		/// <param name="help">Descriptive help text</param>
-		public CMenuItem (string selector, Action<string> execute, string help)
+		public CMenuItem (string selector, Action<string> execute, string help = null)
 		{
 			Selector = selector;
 			HelpText = help;
@@ -59,29 +59,11 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Creates a new CMenuItem from keyword and behavior.
-		/// </summary>
-		/// <param name="selector">Keyword</param>
-		/// <param name="execute">Behavior when selected. The behavior provides feedback to the menu.</param>
-		public CMenuItem (string selector, Func<string, MenuResult> execute)
-			: this (selector, execute, "No help available.")
-		{ }
-
-		/// <summary>
-		/// Creates a new CMenuItem from keyword and behavior.
-		/// </summary>
-		/// <param name="selector">Keyword</param>
-		/// <param name="execute">Behavior when selected.</param>
-		public CMenuItem (string selector, Action<string> execute)
-			: this (selector, execute, "No help available.")
-		{ }
-
-		/// <summary>
 		/// Creates a new CMenuItem from keyword.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
 		public CMenuItem (string selector)
-			: this (selector, (Func<string, MenuResult>) null, "No help available.")
+			: this (selector, (Func<string, MenuResult>) null)
 		{ }
 
 		/// <summary>
