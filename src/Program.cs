@@ -19,19 +19,19 @@ namespace ConsoleMenu
 			var menu = new CMenu ();
 
 			// Add simple Hello World command.
-			menu.AddMenuItem (new CMenuItem ("hello", s => Console.WriteLine ("Hello world!")));
+			menu.Add ("hello", s => Console.WriteLine ("Hello world!"));
 
 			// Add command with behavior defined in separate method.
-			menu.AddMenuItem (new CMenuItem ("len", s => Len (s)));
+			menu.Add ("len", s => PrintLen (s));
 
 			// Add alternative way to stop processing input (by default, "quit" is provided).
-			menu.AddMenuItem (new CMenuItem ("exit", s => MenuResult.Quit));
+			menu.Add ("exit", s => MenuResult.Quit);
 
 			// Add menu item with help text.
-			menu.AddMenuItem (new CMenuItem (
+			menu.Add (
 				"time",
 				s => Console.WriteLine (DateTime.UtcNow),
-				"time\nWrites the current time (UTC)."));
+				"time\nWrites the current time (UTC).");
 
 			// Run menu. The menu will run until quit by the user.
 			menu.Run ();
@@ -39,7 +39,7 @@ namespace ConsoleMenu
 			Console.WriteLine ("Finished!");
 		}
 
-		private static void Len (string s)
+		private static void PrintLen (string s)
 		{
 			Console.WriteLine ("String \"" + s + "\" has length " + s.Length);
 		}

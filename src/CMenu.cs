@@ -126,6 +126,32 @@ namespace ConsoleMenu
 			_Menu.Add (it);
 		}
 
+		/// <summary>
+		/// Adds a new command from keyword, behavior and help.
+		/// </summary>
+		/// <param name="selector">Keyword</param>
+		/// <param name="execute">Behavior when selected. The behavior provides feedback to the menu.</param>
+		/// <param name="help">Descriptive help text</param>
+		public CMenuItem Add (string selector, Func<string, MenuResult> execute, string help = null)
+		{
+			var it = new CMenuItem (selector, execute, help);
+			Add (it);
+			return it;
+		}
+
+		/// <summary>
+		/// Creates a new CMenuItem from keyword, behavior and help text.
+		/// </summary>
+		/// <param name="selector">Keyword</param>
+		/// <param name="execute">Behavior when selected.</param>
+		/// <param name="help">Descriptive help text</param>
+		public CMenuItem Add (string selector, Action<string> execute, string help = null)
+		{
+			var it = new CMenuItem (selector, execute, help);
+			Add (it);
+			return it;
+		}
+
 		private string GetAbbreviation (string s)
 		{
 			for (int i = 1; i <= s.Length; i++) {
