@@ -84,12 +84,12 @@ namespace ConsoleMenu
 				+ "help [command]\n"
 				+ "Displays a help text for the specified command, or\n"
 				+ "Displays a list of all available commands.\n";
-			AddMenuItem (new CMenuItem ("help", s => DisplayHelp (s), helphelp));
+			Add (new CMenuItem ("help", s => DisplayHelp (s), helphelp));
 
 			var helpquit = ""
 				+ "quit\n"
 				+ "Quits menu processing.\n";
-			AddMenuItem (new CMenuItem ("quit", s => MenuResult.Quit, helpquit));
+			Add (new CMenuItem ("quit", s => MenuResult.Quit, helpquit));
 		}
 
 		// todo desc
@@ -116,10 +116,12 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Add new command. Internal structure and abbreviations are updated automatically.
+		/// Add new command.
+		///
+		/// The menu's internal structure and abbreviations are updated automatically.
 		/// </summary>
 		/// <param name="it">Command to add.</param>
-		public void AddMenuItem (CMenuItem it)
+		public void Add (CMenuItem it)
 		{
 			_Menu.Add (it);
 		}
