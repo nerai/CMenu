@@ -140,6 +140,7 @@ namespace ConsoleMenu
 			var its = _Menu
 				.Where (it => it.Execute != null)
 				.Where (it => it.Selector.StartsWith (cmd, StringComparison.InvariantCultureIgnoreCase))
+				.OrderBy (it => it.Selector)
 				.ToArray ();
 			if (its.Length == 1) {
 				return its[0];
@@ -150,7 +151,9 @@ namespace ConsoleMenu
 					Console.WriteLine ("Unknown command: " + cmd);
 				}
 				else {
-					Console.WriteLine ("Command <" + cmd + "> not unique.");
+					Console.WriteLine (
+						"Command <" + cmd + "> not unique. Candidates: " +
+						string.Join (", ", its.Select (it => it.Selector)));
 				}
 			}
 
