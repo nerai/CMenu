@@ -42,18 +42,21 @@ By default, the command "quit" exists for this purpose. Let's add an alternative
 
 	menu.Add ("exit", s => MenuResult.Quit);
 
-To create a command with help text, simply add it.
+To create a command with help text, simply add it during definition or later.
 
 	menu.Add ("time",
 		s => Console.WriteLine (DateTime.UtcNow),
 		"Writes the current time (UTC).");
+	menu["time"].HelpText += " (UTC).";
 
 	$ time
 	2015.10.01 17:54:38
+	$ help time
+	Writes the current time (UTC).
 
 
 
-## Integrated help and command abbreviations
+## Command abbreviations and integrated help 
 
 CMenu keeps an index of all available commands and lists them upon user request via typing "help". Moreover, it also automatically assigns abbreviations to all commands (if useful) and keeps them up-to-date when you later add new commands with similar keywords.
 
@@ -69,7 +72,7 @@ CMenu keeps an index of all available commands and lists them upon user request 
 
 The builtin command "help" also displays usage information of individual commands:
 
-	$ help quit
+	$ help q
 	quit
 	Quits menu processing.
 	$ help help
