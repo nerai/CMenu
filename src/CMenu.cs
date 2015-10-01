@@ -12,7 +12,7 @@ namespace ConsoleMenu
 	/// Create a menu which can display the time:
 	/// <code>
 	/// var menu = new CMenu ();
-	/// menu.AddMenuItem (new CMenuItem ("time", s => Console.WriteLine (DateTime.UtcNow)));
+	/// menu.Add ("time", s => Console.WriteLine (DateTime.UtcNow));
 	/// menu.Run ();
 	/// </code>
 	/// </example>
