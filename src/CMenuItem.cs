@@ -33,7 +33,7 @@ namespace ConsoleMenu
 		internal Func<string, MenuResult> Execute;
 
 		/// <summary>
-		/// Creates a new CMenuItem from keyword and behavior.
+		/// Creates a new CMenuItem from keyword, behavior and help text.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
 		/// <param name="execute">Behavior when selected. The behavior provides feedback to the menu.</param>
@@ -46,7 +46,7 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Creates a new CMenuItem from keyword and behavior.
+		/// Creates a new CMenuItem from keyword, behavior and help text.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
 		/// <param name="execute">Behavior when selected.</param>
