@@ -10,28 +10,45 @@ namespace ConsoleMenu
 	/// </summary>
 	class Program
 	{
+		static CMenu menu;
+
 		static void Main (string[] args)
 		{
 			Console.WriteLine ("Simple CMenu demonstration");
 			Console.WriteLine ("Enter \"help\" for help.");
 
 			// Create menu
-			var menu = new CMenu ();
+			menu = new CMenu ();
 
-			// Add simple Hello World command.
+			// Add simple Hello World command
 			menu.Add ("hello", s => Console.WriteLine ("Hello world!"));
 
-			// Add command with behavior defined in separate method.
+			/*
+			 * If the command happens to be more complex, you can just put it in a separate method.
+			 */
 			menu.Add ("len", s => PrintLen (s));
 
-			// Add alternative way to stop processing input (by default, "quit" is provided).
+			/*
+			 * It is also possible to return an exit code to signal that processing should be stopped.
+			 * By default, the command "quit" exists for this purpose. Let's add an alternative way to stop processing input.
+			 */
 			menu.Add ("exit", s => MenuResult.Quit);
 
-			// Add menu item with help text.
-			menu.Add (
-				"time",
+			/*
+			 * To create a command with help text, simply add it during definition or later.
+			 */
+			menu.Add ("time",
 				s => Console.WriteLine (DateTime.UtcNow),
-				"time\nWrites the current time (UTC).");
+				"Writes the current time");
+			menu["time"].HelpText += " (UTC).";
+
+			/*
+			 * It is also possible to modify the input queue.
+			 * Check out how the "repeat" command adds its argument to the input queue three times.
+			 */
+			menu.Add ("repeat",
+				s => Repeat (s),
+				"Repeats a command 3 times.");
 
 			// Run menu. The menu will run until quit by the user.
 			menu.Run ();
@@ -39,9 +56,16 @@ namespace ConsoleMenu
 			Console.WriteLine ("Finished!");
 		}
 
-		private static void PrintLen (string s)
+		static void PrintLen (string s)
 		{
 			Console.WriteLine ("String \"" + s + "\" has length " + s.Length);
+		}
+
+		static void Repeat (string s)
+		{
+			menu.Input (s);
+			menu.Input (s);
+			menu.Input (s);
 		}
 	}
 }
