@@ -255,7 +255,7 @@ namespace ConsoleMenu
 		/// <param name="line">
 		/// The line to add to the input queue.
 		/// </param>
-		public void Buffer (string line)
+		public void Input (string line)
 		{
 			_InputQueue.Enqueue (line);
 		}

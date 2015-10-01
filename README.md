@@ -100,9 +100,9 @@ Check out how the "repeat" command adds its argument to the input queue three ti
 	
 	static void Repeat (string s)
 	{
-		menu.Buffer (s);
-		menu.Buffer (s);
-		menu.Buffer (s);
+		menu.Input (s);
+		menu.Input (s);
+		menu.Input (s);
 	}
 
 	$ repeat hello
