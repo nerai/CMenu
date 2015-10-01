@@ -10,13 +10,15 @@ namespace ConsoleMenu
 	/// </summary>
 	class Program
 	{
+		static CMenu menu;
+
 		static void Main (string[] args)
 		{
 			Console.WriteLine ("Simple CMenu demonstration");
 			Console.WriteLine ("Enter \"help\" for help.");
 
 			// Create menu
-			var menu = new CMenu ();
+			menu = new CMenu ();
 
 			// Add simple Hello World command
 			menu.Add ("hello", s => Console.WriteLine ("Hello world!"));
@@ -39,6 +41,14 @@ namespace ConsoleMenu
 				s => Console.WriteLine (DateTime.UtcNow),
 				"Writes the current time (UTC).");
 
+			/*
+			 * It is also possible to modify the input queue.
+			 * Check out how the "repeat" command adds its argument to the input queue three times.
+			 */
+			menu.Add ("repeat",
+				s => Repeat (s),
+				"Repeats a command 3 times.");
+
 			// Run menu. The menu will run until quit by the user.
 			menu.Run ();
 
@@ -48,6 +58,13 @@ namespace ConsoleMenu
 		static void PrintLen (string s)
 		{
 			Console.WriteLine ("String \"" + s + "\" has length " + s.Length);
+		}
+
+		static void Repeat (string s)
+		{
+			menu.Buffer (s);
+			menu.Buffer (s);
+			menu.Buffer (s);
 		}
 	}
 }

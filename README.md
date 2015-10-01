@@ -83,3 +83,33 @@ Commands can by entered abbreviated, as long as it is clear which one was intend
 	Command <hel> not unique. Candidates: hello, help
 	$ hell
 	Hello world!
+
+
+
+## Modifying the input queue
+
+It is also possible to modify the input queue.
+Check out how the "repeat" command adds its argument to the input queue three times.
+
+	// Add a command which repeats another command
+	menu.Add ("repeat",
+		s => Repeat (s),
+		"Repeats a command 3 times.");
+
+	[...]
+	
+	static void Repeat (string s)
+	{
+		menu.Buffer (s);
+		menu.Buffer (s);
+		menu.Buffer (s);
+	}
+
+	$ repeat hello
+	Hello world!
+	Hello world!
+	Hello world!
+	$ r l 123
+	String "123" has length 3
+	String "123" has length 3
+	String "123" has length 3
