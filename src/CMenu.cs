@@ -226,13 +226,12 @@ namespace ConsoleMenu
 		public void Run ()
 		{
 			while (true) {
-				Console.Write ("$ ");
 				string input;
-
 				if (_InputQueue.Count > 0) {
 					input = _InputQueue.Dequeue ();
 				}
 				else {
+					Console.Write ("$ ");
 					input = Console.ReadLine ();
 				}
 				var cmd = SplitFirstWord (ref input);
