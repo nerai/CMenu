@@ -87,6 +87,29 @@ namespace ConsoleMenu
 			AddMenuItem (new CMenuItem ("quit", s => MenuResult.Quit, helpquit));
 		}
 
+		// todo desc
+		// todo key null
+		public CMenuItem this[string key]
+		{
+			get
+			{
+				var item = _Menu.FirstOrDefault (it => it.Selector.Equals (key, StringComparison.InvariantCultureIgnoreCase));
+				if (item == null) {
+					item = new CMenuItem (key);
+					_Menu.Add (item);
+				}
+				return item;
+			}
+			set
+			{
+				var old = this[key];
+				if (old != null) {
+					_Menu.Remove (old);
+				}
+				_Menu.Add (value);
+			}
+		}
+
 		/// <summary>
 		/// Add new command. Internal structure and abbreviations are updated automatically.
 		/// </summary>
@@ -109,7 +132,10 @@ namespace ConsoleMenu
 
 		private CMenuItem GetMenuItem (string cmd, bool complain)
 		{
-			var its = _Menu.Where (it => it.Selector.StartsWith (cmd, StringComparison.InvariantCultureIgnoreCase)).ToArray ();
+			var its = _Menu
+				.Where (it => it.Execute != null)
+				.Where (it => it.Selector.StartsWith (cmd, StringComparison.InvariantCultureIgnoreCase))
+				.ToArray ();
 			if (its.Length == 1) {
 				return its[0];
 			}

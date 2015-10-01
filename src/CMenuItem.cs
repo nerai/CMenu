@@ -25,7 +25,7 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Behavior upon selection.
 		/// </summary>
-		public readonly Func<string, MenuResult> Execute;
+		public Func<string, MenuResult> Execute;
 
 		/// <summary>
 		/// Descriptive help text.
@@ -74,6 +74,14 @@ namespace ConsoleMenu
 		/// <param name="execute">Behavior when selected. The behavior provides no feedback to the menu.</param>
 		public CMenuItem (string selector, Action<string> execute)
 			: this (selector, execute, "No help available.")
+		{ }
+
+		/// <summary>
+		/// Creates a new CMenuItem from keyword.
+		/// </summary>
+		/// <param name="selector">Keyword</param>
+		public CMenuItem (string selector)
+			: this (selector, (Func<string, MenuResult>) null, "No help available.")
 		{ }
 	}
 }
