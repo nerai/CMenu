@@ -30,6 +30,13 @@ namespace ConsoleMenu
 		private readonly List<CMenuItem> _Menu = new List<CMenuItem> ();
 		private readonly Queue<string> _InputQueue = new Queue<string> ();
 
+		/// <summary>
+		/// Gets or sets how entered commands are compared.
+		///
+		/// By default, the comparison is case insensitive and culture invariant.
+		/// </summary>
+		public StringComparison StringComparison { get; set; }
+
 		private void DisplayHelp (string command)
 		{
 			if (command == null) {
@@ -85,6 +92,8 @@ namespace ConsoleMenu
 		/// </summary>
 		public CMenu ()
 		{
+			StringComparison = StringComparison.InvariantCultureIgnoreCase;
+
 			var helphelp = ""
 				+ "help [command]\n"
 				+ "Displays a help text for the specified command, or\n"
@@ -103,6 +112,9 @@ namespace ConsoleMenu
 		/// <param name="key">
 		/// Keyword of the CMenuItem. The selector must match perfectly (i.e. is not an abbreviation of the keyword).
 		/// </param>
+		/// <value>
+		/// The CMenuItem associated with the specified keyword, or null.
+		/// </value>
 		/// <returns>
 		/// The menu item associated with the specified keyword.
 		/// </returns>
@@ -114,7 +126,7 @@ namespace ConsoleMenu
 					throw new ArgumentNullException ("key");
 				}
 
-				var item = _Menu.FirstOrDefault (it => it.Selector.Equals (key, StringComparison.InvariantCultureIgnoreCase));
+				var item = _Menu.FirstOrDefault (it => it.Selector.Equals (key, StringComparison));
 				if (item == null) {
 					item = new CMenuItem (key);
 					_Menu.Add (item);
@@ -131,7 +143,9 @@ namespace ConsoleMenu
 				if (old != null) {
 					_Menu.Remove (old);
 				}
-				_Menu.Add (value);
+				if (value != null) {
+					_Menu.Add (value);
+				}
 			}
 		}
 
@@ -197,11 +211,18 @@ namespace ConsoleMenu
 				throw new ArgumentNullException ("cmd");
 			}
 
-			var its = _Menu
-				.Where (it => it.Execute != null)
-				.Where (it => it.Selector.StartsWith (cmd, StringComparison.InvariantCultureIgnoreCase))
-				.OrderBy (it => it.Selector)
+			var from = _Menu.Where (it => it.Execute != null);
+
+			var its = from
+				.Where (it => it.Selector.Equals (cmd, StringComparison))
 				.ToArray ();
+			if (its.Length == 0) {
+				its = from
+					.Where (it => it.Selector.StartsWith (cmd, StringComparison))
+					.OrderBy (it => it.Selector)
+					.ToArray ();
+			}
+
 			if (its.Length == 1) {
 				return its[0];
 			}

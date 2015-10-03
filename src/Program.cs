@@ -14,6 +14,13 @@ namespace ConsoleMenu
 
 		static void Main (string[] args)
 		{
+			Basics ();
+			InputModification ();
+			CaseSensitivity ();
+		}
+
+		static void Basics ()
+		{
 			Console.WriteLine ("Simple CMenu demonstration");
 			Console.WriteLine ("Enter \"help\" for help.");
 
@@ -42,14 +49,6 @@ namespace ConsoleMenu
 				"Writes the current time");
 			menu["time"].HelpText += " (UTC).";
 
-			/*
-			 * It is also possible to modify the input queue.
-			 * Check out how the "repeat" command adds its argument to the input queue three times.
-			 */
-			menu.Add ("repeat",
-				s => Repeat (s),
-				"Repeats a command 3 times.");
-
 			// Run menu. The menu will run until quit by the user.
 			menu.Run ();
 
@@ -66,6 +65,33 @@ namespace ConsoleMenu
 			menu.Input (s);
 			menu.Input (s);
 			menu.Input (s);
+		}
+
+		static void InputModification ()
+		{
+			/*
+			 * It is also possible to modify the input queue.
+			 * Check out how the "repeat" command adds its argument to the input queue three times.
+			 */
+			menu.Add ("repeat",
+				s => Repeat (s),
+				"Repeats a command 3 times.");
+
+			// Run menu. The menu will run until quit by the user.
+			Console.WriteLine ("New command available: repeat");
+			menu.Run ();
+		}
+
+		static void CaseSensitivity ()
+		{
+			/*
+			 * Commands are case *in*sensitive by default. This can be changed using the `StringComparison` property.
+			 */
+			menu.StringComparison = StringComparison.InvariantCulture;
+			menu.Add ("Hello", s => Console.WriteLine ("Hi!"));
+
+			Console.WriteLine ("The menu is now case sensitive.");
+			menu.Run ();
 		}
 	}
 }

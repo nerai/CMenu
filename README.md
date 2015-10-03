@@ -80,12 +80,34 @@ The builtin command "help" also displays usage information of individual command
 	Displays a help text for the specified command, or
 	Displays a list of all available commands.
 
-Commands can by entered abbreviated, as long as it is clear which one was intended. If it is not clear, then the possible options will be displayed. Commands are always case INsensitive.
+Commands can by entered abbreviated, as long as it is clear which one was intended. If it is not clear, then the possible options will be displayed.
 
 	$ hel
 	Command <hel> not unique. Candidates: hello, help
 	$ hell
 	Hello world!
+
+Commands are case *in*sensitive by default. This can be changed using the `StringComparison` property.
+
+	menu.StringComparison = StringComparison.InvariantCulture;
+	menu.Add ("Hello", s => Console.WriteLine ("Hi!"));
+
+	$ help
+	Available commands:
+	e   | exit
+	H   | Hello
+		  hello
+		  help
+	l   | len
+	q   | quit
+	r   | repeat
+	t   | time
+	Type "help <command>" for individual command help.
+	$ H
+	Hi!
+	$ h
+	Command <h> not unique. Candidates: hello, help
+	$
 
 
 
@@ -116,3 +138,4 @@ Check out how the "repeat" command adds its argument to the input queue three ti
 	String "123" has length 3
 	String "123" has length 3
 	String "123" has length 3
+
