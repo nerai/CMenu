@@ -202,11 +202,18 @@ namespace ConsoleMenu
 				throw new ArgumentNullException ("cmd");
 			}
 
-			var its = _Menu
-				.Where (it => it.Execute != null)
-				.Where (it => it.Selector.StartsWith (cmd, StringComparison.InvariantCultureIgnoreCase))
-				.OrderBy (it => it.Selector)
+			var from = _Menu.Where (it => it.Execute != null);
+
+			var its = from
+				.Where (it => cmd.Equals (it.Selector, StringComparison.InvariantCultureIgnoreCase))
 				.ToArray ();
+			if (its.Length == 0) {
+				its = from
+					.Where (it => cmd.StartsWith (it.Selector, StringComparison.InvariantCultureIgnoreCase))
+					.OrderBy (it => it.Selector)
+					.ToArray ();
+			}
+
 			if (its.Length == 1) {
 				return its[0];
 			}
