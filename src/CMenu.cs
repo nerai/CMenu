@@ -103,6 +103,9 @@ namespace ConsoleMenu
 		/// <param name="key">
 		/// Keyword of the CMenuItem. The selector must match perfectly (i.e. is not an abbreviation of the keyword).
 		/// </param>
+		/// <value>
+		/// The CMenuItem associated with the specified keyword, or null.
+		/// </value>
 		/// <returns>
 		/// The menu item associated with the specified keyword.
 		/// </returns>
@@ -131,7 +134,9 @@ namespace ConsoleMenu
 				if (old != null) {
 					_Menu.Remove (old);
 				}
-				_Menu.Add (value);
+				if (value != null) {
+					_Menu.Add (value);
+				}
 			}
 		}
 
