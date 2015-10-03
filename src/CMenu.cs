@@ -209,11 +209,11 @@ namespace ConsoleMenu
 			var from = _Menu.Where (it => it.Execute != null);
 
 			var its = from
-				.Where (it => cmd.Equals (it.Selector, StringComparison))
+				.Where (it => it.Selector.Equals (cmd, StringComparison))
 				.ToArray ();
 			if (its.Length == 0) {
 				its = from
-					.Where (it => cmd.StartsWith (it.Selector, StringComparison))
+					.Where (it => it.Selector.StartsWith (cmd, StringComparison))
 					.OrderBy (it => it.Selector)
 					.ToArray ();
 			}
