@@ -46,7 +46,7 @@ To create a command with help text, simply add it during definition or later.
 
 	menu.Add ("time",
 		s => Console.WriteLine (DateTime.UtcNow),
-		"Writes the current time (UTC).");
+		"Writes the current time");
 	menu["time"].HelpText += " (UTC).";
 
 	$ time
