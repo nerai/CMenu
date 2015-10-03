@@ -80,7 +80,7 @@ The builtin command "help" also displays usage information of individual command
 	Displays a help text for the specified command, or
 	Displays a list of all available commands.
 
-Commands can by entered abbreviated, as long as it is clear which one was intended. If it is not clear, then the possible options will be displayed. Commands are always case INsensitive.
+Commands can by entered abbreviated, as long as it is clear which one was intended. If it is not clear, then the possible options will be displayed. Commands are case INsensitive by default, you can change that with the StringComparison property.
 
 	$ hel
 	Command <hel> not unique. Candidates: hello, help

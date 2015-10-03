@@ -30,6 +30,8 @@ namespace ConsoleMenu
 		private readonly List<CMenuItem> _Menu = new List<CMenuItem> ();
 		private readonly Queue<string> _InputQueue = new Queue<string> ();
 
+		public StringComparison StringComparison { get; set; }
+
 		private void DisplayHelp (string command)
 		{
 			if (command == null) {
@@ -85,6 +87,8 @@ namespace ConsoleMenu
 		/// </summary>
 		public CMenu ()
 		{
+			StringComparison = StringComparison.InvariantCultureIgnoreCase;
+
 			var helphelp = ""
 				+ "help [command]\n"
 				+ "Displays a help text for the specified command, or\n"
@@ -117,7 +121,7 @@ namespace ConsoleMenu
 					throw new ArgumentNullException ("key");
 				}
 
-				var item = _Menu.FirstOrDefault (it => it.Selector.Equals (key, StringComparison.InvariantCultureIgnoreCase));
+				var item = _Menu.FirstOrDefault (it => it.Selector.Equals (key, StringComparison));
 				if (item == null) {
 					item = new CMenuItem (key);
 					_Menu.Add (item);
@@ -205,11 +209,11 @@ namespace ConsoleMenu
 			var from = _Menu.Where (it => it.Execute != null);
 
 			var its = from
-				.Where (it => cmd.Equals (it.Selector, StringComparison.InvariantCultureIgnoreCase))
+				.Where (it => cmd.Equals (it.Selector, StringComparison))
 				.ToArray ();
 			if (its.Length == 0) {
 				its = from
-					.Where (it => cmd.StartsWith (it.Selector, StringComparison.InvariantCultureIgnoreCase))
+					.Where (it => cmd.StartsWith (it.Selector, StringComparison))
 					.OrderBy (it => it.Selector)
 					.ToArray ();
 			}
