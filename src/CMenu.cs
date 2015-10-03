@@ -30,6 +30,11 @@ namespace ConsoleMenu
 		private readonly List<CMenuItem> _Menu = new List<CMenuItem> ();
 		private readonly Queue<string> _InputQueue = new Queue<string> ();
 
+		/// <summary>
+		/// Gets or sets how entered commands are compared.
+		///
+		/// By default, the comparison is case insensitive and culture invariant.
+		/// </summary>
 		public StringComparison StringComparison { get; set; }
 
 		private void DisplayHelp (string command)

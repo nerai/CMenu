@@ -84,6 +84,9 @@ namespace ConsoleMenu
 
 		static void CaseSensitivity ()
 		{
+			/*
+			 * Commands are case *in*sensitive by default. This can be changed using the `StringComparison` property.
+			 */
 			menu.StringComparison = StringComparison.InvariantCulture;
 			menu.Add ("Hello", s => Console.WriteLine ("Hi!"));
 
