@@ -42,12 +42,16 @@ namespace ConsoleMenu
 			menu.Add ("exit", s => MenuResult.Quit);
 
 			/*
-			 * To create a command with help text, simply add it during definition or later.
+			 * To create a command with help text, simply add it during definition.
 			 */
 			menu.Add ("time",
 				s => Console.WriteLine (DateTime.UtcNow),
-				"Writes the current time");
-			menu["time"].HelpText += " (UTC).";
+				"Help for \"time\": Writes the current time");
+
+			/*
+			 * You can also access individual commands to edit them later, though this is rarely required.
+			 */
+			((CMenuItem) menu["time"]).HelpText += " (UTC).";
 
 			// Run menu. The menu will run until quit by the user.
 			menu.Run ();
