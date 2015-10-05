@@ -15,22 +15,39 @@ namespace ConsoleMenu
 	/// </code>
 	/// </example>
 	/// </summary>
-	public class CMenuItem
+	public class CMenuItem : IMenuItem
 	{
 		/// <summary>
 		/// Keyword to select this item.
 		/// </summary>
-		public readonly string Selector;
+		public string Selector
+		{
+			get;
+			private set;
+		}
 
 		/// <summary>
 		/// Descriptive help text.
 		/// </summary>
-		public string HelpText;
+		public string HelpText
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// Behavior upon selection.
 		/// </summary>
-		internal Func<string, MenuResult> Execute;
+		public MenuResult Execute (string arg)
+		{
+			if (_Execute == null) {
+				throw new NotImplementedException ("This menu item does not have an associated behavior yet.");
+			}
+
+			return _Execute (arg);
+		}
+
+		private Func<string, MenuResult> _Execute;
 
 		/// <summary>
 		/// Creates a new CMenuItem from keyword, behavior and help text.
@@ -82,7 +99,7 @@ namespace ConsoleMenu
 		/// </param>
 		public void SetAction (Func<string, MenuResult> action)
 		{
-			Execute = action;
+			_Execute = action;
 		}
 
 		/// <summary>
@@ -94,10 +111,10 @@ namespace ConsoleMenu
 		public void SetAction (Action<string> action)
 		{
 			if (action == null) {
-				Execute = null;
+				_Execute = null;
 			}
 			else {
-				Execute = s => {
+				_Execute = s => {
 					action (s);
 					return MenuResult.Normal;
 				};
