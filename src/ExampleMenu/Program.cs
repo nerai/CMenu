@@ -15,6 +15,9 @@ namespace ExampleMenu
 
 			menu.Add (new MI_Echo ());
 			menu.Add (new MI_If (menu));
+			menu.Add (new MI_Pause ());
+			menu.Add (new MI_Record ());
+			menu.Add (new MI_Replay (menu));
 
 			menu.Run ();
 		}

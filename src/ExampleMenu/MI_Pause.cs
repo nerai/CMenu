@@ -6,25 +6,26 @@ using ConsoleMenu;
 
 namespace ExampleMenu
 {
-	public class MI_Echo : IMenuItem
+	public class MI_Pause : IMenuItem
 	{
 		public string Selector
 		{
-			get { return "echo"; }
+			get { return "pause"; }
 		}
 
 		public string HelpText
 		{
 			get
 			{
-				return "echo [text]\n"
-					+ "Prints the specified text to stdout.\n";
+				return "pause\n"
+					+ "Stops further operation until the enter key is pressed.\n";
 			}
 		}
 
 		public MenuResult Execute (string arg)
 		{
-			Console.WriteLine (arg);
+			Console.ReadLine ();
+
 			return MenuResult.Normal;
 		}
 	}
