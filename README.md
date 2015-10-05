@@ -121,26 +121,33 @@ It is also possible to modify the input queue by adding input:
 * Either at its beginning, so that it will be executed immediately after
 * or at its end, so that it will be processed when the complete current queue has been processed.
 
-Check out how the "repeat" command adds its argument to the input queue three times.
+Check out how the "repeat" command adds its argument to the input queue two times.
 
 	// Add a command which repeats another command
 	menu.Add ("repeat",
 		s => Repeat (s),
-		"Repeats a command 3 times.");
+		"Repeats a command two times.");
 
 	static void Repeat (string s)
 	{
-		menu.Input (s);
-		menu.Input (s);
-		menu.Input (s);
+		menu.Input (s, true);
+		menu.Input (s, true);
 	}
 
 	$ repeat hello
 	Hello world!
 	Hello world!
-	Hello world!
 	$ r l 123
 	String "123" has length 3
 	String "123" has length 3
-	String "123" has length 3
 
+
+
+## Example project
+
+The source code contains an example project. It offers the following commands:
+* echo
+* if
+* pause
+* record
+* replay
