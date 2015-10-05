@@ -27,8 +27,6 @@ If the command happens to be more complex, you can just put it in a separate met
 	
 	menu.Add ("len", s => PrintLen (s));
 
-	[...]
-	
 	static void PrintLen (string s)
 	{
 		Console.WriteLine ("String \"" + s + "\" has length " + s.Length);
@@ -119,7 +117,10 @@ Commands are case *in*sensitive by default. This can be changed using the `Strin
 
 ## Modifying the input queue
 
-It is also possible to modify the input queue.
+It is also possible to modify the input queue by adding input:
+* Either at its beginning, so that it will be executed immediately after
+* or at its end, so that it will be processed when the complete current queue has been processed.
+
 Check out how the "repeat" command adds its argument to the input queue three times.
 
 	// Add a command which repeats another command
@@ -127,8 +128,6 @@ Check out how the "repeat" command adds its argument to the input queue three ti
 		s => Repeat (s),
 		"Repeats a command 3 times.");
 
-	[...]
-	
 	static void Repeat (string s)
 	{
 		menu.Input (s);
