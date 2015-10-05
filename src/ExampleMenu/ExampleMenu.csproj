@@ -75,6 +75,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MI_Replay.cs" />
+    <Compile Include="MI_Record.cs" />
     <Compile Include="MI_If.cs" />
     <Compile Include="MI_Echo.cs" />
     <Compile Include="Program.cs" />
