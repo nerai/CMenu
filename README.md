@@ -42,17 +42,23 @@ By default, the command "quit" exists for this purpose. Let's add an alternative
 
 	menu.Add ("exit", s => MenuResult.Quit);
 
-To create a command with help text, simply add it during definition or later.
+To create a command with help text, simply add it during definition.
 
 	menu.Add ("time",
 		s => Console.WriteLine (DateTime.UtcNow),
-		"Writes the current time");
-	menu["time"].HelpText += " (UTC).";
+		"Help for \"time\": Writes the current time");
 
 	$ time
 	2015.10.01 17:54:38
 	$ help time
-	Writes the current time (UTC).
+	Help for "time": Writes the current time
+	
+You can also access individual commands to edit them later, though this is rarely required.
+
+	((CMenuItem) menu["time"]).HelpText += " (UTC).";
+	
+	$ help time
+	Help for "time": Writes the current time (UTC).
 
 
 
