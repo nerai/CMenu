@@ -19,7 +19,7 @@ namespace ConsoleMenu
 	/// </summary>
 	public class CMenu
 	{
-		private static string SplitFirstWord (ref string from)
+		public static string SplitFirstWord (ref string from)
 		{
 			var split = from.Split (new char[] { ' ', '\t' }, 2, StringSplitOptions.RemoveEmptyEntries);
 			from = split.Length > 1 ? split[1].TrimStart () : "";
