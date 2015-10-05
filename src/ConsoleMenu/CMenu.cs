@@ -27,7 +27,7 @@ namespace ConsoleMenu
 			return word;
 		}
 
-		private readonly List<CMenuItem> _Menu = new List<CMenuItem> ();
+		private readonly List<IMenuItem> _Menu = new List<IMenuItem> ();
 		private readonly List<string> _InputQueue = new List<string> ();
 
 		/// <summary>
@@ -118,7 +118,7 @@ namespace ConsoleMenu
 		/// <returns>
 		/// The menu item associated with the specified keyword.
 		/// </returns>
-		public CMenuItem this[string key]
+		public IMenuItem this[string key]
 		{
 			get
 			{
@@ -155,7 +155,7 @@ namespace ConsoleMenu
 		/// The menu's internal structure and abbreviations are updated automatically.
 		/// </summary>
 		/// <param name="it">Command to add.</param>
-		public void Add (CMenuItem it)
+		public void Add (IMenuItem it)
 		{
 			if (it == null) {
 				throw new ArgumentNullException ("it");
@@ -205,7 +205,6 @@ namespace ConsoleMenu
 			return cmd;
 		}
 
-		private CMenuItem GetMenuItem (string cmd, bool complain)
 		{
 			if (cmd == null) {
 				throw new ArgumentNullException ("cmd");
@@ -222,6 +221,7 @@ namespace ConsoleMenu
 					.OrderBy (it => it.Selector)
 					.ToArray ();
 			}
+		private IMenuItem GetMenuItem (string cmd, bool complain)
 
 			if (its.Length == 1) {
 				return its[0];
