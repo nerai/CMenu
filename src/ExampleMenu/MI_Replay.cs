@@ -29,8 +29,11 @@ namespace ExampleMenu
 		{
 			get
 			{
-				return "replay\n"
-					+ "XXX.";
+				return "replay name\n"
+					+ "Replays all commands stored in the specified file name.\n"
+					+ "Replaying puts all stored commands in the same order on the stack as they were originally entered.\n"
+					+ "\n"
+					+ "Nested replaying is supported.\n";
 			}
 		}
 

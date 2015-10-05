@@ -18,7 +18,7 @@ namespace ExampleMenu
 			get
 			{
 				return "pause\n"
-					+ "XXX.";
+					+ "Stops further operation until the enter key is pressed.\n";
 			}
 		}
 

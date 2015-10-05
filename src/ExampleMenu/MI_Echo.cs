@@ -18,7 +18,7 @@ namespace ExampleMenu
 			get
 			{
 				return "echo [text]\n"
-					+ "Prints the specified text to stdout.";
+					+ "Prints the specified text to stdout.\n";
 			}
 		}
 

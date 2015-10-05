@@ -20,8 +20,12 @@ namespace ExampleMenu
 		{
 			get
 			{
-				return "record\n"
-					+ "XXX.";
+				return "record name\n"
+					+ "Records all subsequent commands to the specified file name.\n"
+					+ "Recording can be stopped by the command \"" + EndrecordCommand + "\"\n"
+					+ "Stored records can be played via the \"replay\" command.\n"
+					+ "\n"
+					+ "Nested recording is not supported.\n";
 			}
 		}
 
