@@ -41,12 +41,11 @@ namespace ExampleMenu
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
 				Console.WriteLine ("You must enter a name to identify this command group.");
-				// todo: besser: alle vorhandenen records auflisten
 				return MenuResult.Normal;
 			}
 
 			Directory.CreateDirectory (".\\Records\\");
-			var lines = File.ReadAllLines (".\\Records\\" + arg + ".txt"); // todo: file not found
+			var lines = File.ReadAllLines (".\\Records\\" + arg + ".txt");
 			foreach (var line in lines) {
 				_Menu.Input (line, false);
 			}
