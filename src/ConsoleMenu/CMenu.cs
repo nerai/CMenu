@@ -205,23 +205,27 @@ namespace ConsoleMenu
 			return cmd;
 		}
 
+		private IMenuItem[] GetCommands (string cmd, StringComparison comparison)
+		{
+			var its = _Menu
+				.Where (it => it.Selector.Equals (cmd, comparison))
+				.ToArray ();
+			if (its.Length == 0) {
+				its = _Menu
+					.Where (it => it.Selector.StartsWith (cmd, comparison))
+					.OrderBy (it => it.Selector)
+					.ToArray ();
+			}
+			return its;
+		}
+
+		private IMenuItem GetMenuItem (string cmd, bool complain)
 		{
 			if (cmd == null) {
 				throw new ArgumentNullException ("cmd");
 			}
 
-			var from = _Menu.Where (it => it.Execute != null);
-
-			var its = from
-				.Where (it => it.Selector.Equals (cmd, StringComparison))
-				.ToArray ();
-			if (its.Length == 0) {
-				its = from
-					.Where (it => it.Selector.StartsWith (cmd, StringComparison))
-					.OrderBy (it => it.Selector)
-					.ToArray ();
-			}
-		private IMenuItem GetMenuItem (string cmd, bool complain)
+			var its = GetCommands (cmd, StringComparison);
 
 			if (its.Length == 1) {
 				return its[0];
@@ -230,6 +234,21 @@ namespace ConsoleMenu
 			if (complain) {
 				if (its.Length == 0) {
 					Console.WriteLine ("Unknown command: " + cmd);
+					if (false
+						|| StringComparison == StringComparison.CurrentCulture
+						|| StringComparison == StringComparison.InvariantCulture
+						|| StringComparison == StringComparison.Ordinal) {
+						var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase);
+						if (suggestions.Length == 1) {
+							Console.WriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
+						}
+						else if (suggestions.Length <= 5) {
+							Console.Write ("Did you mean ");
+							Console.Write (string.Join (", ", suggestions.Take (suggestions.Length - 1).Select (sug => "\"" + sug.Selector + "\"")));
+							Console.Write (" or \"" + suggestions.Last ().Selector + "\"?");
+							Console.WriteLine ();
+						}
+					}
 				}
 				else {
 					Console.WriteLine (
