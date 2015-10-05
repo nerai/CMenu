@@ -127,10 +127,6 @@ namespace ConsoleMenu
 				}
 
 				var item = _Menu.FirstOrDefault (it => it.Selector.Equals (key, StringComparison));
-				if (item == null) {
-					item = new CMenuItem (key);
-					_Menu.Add (item);
-				}
 				return item;
 			}
 			set
