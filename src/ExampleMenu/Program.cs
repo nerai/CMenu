@@ -14,6 +14,7 @@ namespace ExampleMenu
 			var menu = new CMenu ();
 
 			menu.Add (new MI_Echo ());
+			menu.Add (new MI_If (menu));
 
 			menu.Run ();
 		}
