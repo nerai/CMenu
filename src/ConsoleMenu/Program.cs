@@ -64,26 +64,25 @@ namespace ConsoleMenu
 			Console.WriteLine ("String \"" + s + "\" has length " + s.Length);
 		}
 
-		static void Repeat (string s)
-		{
-			menu.Input (s, true);
-			menu.Input (s, true);
-			menu.Input (s, true);
-		}
-
 		static void InputModification ()
 		{
 			/*
 			 * It is also possible to modify the input queue.
-			 * Check out how the "repeat" command adds its argument to the input queue three times.
+			 * Check out how the "repeat" command adds its argument to the input queue two times.
 			 */
 			menu.Add ("repeat",
 				s => Repeat (s),
-				"Repeats a command 3 times.");
+				"Repeats a command two times.");
 
 			// Run menu. The menu will run until quit by the user.
 			Console.WriteLine ("New command available: repeat");
 			menu.Run ();
+		}
+
+		static void Repeat (string s)
+		{
+			menu.Input (s, true);
+			menu.Input (s, true);
 		}
 
 		static void CaseSensitivity ()
