@@ -92,6 +92,7 @@ Commands can by entered abbreviated, as long as it is clear which one was intend
 	Hello world!
 
 Commands are case *in*sensitive by default. This can be changed using the `StringComparison` property.
+When in case sensitive mode, CMenu will helpfully point out similar commands with different caseing.
 
 	menu.StringComparison = StringComparison.InvariantCulture;
 	menu.Add ("Hello", s => Console.WriteLine ("Hi!"));
@@ -100,8 +101,8 @@ Commands are case *in*sensitive by default. This can be changed using the `Strin
 	Available commands:
 	e   | exit
 	H   | Hello
-		  hello
-		  help
+	      hello
+	      help
 	l   | len
 	q   | quit
 	r   | repeat
@@ -111,7 +112,9 @@ Commands are case *in*sensitive by default. This can be changed using the `Strin
 	Hi!
 	$ h
 	Command <h> not unique. Candidates: hello, help
-	$
+	$ hE
+	Unknown command: hE
+	Did you mean "hello", "Hello" or "help"?
 
 
 
