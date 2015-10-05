@@ -62,9 +62,9 @@ namespace ConsoleMenu
 
 		static void Repeat (string s)
 		{
-			menu.Input (s);
-			menu.Input (s);
-			menu.Input (s);
+			menu.Input (s, true);
+			menu.Input (s, true);
+			menu.Input (s, true);
 		}
 
 		static void InputModification ()
