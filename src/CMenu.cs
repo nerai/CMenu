@@ -28,7 +28,7 @@ namespace ConsoleMenu
 		}
 
 		private readonly List<CMenuItem> _Menu = new List<CMenuItem> ();
-		private readonly Queue<string> _InputQueue = new Queue<string> ();
+		private readonly List<string> _InputQueue = new List<string> ();
 
 		/// <summary>
 		/// Gets or sets how entered commands are compared.
@@ -249,7 +249,8 @@ namespace ConsoleMenu
 			while (true) {
 				string input;
 				if (_InputQueue.Count > 0) {
-					input = _InputQueue.Dequeue ();
+					input = _InputQueue.First ();
+					_InputQueue.RemoveAt (0);
 				}
 				else {
 					Console.Write ("$ ");
@@ -276,9 +277,14 @@ namespace ConsoleMenu
 		/// <param name="line">
 		/// The line to add to the input queue.
 		/// </param>
-		public void Input (string line)
+		public void Input (string line, bool atBeginning)
 		{
-			_InputQueue.Enqueue (line);
+			if (atBeginning) {
+				_InputQueue.Insert (0, line);
+			}
+			else {
+				_InputQueue.Add (line);
+			}
 		}
 	}
 }
