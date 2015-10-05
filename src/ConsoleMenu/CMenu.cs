@@ -271,8 +271,12 @@ namespace ConsoleMenu
 					Console.Write ("$ ");
 					input = Console.ReadLine ();
 				}
-				var cmd = SplitFirstWord (ref input);
 
+				if (string.IsNullOrWhiteSpace (input)) {
+					continue;
+				}
+
+				var cmd = SplitFirstWord (ref input);
 				var it = GetMenuItem (cmd, true);
 				if (it == null) {
 					continue;
