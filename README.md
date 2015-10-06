@@ -148,12 +148,7 @@ Check out how the "repeat" command adds its argument to the input queue two time
 
 ## Example project
 
-The source code contains an example project. It offers the following commands, which illustrate several advanced use cases:
-* echo
-* if
-* pause
-* record
-* replay
+The source code contains an example project. It offers commands, which illustrate several (more or less advanced) use cases. It may be useful to reference them in your own projects.
 
 ### echo
 
