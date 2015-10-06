@@ -31,33 +31,85 @@ namespace ConsoleMenu
 			}
 
 			var cmd = MenuUtil.SplitFirstWord (ref arg);
+
 			if (string.IsNullOrEmpty (cmd)) {
-				Console.WriteLine ("Available commands:");
-				var abbreviations = _Menu.CommandAbbreviations ().OrderBy (it => it.Key);
-				foreach (var ab in abbreviations) {
-					if (ab.Value == null) {
-						Console.Write ("      ");
-					}
-					else {
-						Console.Write (ab.Value.PadRight (3) + " | ");
-					}
-					Console.WriteLine (ab.Key);
-				}
-				Console.WriteLine ("Type \"help <command>\" for individual command help.");
+				DisplayAvailableCommands (_Menu, false);
 			}
 			else {
 				var it = _Menu.GetMenuItem (cmd, true);
 				if (it != null) {
-					if (it.HelpText == null) {
-						Console.WriteLine ("No help available for " + it.Selector);
-					}
-					else {
-						Console.WriteLine (it.HelpText);
-					}
+					DisplayHelp (arg, it);
 				}
 			}
 
 			return MenuResult.Normal;
+		}
+
+		private static void DisplayHelp (string arg, IMenuItem context)
+		{
+			if (arg == null) {
+				throw new ArgumentNullException ("arg");
+			}
+			if (context == null) { //XXX?
+				throw new ArgumentNullException ("context");
+			}
+
+			var cmd = MenuUtil.SplitFirstWord (ref arg);
+			var mc = context as MenuItemCollection;
+
+			if (string.IsNullOrEmpty (cmd)) {
+				DisplayItemHelp (context);
+				if (mc != null) {
+					DisplayAvailableCommands (mc, true);
+				}
+			}
+			else {
+				if (mc == null) {
+					DisplayItemHelp (context);
+					if (!string.IsNullOrEmpty (arg)) {
+						Console.WriteLine ("Inner command \"" + arg + "\" not found.");
+					}
+				}
+				else {
+					var inner = mc.GetMenuItem (cmd, true);
+					if (inner == null) {
+						return;
+					}
+					else {
+						DisplayHelp (arg, inner);
+					}
+				}
+			}
+		}
+
+		private static void DisplayItemHelp (IMenuItem item)
+		{
+			if (item.HelpText == null) {
+				Console.WriteLine ("No help available for " + item.Selector);
+			}
+			else {
+				Console.WriteLine (item.HelpText);
+			}
+		}
+
+		private static void DisplayAvailableCommands (MenuItemCollection menu, bool inner)
+		{
+			if (!inner) {
+				Console.WriteLine ("Available commands:");
+			}
+			var abbreviations = menu.CommandAbbreviations ().OrderBy (it => it.Key);
+			foreach (var ab in abbreviations) {
+				if (ab.Value == null) {
+					Console.Write ("      ");
+				}
+				else {
+					Console.Write (ab.Value.PadRight (3) + " | ");
+				}
+				Console.WriteLine (ab.Key);
+			}
+			if (!inner) {
+				Console.WriteLine ("Type \"help <command>\" for individual command help.");
+			}
 		}
 	}
 }

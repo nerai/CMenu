@@ -154,26 +154,31 @@ namespace ConsoleMenu
 				return its[0];
 			}
 
-			if (complain) {
-				if (its.Length == 0) {
-					Console.WriteLine ("Unknown command: " + cmd);
-					if (UsesCaseSensitiveComparison ()) {
-						var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase);
-						if (suggestions.Length == 1) {
-							Console.WriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
-						}
-						else if (suggestions.Length <= 5) {
-							Console.Write ("Did you mean ");
-							Console.Write (string.Join (", ", suggestions.Take (suggestions.Length - 1).Select (sug => "\"" + sug.Selector + "\"")));
-							Console.Write (" or \"" + suggestions.Last ().Selector + "\"?");
-							Console.WriteLine ();
-						}
+			if (!complain) {
+				return null;
+			}
+
+			if (its.Length > 0) {
+				Console.WriteLine (
+					"Command <" + cmd + "> not unique. Candidates: " +
+					string.Join (", ", its.Select (it => it.Selector)));
+				return null;
+			}
+
+			Console.WriteLine ("Unknown command: " + cmd);
+
+			if (UsesCaseSensitiveComparison ()) {
+				var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase);
+				if (suggestions.Length > 0) {
+					if (suggestions.Length == 1) {
+						Console.WriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
 					}
-				}
-				else {
-					Console.WriteLine (
-						"Command <" + cmd + "> not unique. Candidates: " +
-						string.Join (", ", its.Select (it => it.Selector)));
+					else if (suggestions.Length <= 5) {
+						Console.Write ("Did you mean ");
+						Console.Write (string.Join (", ", suggestions.Take (suggestions.Length - 1).Select (sug => "\"" + sug.Selector + "\"")));
+						Console.Write (" or \"" + suggestions.Last ().Selector + "\"?");
+						Console.WriteLine ();
+					}
 				}
 			}
 
