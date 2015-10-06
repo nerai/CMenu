@@ -142,7 +142,7 @@ namespace ConsoleMenu
 		/// <param name="cmd">A keyword that uniquely identifies the searched menu item</param>
 		/// <param name="complain">If true, clarifications about missing or superfluous matches will be written to stdout</param>
 		/// <returns>The single closest matching menu item, or null in case of 0 or multiple matches</returns>
-		protected IMenuItem GetMenuItem (string cmd, bool complain)
+		public IMenuItem GetMenuItem (string cmd, bool complain)
 		{
 			if (cmd == null) {
 				throw new ArgumentNullException ("cmd");
@@ -157,10 +157,7 @@ namespace ConsoleMenu
 			if (complain) {
 				if (its.Length == 0) {
 					Console.WriteLine ("Unknown command: " + cmd);
-					if (false
-						|| StringComparison == StringComparison.CurrentCulture
-						|| StringComparison == StringComparison.InvariantCulture
-						|| StringComparison == StringComparison.Ordinal) {
+					if (UsesCaseSensitiveComparison ()) {
 						var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase);
 						if (suggestions.Length == 1) {
 							Console.WriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
@@ -181,6 +178,14 @@ namespace ConsoleMenu
 			}
 
 			return null;
+		}
+
+		private bool UsesCaseSensitiveComparison ()
+		{
+			return false
+				|| StringComparison == StringComparison.CurrentCulture
+				|| StringComparison == StringComparison.InvariantCulture
+				|| StringComparison == StringComparison.Ordinal;
 		}
 
 		/// <summary>
