@@ -44,12 +44,19 @@ namespace ConsoleMenu
 				return _Execute (arg);
 			}
 
-			if (!_Menu.Any ()) {
+			if (_Menu.Any ()) {
+				return ExecuteInner (arg);
+			}
+			else {
 				throw new NotImplementedException ("This menu item does not have an associated behavior yet.");
 			}
 
 			// todo proper error checks
+		}
 
+		// todo: move into MIcollection?
+		protected MenuResult ExecuteInner (string arg)
+		{
 			var cmd = CMenu.SplitFirstWord (ref arg);
 
 			var it = GetMenuItem (cmd, true);
