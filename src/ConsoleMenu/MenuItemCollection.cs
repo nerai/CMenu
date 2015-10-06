@@ -90,6 +90,15 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
+		/// Adds a new command from keyword and help.
+		/// </summary>
+		/// <param name="selector">Keyword</param>
+		public CMenuItem Add (string selector, string help = null)
+		{
+			return Add (selector, (Func<string, MenuResult>) null, help);
+		}
+
+		/// <summary>
 		/// Creates a new CMenuItem from keyword, behavior and help text.
 		/// </summary>
 		/// <param name="selector">Keyword</param>

@@ -44,19 +44,20 @@ namespace ConsoleMenu
 				return _Execute (arg);
 			}
 
-			if (_Menu.Any ()) {
-				// todo proper error checks
-
-				var cmd = CMenu.SplitFirstWord (ref arg);
-				// XXX
-
-				var it = GetMenuItem (cmd, true);
-				if (it != null) {
-					return it.Execute (arg);
-				}
+			if (!_Menu.Any ()) {
+				throw new NotImplementedException ("This menu item does not have an associated behavior yet.");
 			}
 
-			throw new NotImplementedException ("This menu item does not have an associated behavior yet.");
+			// todo proper error checks
+
+			var cmd = CMenu.SplitFirstWord (ref arg);
+
+			var it = GetMenuItem (cmd, true);
+			if (it != null) {
+				return it.Execute (arg);
+			}
+
+			return MenuResult.Normal;
 		}
 
 		private Func<string, MenuResult> _Execute;
