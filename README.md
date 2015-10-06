@@ -146,6 +146,21 @@ Check out how the "repeat" command adds its argument to the input queue two time
 
 
 
+## Inner commands
+
+If a command needs further choices, you may want to select those in a similar manner as in the menu. To do that, simply add sub-items to the main item. If no other behavior is specified, the main item will continue selection within those embedded items.
+
+	var mi = menu.Add ("convert");
+	mi.Add ("upper", s => Console.WriteLine (s.ToUpperInvariant ()));
+	mi.Add ("lower", s => Console.WriteLine (s.ToLowerInvariant ()));
+
+	$ convert upper aBcD
+	ABCD
+	$ convert lower aBcD
+	abcd
+
+
+
 ## Example project
 
 The source code contains an example project. It offers commands, which illustrate several (more or less advanced) use cases. It may be useful to reference them in your own projects.
