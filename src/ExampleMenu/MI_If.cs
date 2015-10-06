@@ -47,13 +47,13 @@ namespace ExampleMenu
 
 		public override MenuResult Execute (string arg)
 		{
-			var cond = CMenu.SplitFirstWord (ref arg);
+			var cond = MenuUtil.SplitFirstWord (ref arg);
 			bool ok = false;
 			bool invert = false;
 
 			while ("not".Equals (cond, _Menu.StringComparison)) {
 				invert = !invert;
-				cond = CMenu.SplitFirstWord (ref arg);
+				cond = MenuUtil.SplitFirstWord (ref arg);
 			}
 
 			ConditionCheck cc;

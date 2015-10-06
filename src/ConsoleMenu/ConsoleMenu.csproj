@@ -80,6 +80,7 @@
     <Compile Include="IMenuItem.cs" />
     <Compile Include="MenuItemCollection.cs" />
     <Compile Include="MenuResult.cs" />
+    <Compile Include="MenuUtil.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

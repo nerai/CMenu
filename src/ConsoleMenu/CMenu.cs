@@ -35,7 +35,7 @@ namespace ConsoleMenu
 				throw new ArgumentNullException ("command");
 			}
 
-			var cmd = SplitFirstWord (ref command);
+			var cmd = MenuUtil.SplitFirstWord (ref command);
 			if (cmd == "") {
 				var cmds = _Menu
 					.Select (it => {
