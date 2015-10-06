@@ -54,19 +54,6 @@ namespace ConsoleMenu
 			// todo proper error checks
 		}
 
-		// todo: move into MIcollection?
-		protected MenuResult ExecuteInner (string arg)
-		{
-			var cmd = CMenu.SplitFirstWord (ref arg);
-
-			var it = GetMenuItem (cmd, true);
-			if (it != null) {
-				return it.Execute (arg);
-			}
-
-			return MenuResult.Normal;
-		}
-
 		private Func<string, MenuResult> _Execute;
 
 		/// <summary>

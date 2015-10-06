@@ -165,5 +165,17 @@ namespace ConsoleMenu
 
 			return null;
 		}
+
+		protected MenuResult ExecuteInner (string arg)
+		{
+			var cmd = MenuUtil.SplitFirstWord (ref arg);
+
+			var it = GetMenuItem (cmd, true);
+			if (it != null) {
+				return it.Execute (arg);
+			}
+
+			return MenuResult.Normal;
+		}
 	}
 }

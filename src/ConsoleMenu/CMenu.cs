@@ -19,14 +19,6 @@ namespace ConsoleMenu
 	/// </summary>
 	public class CMenu : MenuItemCollection
 	{
-		public static string SplitFirstWord (ref string from)
-		{
-			var split = from.Split (new char[] { ' ', '\t' }, 2, StringSplitOptions.RemoveEmptyEntries);
-			from = split.Length > 1 ? split[1].TrimStart () : "";
-			var word = split.Length > 0 ? split[0].Trim () : "";
-			return word;
-		}
-
 		private readonly List<string> _InputQueue = new List<string> ();
 
 		private void DisplayHelp (string command)
@@ -131,14 +123,7 @@ namespace ConsoleMenu
 					continue;
 				}
 
-				var cmd = SplitFirstWord (ref input);
-				var it = GetMenuItem (cmd, true);
-				if (it == null) {
-					continue;
-				}
-
-				var result = it.Execute (input);
-
+				var result = ExecuteInner (input);
 				if (result == MenuResult.Quit) {
 					break;
 				}
