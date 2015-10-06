@@ -148,9 +148,46 @@ Check out how the "repeat" command adds its argument to the input queue two time
 
 ## Example project
 
-The source code contains an example project. It offers the following commands:
+The source code contains an example project. It offers the following commands, which illustrate several advanced use cases:
 * echo
 * if
 * pause
 * record
 * replay
+
+### echo
+
+	echo [text]
+	Prints the specified text to stdout.
+
+### if
+
+	if [not] <condition> <command>
+	Executes <command> if <condition> is met.
+	If the modifier <not> is given, the condition result is reversed.
+	
+	It is allowed to specify multiple concurrent <not>, each of which invert the condition again.
+	By default, the conditons "true" and "false" are known. Further conditions can be added by the developer.
+	Condition combination is not currently supported, though it can be emulated via chaining ("if <c1> if <c2> ...")
+
+### pause
+
+	pause
+	Stops further operation until the enter key is pressed.
+
+### record
+
+	record name
+	Records all subsequent commands to the specified file name.
+	Recording can be stopped by the command endrecord
+	Stored records can be played via the "replay" command.
+	
+	Nested recording is not supported.
+
+### replay
+
+	replay name
+	Replays all commands stored in the specified file name.
+	Replaying puts all stored commands in the same order on the stack as they were originally entered.
+	
+	Nested replaying is supported.
