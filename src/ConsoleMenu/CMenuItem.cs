@@ -23,7 +23,7 @@ namespace ConsoleMenu
 		public string Selector
 		{
 			get;
-			private set;
+			set;
 		}
 
 		/// <summary>
@@ -38,7 +38,7 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Behavior upon selection.
 		/// </summary>
-		public MenuResult Execute (string arg)
+		public virtual MenuResult Execute (string arg)
 		{
 			if (_Execute == null) {
 				throw new NotImplementedException ("This menu item does not have an associated behavior yet.");

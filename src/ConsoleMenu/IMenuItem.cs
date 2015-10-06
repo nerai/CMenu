@@ -13,12 +13,12 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Keyword to select this item.
 		/// </summary>
-		string Selector { get; }
+		string Selector { get; set; }
 
 		/// <summary>
 		/// Descriptive help text.
 		/// </summary>
-		string HelpText { get; }
+		string HelpText { get; set; }
 
 		/// <summary>
 		/// Behavior upon selection.

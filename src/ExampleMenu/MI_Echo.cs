@@ -6,23 +6,17 @@ using ConsoleMenu;
 
 namespace ExampleMenu
 {
-	public class MI_Echo : IMenuItem
+	public class MI_Echo : CMenuItem
 	{
-		public string Selector
+		public MI_Echo ()
+			: base ("echo")
 		{
-			get { return "echo"; }
+			HelpText = ""
+				+ "echo [text]\n"
+				+ "Prints the specified text to stdout.\n";
 		}
 
-		public string HelpText
-		{
-			get
-			{
-				return "echo [text]\n"
-					+ "Prints the specified text to stdout.\n";
-			}
-		}
-
-		public MenuResult Execute (string arg)
+		public override MenuResult Execute (string arg)
 		{
 			Console.WriteLine (arg);
 			return MenuResult.Normal;

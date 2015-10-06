@@ -6,23 +6,17 @@ using ConsoleMenu;
 
 namespace ExampleMenu
 {
-	public class MI_Pause : IMenuItem
+	public class MI_Pause : CMenuItem
 	{
-		public string Selector
+		public MI_Pause ()
+			: base ("pause")
 		{
-			get { return "pause"; }
+			HelpText = ""
+				+ "pause\n"
+				+ "Stops further operation until the enter key is pressed.\n";
 		}
 
-		public string HelpText
-		{
-			get
-			{
-				return "pause\n"
-					+ "Stops further operation until the enter key is pressed.\n";
-			}
-		}
-
-		public MenuResult Execute (string arg)
+		public override MenuResult Execute (string arg)
 		{
 			Console.ReadLine ();
 

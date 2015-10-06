@@ -6,7 +6,7 @@ using ConsoleMenu;
 
 namespace ExampleMenu
 {
-	public class MI_If : IMenuItem
+	public class MI_If : CMenuItem
 	{
 		private readonly CMenu _Menu;
 
@@ -15,7 +15,16 @@ namespace ExampleMenu
 		public readonly Dictionary<string, ConditionCheck> Conditions = new Dictionary<string, ConditionCheck> ();
 
 		public MI_If (CMenu menu)
+			: base ("if")
 		{
+			HelpText = ""
+				+ "if [not] <condition> <command>\n"
+				+ "Executes <command> if <condition> is met.\n"
+				+ "If the modifier <not> is given, the condition result is reversed.\n"
+				+ "\n"
+				+ "It is allowed to specify multiple concurrent <not>, each of which invert the condition again.\n"
+				+ "By default, the conditons \"true\" and \"false\" are known. Further conditions can be added by the developer.\n"
+				+ "Condition combination is not currently supported, though it can be emulated via chaining (\"if <c1> if <c2> ...\")\n";
 			if (menu == null) {
 				throw new ArgumentNullException ("menu");
 			}
@@ -36,26 +45,7 @@ namespace ExampleMenu
 			return false;
 		}
 
-		public string Selector
-		{
-			get { return "if"; }
-		}
-
-		public string HelpText
-		{
-			get
-			{
-				return "if [not] <condition> <command>\n"
-					+ "Executes <command> if <condition> is met.\n"
-					+ "If the modifier <not> is given, the condition result is reversed.\n"
-					+ "\n"
-					+ "It is allowed to specify multiple concurrent <not>, each of which invert the condition again.\n"
-					+ "By default, the conditons \"true\" and \"false\" are known. Further conditions can be added by the developer.\n"
-					+ "Condition combination is not currently supported, though it can be emulated via chaining (\"if <c1> if <c2> ...\")\n";
-			}
-		}
-
-		public MenuResult Execute (string arg)
+		public override MenuResult Execute (string arg)
 		{
 			var cond = CMenu.SplitFirstWord (ref arg);
 			bool ok = false;

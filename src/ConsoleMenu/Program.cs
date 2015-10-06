@@ -51,7 +51,7 @@ namespace ConsoleMenu
 			/*
 			 * You can also access individual commands to edit them later, though this is rarely required.
 			 */
-			((CMenuItem) menu["time"]).HelpText += " (UTC).";
+			menu["time"].HelpText += " (UTC).";
 
 			// Run menu. The menu will run until quit by the user.
 			menu.Run ();

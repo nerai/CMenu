@@ -7,29 +7,23 @@ using ConsoleMenu;
 
 namespace ExampleMenu
 {
-	public class MI_Record : IMenuItem
+	public class MI_Record : CMenuItem
 	{
 		public string EndrecordCommand = "endrecord";
 
-		public string Selector
+		public MI_Record ()
+			: base ("record")
 		{
-			get { return "record"; }
+			HelpText = ""
+				+ "record name\n"
+				+ "Records all subsequent commands to the specified file name.\n"
+				+ "Recording can be stopped by the command \"" + EndrecordCommand + "\"\n"
+				+ "Stored records can be played via the \"replay\" command.\n"
+				+ "\n"
+				+ "Nested recording is not supported.\n";
 		}
 
-		public string HelpText
-		{
-			get
-			{
-				return "record name\n"
-					+ "Records all subsequent commands to the specified file name.\n"
-					+ "Recording can be stopped by the command \"" + EndrecordCommand + "\"\n"
-					+ "Stored records can be played via the \"replay\" command.\n"
-					+ "\n"
-					+ "Nested recording is not supported.\n";
-			}
-		}
-
-		public MenuResult Execute (string arg)
+		public override MenuResult Execute (string arg)
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
 				Console.WriteLine ("You must enter a name to identify this command group.");

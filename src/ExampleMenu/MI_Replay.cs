@@ -7,12 +7,20 @@ using ConsoleMenu;
 
 namespace ExampleMenu
 {
-	public class MI_Replay : IMenuItem
+	public class MI_Replay : CMenuItem
 	{
 		private readonly CMenu _Menu;
 
 		public MI_Replay (CMenu menu)
+			: base ("replay")
 		{
+			HelpText = ""
+				+ "replay name\n"
+				+ "Replays all commands stored in the specified file name.\n"
+				+ "Replaying puts all stored commands in the same order on the stack as they were originally entered.\n"
+				+ "\n"
+				+ "Nested replaying is supported.\n";
+
 			if (menu == null) {
 				throw new ArgumentNullException ("menu");
 			}
@@ -20,24 +28,7 @@ namespace ExampleMenu
 			_Menu = menu;
 		}
 
-		public string Selector
-		{
-			get { return "replay"; }
-		}
-
-		public string HelpText
-		{
-			get
-			{
-				return "replay name\n"
-					+ "Replays all commands stored in the specified file name.\n"
-					+ "Replaying puts all stored commands in the same order on the stack as they were originally entered.\n"
-					+ "\n"
-					+ "Nested replaying is supported.\n";
-			}
-		}
-
-		public MenuResult Execute (string arg)
+		public override MenuResult Execute (string arg)
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
 				Console.WriteLine ("You must enter a name to identify this command group.");
