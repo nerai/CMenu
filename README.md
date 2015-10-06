@@ -53,7 +53,7 @@ To create a command with help text, simply add it during definition.
 	
 You can also access individual commands to edit them later, though this is rarely required.
 
-	((CMenuItem) menu["time"]).HelpText += " (UTC).";
+	menu["time"].HelpText += " (UTC).";
 	
 	$ help time
 	Help for "time": Writes the current time (UTC).
