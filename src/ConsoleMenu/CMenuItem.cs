@@ -44,7 +44,7 @@ namespace ConsoleMenu
 				return _Execute (arg);
 			}
 
-			if (_Menu.Any ()) {
+			if (this.Any ()) {
 				return ExecuteInner (arg);
 			}
 			else {

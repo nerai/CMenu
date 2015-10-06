@@ -5,10 +5,9 @@ using System.Text;
 
 namespace ConsoleMenu
 {
-	public class MenuItemCollection
+	public class MenuItemCollection : IEnumerable<IMenuItem>
 	{
-		// xxx private
-		protected readonly List<IMenuItem> _Menu = new List<IMenuItem> ();
+		private readonly List<IMenuItem> _Menu = new List<IMenuItem> ();
 
 		/// <summary>
 		/// Gets or sets how entered commands are compared.
@@ -176,6 +175,16 @@ namespace ConsoleMenu
 			}
 
 			return MenuResult.Normal;
+		}
+
+		public IEnumerator<IMenuItem> GetEnumerator ()
+		{
+			return _Menu.GetEnumerator ();
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
+		{
+			return GetEnumerator ();
 		}
 	}
 }

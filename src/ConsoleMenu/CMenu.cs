@@ -29,7 +29,7 @@ namespace ConsoleMenu
 
 			var cmd = MenuUtil.SplitFirstWord (ref command);
 			if (cmd == "") {
-				var cmds = _Menu
+				var cmds = this
 					.Select (it => {
 						var sel = it.Selector;
 						var ab = GetAbbreviation (sel);
