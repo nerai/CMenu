@@ -142,7 +142,7 @@ namespace ConsoleMenu
 		/// <param name="cmd">A keyword that uniquely identifies the searched menu item</param>
 		/// <param name="complain">If true, clarifications about missing or superfluous matches will be written to stdout</param>
 		/// <returns>The single closest matching menu item, or null in case of 0 or multiple matches</returns>
-		protected IMenuItem GetMenuItem (string cmd, bool complain)
+		public IMenuItem GetMenuItem (string cmd, bool complain)
 		{
 			if (cmd == null) {
 				throw new ArgumentNullException ("cmd");

@@ -21,48 +21,6 @@ namespace ConsoleMenu
 	{
 		private readonly List<string> _InputQueue = new List<string> ();
 
-		private void DisplayHelp (string command)
-		{
-			if (command == null) {
-				throw new ArgumentNullException ("command");
-			}
-
-			var cmd = MenuUtil.SplitFirstWord (ref command);
-			if (cmd == "") {
-				var cmds = this
-					.Select (it => {
-						var sel = it.Selector;
-						var ab = GetAbbreviation (sel);
-						string res;
-						if (ab.Length < sel.Length - 1) {
-							res = ab.PadRight (3) + " | ";
-						}
-						else {
-							res = "      ";
-						}
-						res += sel;
-						return res;
-					})
-					.OrderBy (it => it.TrimStart ());
-				Console.WriteLine ("Available commands:");
-				foreach (var it in cmds) {
-					Console.WriteLine (it);
-				}
-				Console.WriteLine ("Type \"help <command>\" for individual command help.");
-			}
-			else {
-				var it = GetMenuItem (cmd, true);
-				if (it != null) {
-					if (it.HelpText == null) {
-						Console.WriteLine ("No help available for " + it.Selector);
-					}
-					else {
-						Console.WriteLine (it.HelpText);
-					}
-				}
-			}
-		}
-
 		/// <summary>
 		/// Create a new CMenu.
 		///
@@ -76,31 +34,8 @@ namespace ConsoleMenu
 		/// </summary>
 		public CMenu ()
 		{
-			var helphelp = ""
-				+ "help [command]\n"
-				+ "Displays a help text for the specified command, or\n"
-				+ "Displays a list of all available commands.\n";
-			Add (new CMenuItem ("help", s => DisplayHelp (s), helphelp));
-
-			var helpquit = ""
-				+ "quit\n"
-				+ "Quits menu processing.\n";
-			Add (new CMenuItem ("quit", s => MenuResult.Quit, helpquit));
-		}
-
-		private string GetAbbreviation (string cmd)
-		{
-			if (cmd == null) {
-				throw new ArgumentNullException ("cmd");
-			}
-
-			for (int i = 1; i <= cmd.Length; i++) {
-				var sub = cmd.Substring (0, i);
-				if (GetMenuItem (sub, false) != null) {
-					return sub;
-				}
-			}
-			return cmd;
+			Add (new MI_Quit ());
+			Add (new MI_Help (this));
 		}
 
 		/// <summary>
