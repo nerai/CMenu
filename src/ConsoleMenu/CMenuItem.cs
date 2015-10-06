@@ -15,7 +15,7 @@ namespace ConsoleMenu
 	/// </code>
 	/// </example>
 	/// </summary>
-	public class CMenuItem : IMenuItem
+	public class CMenuItem : MenuItemCollection, IMenuItem
 	{
 		/// <summary>
 		/// Keyword to select this item.
@@ -40,11 +40,23 @@ namespace ConsoleMenu
 		/// </summary>
 		public virtual MenuResult Execute (string arg)
 		{
-			if (_Execute == null) {
-				throw new NotImplementedException ("This menu item does not have an associated behavior yet.");
+			if (_Execute != null) {
+				return _Execute (arg);
 			}
 
-			return _Execute (arg);
+			if (_Menu.Any ()) {
+				// todo proper error checks
+
+				var cmd = CMenu.SplitFirstWord (ref arg);
+				// XXX
+
+				var it = GetMenuItem (cmd, true);
+				if (it != null) {
+					return it.Execute (arg);
+				}
+			}
+
+			throw new NotImplementedException ("This menu item does not have an associated behavior yet.");
 		}
 
 		private Func<string, MenuResult> _Execute;
