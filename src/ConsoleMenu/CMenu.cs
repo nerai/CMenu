@@ -17,7 +17,7 @@ namespace ConsoleMenu
 	/// </code>
 	/// </example>
 	/// </summary>
-	public class CMenu
+	public class CMenu : MenuItemCollection
 	{
 		public static string SplitFirstWord (ref string from)
 		{
@@ -27,15 +27,7 @@ namespace ConsoleMenu
 			return word;
 		}
 
-		private readonly List<IMenuItem> _Menu = new List<IMenuItem> ();
 		private readonly List<string> _InputQueue = new List<string> ();
-
-		/// <summary>
-		/// Gets or sets how entered commands are compared.
-		///
-		/// By default, the comparison is case insensitive and culture invariant.
-		/// </summary>
-		public StringComparison StringComparison { get; set; }
 
 		private void DisplayHelp (string command)
 		{
@@ -92,8 +84,6 @@ namespace ConsoleMenu
 		/// </summary>
 		public CMenu ()
 		{
-			StringComparison = StringComparison.InvariantCultureIgnoreCase;
-
 			var helphelp = ""
 				+ "help [command]\n"
 				+ "Displays a help text for the specified command, or\n"
@@ -104,86 +94,6 @@ namespace ConsoleMenu
 				+ "quit\n"
 				+ "Quits menu processing.\n";
 			Add (new CMenuItem ("quit", s => MenuResult.Quit, helpquit));
-		}
-
-		/// <summary>
-		/// Gets or sets the CMenuItem associated with the specified keyword.
-		/// </summary>
-		/// <param name="key">
-		/// Keyword of the CMenuItem. The selector must match perfectly (i.e. is not an abbreviation of the keyword).
-		/// </param>
-		/// <value>
-		/// The CMenuItem associated with the specified keyword, or null.
-		/// </value>
-		/// <returns>
-		/// The menu item associated with the specified keyword.
-		/// </returns>
-		public IMenuItem this[string key]
-		{
-			get
-			{
-				if (key == null) {
-					throw new ArgumentNullException ("key");
-				}
-
-				var item = _Menu.FirstOrDefault (it => it.Selector.Equals (key, StringComparison));
-				return item;
-			}
-			set
-			{
-				if (key == null) {
-					throw new ArgumentNullException ("key");
-				}
-
-				var old = this[key];
-				if (old != null) {
-					_Menu.Remove (old);
-				}
-				if (value != null) {
-					_Menu.Add (value);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Add new command.
-		///
-		/// The menu's internal structure and abbreviations are updated automatically.
-		/// </summary>
-		/// <param name="it">Command to add.</param>
-		public void Add (IMenuItem it)
-		{
-			if (it == null) {
-				throw new ArgumentNullException ("it");
-			}
-
-			_Menu.Add (it);
-		}
-
-		/// <summary>
-		/// Adds a new command from keyword, behavior and help.
-		/// </summary>
-		/// <param name="selector">Keyword</param>
-		/// <param name="execute">Behavior when selected. The behavior provides feedback to the menu.</param>
-		/// <param name="help">Descriptive help text</param>
-		public CMenuItem Add (string selector, Func<string, MenuResult> execute, string help = null)
-		{
-			var it = new CMenuItem (selector, execute, help);
-			Add (it);
-			return it;
-		}
-
-		/// <summary>
-		/// Creates a new CMenuItem from keyword, behavior and help text.
-		/// </summary>
-		/// <param name="selector">Keyword</param>
-		/// <param name="execute">Behavior when selected.</param>
-		/// <param name="help">Descriptive help text</param>
-		public CMenuItem Add (string selector, Action<string> execute, string help = null)
-		{
-			var it = new CMenuItem (selector, execute, help);
-			Add (it);
-			return it;
 		}
 
 		private string GetAbbreviation (string cmd)
@@ -199,61 +109,6 @@ namespace ConsoleMenu
 				}
 			}
 			return cmd;
-		}
-
-		private IMenuItem[] GetCommands (string cmd, StringComparison comparison)
-		{
-			var its = _Menu
-				.Where (it => it.Selector.Equals (cmd, comparison))
-				.ToArray ();
-			if (its.Length == 0) {
-				its = _Menu
-					.Where (it => it.Selector.StartsWith (cmd, comparison))
-					.OrderBy (it => it.Selector)
-					.ToArray ();
-			}
-			return its;
-		}
-
-		private IMenuItem GetMenuItem (string cmd, bool complain)
-		{
-			if (cmd == null) {
-				throw new ArgumentNullException ("cmd");
-			}
-
-			var its = GetCommands (cmd, StringComparison);
-
-			if (its.Length == 1) {
-				return its[0];
-			}
-
-			if (complain) {
-				if (its.Length == 0) {
-					Console.WriteLine ("Unknown command: " + cmd);
-					if (false
-						|| StringComparison == StringComparison.CurrentCulture
-						|| StringComparison == StringComparison.InvariantCulture
-						|| StringComparison == StringComparison.Ordinal) {
-						var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase);
-						if (suggestions.Length == 1) {
-							Console.WriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
-						}
-						else if (suggestions.Length <= 5) {
-							Console.Write ("Did you mean ");
-							Console.Write (string.Join (", ", suggestions.Take (suggestions.Length - 1).Select (sug => "\"" + sug.Selector + "\"")));
-							Console.Write (" or \"" + suggestions.Last ().Selector + "\"?");
-							Console.WriteLine ();
-						}
-					}
-				}
-				else {
-					Console.WriteLine (
-						"Command <" + cmd + "> not unique. Candidates: " +
-						string.Join (", ", its.Select (it => it.Selector)));
-				}
-			}
-
-			return null;
 		}
 
 		/// <summary>

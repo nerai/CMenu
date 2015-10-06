@@ -78,6 +78,7 @@
     <Compile Include="CMenu.cs" />
     <Compile Include="CMenuItem.cs" />
     <Compile Include="IMenuItem.cs" />
+    <Compile Include="MenuItemCollection.cs" />
     <Compile Include="MenuResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
