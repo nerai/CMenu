@@ -39,6 +39,11 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
+		/// The string which is displayed in front of every prompt (i.e. query for user input)
+		/// </summary>
+		public string PromptCharacter = "$";
+
+		/// <summary>
 		/// Start console promting and processing.
 		/// </summary>
 		public void Run ()
@@ -50,7 +55,7 @@ namespace ConsoleMenu
 					_InputQueue.RemoveAt (0);
 				}
 				else {
-					Console.Write ("$ ");
+					Console.Write (PromptCharacter + " ");
 					input = Console.ReadLine ();
 				}
 
