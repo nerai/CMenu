@@ -50,8 +50,6 @@ namespace ConsoleMenu
 			else {
 				throw new NotImplementedException ("This menu item does not have an associated behavior yet.");
 			}
-
-			// todo proper error checks
 		}
 
 		private Func<string, MenuResult> _Execute;

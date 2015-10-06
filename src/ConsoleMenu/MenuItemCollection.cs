@@ -5,6 +5,11 @@ using System.Text;
 
 namespace ConsoleMenu
 {
+	/// <summary>
+	/// A collection of IMenuItems
+	///
+	/// Offers various ways to add, retrieve and use items.
+	/// </summary>
 	public class MenuItemCollection : IEnumerable<IMenuItem>
 	{
 		private readonly List<IMenuItem> _Menu = new List<IMenuItem> ();
@@ -16,6 +21,9 @@ namespace ConsoleMenu
 		/// </summary>
 		public StringComparison StringComparison { get; set; }
 
+		/// <summary>
+		/// Create a new, empty MenuItemCollection
+		/// </summary>
 		public MenuItemCollection ()
 		{
 			StringComparison = StringComparison.InvariantCultureIgnoreCase;
@@ -124,6 +132,16 @@ namespace ConsoleMenu
 			return its;
 		}
 
+		/// <summary>
+		/// Retrieves the IMenuItem associated with the specified keyword.
+		///
+		/// If no single item matches perfectly, the search will broaden to all items starting with the keyword.
+		///
+		/// In case sensitive mode, missing match which could be solved by different casing will re reported if complain is specified.
+		/// </summary>
+		/// <param name="cmd">A keyword that uniquely identifies the searched menu item</param>
+		/// <param name="complain">If true, clarifications about missing or superfluous matches will be written to stdout</param>
+		/// <returns>The single closest matching menu item, or null in case of 0 or multiple matches</returns>
 		protected IMenuItem GetMenuItem (string cmd, bool complain)
 		{
 			if (cmd == null) {
@@ -165,6 +183,11 @@ namespace ConsoleMenu
 			return null;
 		}
 
+		/// <summary>
+		/// Executes the command specified in the argument and returns its result.
+		/// </summary>
+		/// <param name="arg">Command to execute using contained commands.</param>
+		/// <returns>The result of execution, or <c>MenuResult.Normal</c> in case of errors.</returns>
 		protected MenuResult ExecuteInner (string arg)
 		{
 			var cmd = MenuUtil.SplitFirstWord (ref arg);
