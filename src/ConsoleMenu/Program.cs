@@ -14,16 +14,15 @@ namespace ConsoleMenu
 
 		static void Main (string[] args)
 		{
+			Console.WriteLine ("Simple CMenu demonstration");
+
 			Basics ();
-			InputModification ();
 			CaseSensitivity ();
+			InputModification ();
 		}
 
 		static void Basics ()
 		{
-			Console.WriteLine ("Simple CMenu demonstration");
-			Console.WriteLine ("Enter \"help\" for help.");
-
 			// Create menu
 			menu = new CMenu ();
 
@@ -54,6 +53,8 @@ namespace ConsoleMenu
 			menu["time"].HelpText += " (UTC).";
 
 			// Run menu. The menu will run until quit by the user.
+			Console.WriteLine ("Enter \"help\" for help.");
+			Console.WriteLine ("Enter \"quit\" to quit (in this case, the next step of this demo will be started).");
 			menu.Run ();
 
 			Console.WriteLine ("Finished!");
@@ -62,6 +63,18 @@ namespace ConsoleMenu
 		static void PrintLen (string s)
 		{
 			Console.WriteLine ("String \"" + s + "\" has length " + s.Length);
+		}
+
+		static void CaseSensitivity ()
+		{
+			/*
+			 * Commands are case *in*sensitive by default. This can be changed using the `StringComparison` property.
+			 */
+			menu.StringComparison = StringComparison.InvariantCulture;
+			menu.Add ("Hello", s => Console.WriteLine ("Hi!"));
+
+			Console.WriteLine ("The menu is now case sensitive.");
+			menu.Run ();
 		}
 
 		static void InputModification ()
@@ -74,7 +87,6 @@ namespace ConsoleMenu
 				s => Repeat (s),
 				"Repeats a command two times.");
 
-			// Run menu. The menu will run until quit by the user.
 			Console.WriteLine ("New command available: repeat");
 			menu.Run ();
 		}
@@ -85,15 +97,8 @@ namespace ConsoleMenu
 			menu.Input (s, true);
 		}
 
-		static void CaseSensitivity ()
 		{
-			/*
-			 * Commands are case *in*sensitive by default. This can be changed using the `StringComparison` property.
-			 */
-			menu.StringComparison = StringComparison.InvariantCulture;
-			menu.Add ("Hello", s => Console.WriteLine ("Hi!"));
 
-			Console.WriteLine ("The menu is now case sensitive.");
 			menu.Run ();
 		}
 	}
