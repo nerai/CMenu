@@ -33,21 +33,15 @@ namespace ConsoleMenu
 			var cmd = MenuUtil.SplitFirstWord (ref arg);
 			if (string.IsNullOrEmpty (cmd)) {
 				Console.WriteLine ("Available commands:");
-				var commands = _Menu
-					.Select (it => it.Selector)
-					.OrderBy (it => it);
-				foreach (var sel in commands) {
-					var ab = GetAbbreviation (sel);
-					string res;
-					if (ab.Length < sel.Length - 1) {
-						res = ab.PadRight (3) + " | ";
+				var abbreviations = _Menu.CommandAbbreviations ().OrderBy (it => it.Key);
+				foreach (var ab in abbreviations) {
+					if (ab.Value == null) {
+						Console.Write ("      ");
 					}
 					else {
-						res = "      ";
+						Console.Write (ab.Value.PadRight (3) + " | ");
 					}
-					res += sel;
-
-					Console.WriteLine (res);
+					Console.WriteLine (ab.Key);
 				}
 				Console.WriteLine ("Type \"help <command>\" for individual command help.");
 			}
@@ -64,21 +58,6 @@ namespace ConsoleMenu
 			}
 
 			return MenuResult.Normal;
-		}
-
-		private string GetAbbreviation (string cmd)
-		{
-			if (cmd == null) {
-				throw new ArgumentNullException ("cmd");
-			}
-
-			for (int i = 1; i <= cmd.Length; i++) {
-				var sub = cmd.Substring (0, i);
-				if (_Menu.GetMenuItem (sub, false) != null) {
-					return sub;
-				}
-			}
-			return cmd;
 		}
 	}
 }

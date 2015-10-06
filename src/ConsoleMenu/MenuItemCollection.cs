@@ -214,5 +214,36 @@ namespace ConsoleMenu
 		{
 			return GetEnumerator ();
 		}
+
+		public IDictionary<string, string> CommandAbbreviations ()
+		{
+			var dict = new Dictionary<string, string> ();
+
+			foreach (var it in _Menu) {
+				var sel = it.Selector;
+				var ab = GetAbbreviation (sel);
+				if (ab.Length >= sel.Length - 1) {
+					ab = null;
+				}
+				dict.Add (sel, ab);
+			}
+
+			return dict;
+		}
+
+		private string GetAbbreviation (string cmd)
+		{
+			if (cmd == null) {
+				throw new ArgumentNullException ("cmd");
+			}
+
+			for (int i = 1; i <= cmd.Length; i++) {
+				var sub = cmd.Substring (0, i);
+				if (GetMenuItem (sub, false) != null) {
+					return sub;
+				}
+			}
+			return cmd;
+		}
 	}
 }
