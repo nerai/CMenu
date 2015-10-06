@@ -31,7 +31,7 @@ namespace ConsoleMenu
 			}
 
 			var cmd = MenuUtil.SplitFirstWord (ref arg);
-			if (cmd == "") {
+			if (string.IsNullOrEmpty (cmd)) {
 				Console.WriteLine ("Available commands:");
 				var commands = _Menu
 					.Select (it => it.Selector)
