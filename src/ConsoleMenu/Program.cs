@@ -19,6 +19,7 @@ namespace ConsoleMenu
 			Basics ();
 			CaseSensitivity ();
 			InputModification ();
+			InnerCommands ();
 		}
 
 		static void Basics ()
@@ -97,8 +98,13 @@ namespace ConsoleMenu
 			menu.Input (s, true);
 		}
 
+		static void InnerCommands ()
 		{
+			var mi = menu.Add ("convert", "convert upper|lower [text]\nConverts the text to upper or lower case");
+			mi.Add ("upper", s => Console.WriteLine (s.ToUpperInvariant ()), "Converts to upper case");
+			mi.Add ("lower", s => Console.WriteLine (s.ToLowerInvariant ()), "Converts to lower case");
 
+			Console.WriteLine ("New command <convert> available. It features the inner commands \"upper\" and \"lower\".");
 			menu.Run ();
 		}
 	}
