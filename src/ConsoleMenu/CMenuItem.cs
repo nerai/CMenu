@@ -5,7 +5,6 @@ using System.Text;
 
 namespace ConsoleMenu
 {
-	// todo always branch menu items from a parent menu?
 	/// <summary>
 	/// A single console menu item. It consists of a selector (keyword), a help text and the individual behavior.
 	///

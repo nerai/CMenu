@@ -39,7 +39,6 @@ namespace ConsoleMenu
 				throw new ArgumentNullException ("context");
 			}
 
-			// todo refactor
 			if (string.IsNullOrEmpty (arg)) {
 				DisplayItemHelp (context, !context.Any ());
 				DisplayAvailableCommands (context, isInner);

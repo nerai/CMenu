@@ -5,9 +5,14 @@ using System.Text;
 
 namespace ConsoleMenu
 {
-	// todo codedoc
+	/// <summary>
+	/// Extension methods for StringComparison.
+	/// </summary>
 	public static class StringComparisonExtensions
 	{
+		/// <summary>
+		/// Checks if a StringComparison value is case sensitive.
+		/// </summary>
 		public static bool IsCaseSensitive (this StringComparison sc)
 		{
 			return false
@@ -16,7 +21,10 @@ namespace ConsoleMenu
 				|| sc == StringComparison.Ordinal;
 		}
 
-		public static IEqualityComparer<string> GetCorrespondingComparer (this StringComparison sc)
+		/// <summary>
+		/// Returns a StringComparer with the same comparison as the given StringComparison.
+		/// </summary>
+		public static StringComparer GetCorrespondingComparer (this StringComparison sc)
 		{
 			switch (sc) {
 				case StringComparison.CurrentCulture:

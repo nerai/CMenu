@@ -12,10 +12,6 @@ namespace ConsoleMenu
 	/// </summary>
 	public class MenuItemCollection : IEnumerable<CMenuItem>
 	{
-		// todo descr of detault
-		// todo clarifications and/or refactoring about where this is used
-		// todo change all null checks appropriately
-		// todo check all users of ienumerable
 		private readonly DefaultDictionary<string, CMenuItem> _Menu = new DefaultDictionary<string, CMenuItem> ();
 
 		private StringComparison _StringComparison;
@@ -48,9 +44,13 @@ namespace ConsoleMenu
 
 		/// <summary>
 		/// Gets or sets the CMenuItem associated with the specified keyword.
+		///
+		/// Use the null key to access the default item.
 		/// </summary>
 		/// <param name="key">
 		/// Keyword of the CMenuItem. The selector must match perfectly (i.e. is not an abbreviation of the keyword).
+		///
+		/// If the key is null, the value refers to the default item.
 		/// </param>
 		/// <value>
 		/// The CMenuItem associated with the specified keyword, or null.
@@ -140,11 +140,24 @@ namespace ConsoleMenu
 		/// If no single item matches perfectly, the search will broaden to all items starting with the keyword.
 		///
 		/// In case sensitive mode, missing match which could be solved by different casing will re reported if complain is specified.
+		///
+		/// If <c>useDefault</c> is set and a default item is present, it will be returned and no complaint will be generated.
 		/// </summary>
-		/// <param name="cmd">A keyword that uniquely identifies the searched menu item</param> TODO
-		/// <param name="complain">If true, clarifications about missing or superfluous matches will be written to stdout</param>
-		/// <returns>The single closest matching menu item, or null in case of 0 or multiple matches</returns>
-		public CMenuItem GetMenuItem (ref string cmd, out string args, bool complain, bool useDefault) // todo doc
+		/// <param name="cmd">
+		/// In: The command, possibly with arguments, from which the keyword is extracted which uniquely identifies the searched menu item.
+		/// Out: The keyword uniquely identifying a menu item, or null if no such menu item was found.
+		/// </param>
+		/// <param name="args">
+		/// Out: The arguments which were supplied in addition to a keyword.
+		/// </param>
+		/// <param name="complain">
+		/// If true, clarifications about missing or superfluous matches will be written to stdout.
+		/// </param>
+		/// <param name="useDefault">
+		/// The single closest matching menu item, or the default item if no better fit was found, or null in case of 0 or multiple matches.
+		/// </param>
+		/// <returns></returns>
+		public CMenuItem GetMenuItem (ref string cmd, out string args, bool complain, bool useDefault)
 		{
 			if (cmd == null) {
 				throw new ArgumentNullException ("cmd");
