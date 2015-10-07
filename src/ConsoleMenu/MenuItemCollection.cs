@@ -23,6 +23,7 @@ namespace ConsoleMenu
 
 		// todo descr
 		// todo clarifications and/or refactoring about where this is used
+		// todo change all null checks appropriately
 		public CMenuItem Default = null;
 
 		/// <summary>
@@ -211,6 +212,7 @@ namespace ConsoleMenu
 		{
 			var cmd = MenuUtil.SplitFirstWord (ref arg);
 
+			// xxx cmd must be part of arg if default item is chosen
 			var it = GetMenuItem (cmd, true);
 			if (it != null) {
 				return it.Execute (arg);

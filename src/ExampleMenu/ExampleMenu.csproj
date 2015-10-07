@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MI_Add.cs" />
     <Compile Include="MI_Pause.cs" />
     <Compile Include="MI_Replay.cs" />
     <Compile Include="MI_Record.cs" />

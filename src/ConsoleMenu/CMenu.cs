@@ -32,12 +32,13 @@ namespace ConsoleMenu
 		/// </list>
 		/// </para>
 		/// </summary>
-		public CMenu ()
-			: base (null)
+		public CMenu (string selector = null)
+			: base (selector)
 		{
-			// todo allow not adding these
-			Add (new MI_Quit ());
-			Add (new MI_Help (this));
+			if (selector == null) {
+				Add (new MI_Quit ());
+				Add (new MI_Help (this));
+			}
 		}
 
 		/// <summary>
