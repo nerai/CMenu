@@ -161,6 +161,62 @@ If a command needs further choices, you may want to select those in a similar ma
 
 
 
+## Nested menus and default commands
+
+If a command requires several lines of input itself, you can add a CMenu instead of a CMenuItem. A CMenu always offers input prompts in addition to the usual behavior and subitems of a CMenuItem. You may also opt for a custom prompt character, or even disable it.
+
+It may be useful to capture all input which lacks a corresponding command in a "default" command. The default command has the unique selector null.
+
+Let's see an example for a command which calculactes the sum of integers entered by the user. The sum is calculated and output once the user enters "=", which will be implemented as a subcommand. Capturing the integers is done with a default command. To clarify to the user that this is a different menu, we also replace the prompt character with a "+".
+
+	public class MI_Add : CMenu
+	{
+		public MI_Add ()
+			: base ("add")
+		{
+			HelpText = ""
+				+ "add\n"
+				+ "Adds numbers until \"=\" is entered.\n";
+			PromptCharacter = "+";
+
+			Add ("=", s => MenuResult.Quit, "Prints the sum and quits the add submenu");
+			Add (null, s => Add (s));
+		}
+
+		private int _Sum = 0;
+
+		private void Add (string s)
+		{
+			int i;
+			if (int.TryParse (s, out i)) {
+				_Sum += i;
+			}
+			else {
+				Console.WriteLine (s + " is not a valid number.");
+			}
+		}
+
+		public override MenuResult Execute (string arg)
+		{
+			Console.WriteLine ("You're now in submenu <Add>.");
+			Console.WriteLine ("Enter numbers. To print their sum and exit the submenu, enter \"=\".");
+			_Sum = 0;
+			Run ();
+			Console.WriteLine ("Sum = " + _Sum);
+			return MenuResult.Normal;
+		}
+	}
+
+	$ add
+	You're now in submenu <Add>.
+	Enter numbers. To print their sum and exit the submenu, enter "=".
+	+ 2
+	+ 3
+	+ =
+	Sum = 5
+
+
+
 ## Example project
 
 The source code contains an example project. It offers commands, which illustrate several (more or less advanced) use cases. It may be useful to reference them in your own projects.
