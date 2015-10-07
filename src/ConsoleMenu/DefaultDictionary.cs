@@ -5,11 +5,21 @@ using System.Text;
 
 namespace ConsoleMenu
 {
+	// todo codedoc
 	public class DefaultDictionary<TKey, TValue> where TValue : class
 	{
-		private Dictionary<TKey, TValue> _D;
+		private Dictionary<TKey, TValue> _D = new Dictionary<TKey, TValue> ();
 
 		public TValue Default = null;
+
+		public DefaultDictionary ()
+		{
+		}
+
+		public void SetComparer (IEqualityComparer<TKey> comparer)
+		{
+			_D = new Dictionary<TKey, TValue> (_D, comparer);
+		}
 
 		public TValue this[TKey key]
 		{
@@ -31,6 +41,28 @@ namespace ConsoleMenu
 				else {
 					_D[key] = value;
 				}
+			}
+		}
+
+		public bool TryGetValue (TKey key, out TValue value)
+		{
+			return _D.TryGetValue (key, out value);
+		}
+
+		public TValue TryGetValue (TKey key)
+		{
+			TValue v;
+			_D.TryGetValue (key, out v);
+			return v;
+		}
+
+		public void Add (TKey key, TValue value)
+		{
+			if (key == null) {
+				Default = value;
+			}
+			else {
+				_D.Add (key, value);
 			}
 		}
 	}
