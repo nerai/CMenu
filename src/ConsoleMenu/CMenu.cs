@@ -35,6 +35,7 @@ namespace ConsoleMenu
 		public CMenu ()
 			: base (null)
 		{
+			// todo allow not adding these
 			Add (new MI_Quit ());
 			Add (new MI_Help (this));
 		}

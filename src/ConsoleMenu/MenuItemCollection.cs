@@ -21,6 +21,10 @@ namespace ConsoleMenu
 		/// </summary>
 		public StringComparison StringComparison { get; set; }
 
+		// todo descr
+		// todo clarifications and/or refactoring about where this is used
+		public CMenuItem Default = null;
+
 		/// <summary>
 		/// Create a new, empty MenuItemCollection
 		/// </summary>
@@ -46,7 +50,7 @@ namespace ConsoleMenu
 			get
 			{
 				if (key == null) {
-					throw new ArgumentNullException ("key");
+					return Default;
 				}
 
 				var item = _Menu.FirstOrDefault (it => it.Selector.Equals (key, StringComparison));
@@ -55,7 +59,8 @@ namespace ConsoleMenu
 			set
 			{
 				if (key == null) {
-					throw new ArgumentNullException ("key");
+					Default = value;
+					return;
 				}
 
 				var old = this[key];
@@ -164,6 +169,10 @@ namespace ConsoleMenu
 				return null;
 			}
 
+			if (Default != null) {
+				return Default;
+			}
+
 			if (complainMissing) {
 				Console.WriteLine ("Unknown command: " + cmd);
 
@@ -203,7 +212,7 @@ namespace ConsoleMenu
 		{
 			var cmd = MenuUtil.SplitFirstWord (ref arg);
 
-			var it = GetMenuItem (cmd, true);
+			var it = GetMenuItem (cmd, true, true);
 			if (it != null) {
 				return it.Execute (arg);
 			}

@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ConsoleMenu
 {
+	// todo always branch menu items from a parent menu?
 	/// <summary>
 	/// A single console menu item. It consists of a selector (keyword), a help text and the individual behavior.
 	///
@@ -79,6 +80,7 @@ namespace ConsoleMenu
 		/// <param name="help">Descriptive help text</param>
 		public CMenuItem (string selector, Action<string> execute, string help = null)
 		{
+			// todo allow selector null for default items?
 			if (selector == null) {
 				throw new ArgumentNullException ("selector");
 			}
