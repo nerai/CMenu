@@ -145,10 +145,9 @@ namespace ConsoleMenu
 		/// In case sensitive mode, missing match which could be solved by different casing will re reported if complain is specified.
 		/// </summary>
 		/// <param name="cmd">A keyword that uniquely identifies the searched menu item</param>
-		/// <param name="complainMissing">If true, clarifications about missing matches will be written to stdout</param>
-		/// <param name="complainMultiple">If true, clarifications about superfluous matches will be written to stdout</param>
+		/// <param name="complain">If true, clarifications about missing or superfluous matches will be written to stdout</param>
 		/// <returns>The single closest matching menu item, or null in case of 0 or multiple matches</returns>
-		public CMenuItem GetMenuItem (string cmd, bool complainMissing, bool complainMultiple)
+		public CMenuItem GetMenuItem (string cmd, bool complain)
 		{
 			if (cmd == null) {
 				throw new ArgumentNullException ("cmd");
@@ -161,7 +160,7 @@ namespace ConsoleMenu
 			}
 
 			if (its.Length > 1) {
-				if (complainMultiple) {
+				if (complain) {
 					Console.WriteLine (
 						"Command <" + cmd + "> not unique. Candidates: " +
 						string.Join (", ", its.Select (it => it.Selector)));
@@ -173,7 +172,7 @@ namespace ConsoleMenu
 				return Default;
 			}
 
-			if (complainMissing) {
+			if (complain) {
 				Console.WriteLine ("Unknown command: " + cmd);
 
 				if (UsesCaseSensitiveComparison ()) {
@@ -212,7 +211,7 @@ namespace ConsoleMenu
 		{
 			var cmd = MenuUtil.SplitFirstWord (ref arg);
 
-			var it = GetMenuItem (cmd, true, true);
+			var it = GetMenuItem (cmd, true);
 			if (it != null) {
 				return it.Execute (arg);
 			}
