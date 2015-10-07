@@ -40,7 +40,9 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// The string which is displayed in front of every prompt (i.e. query for user input)
+		/// The string which is displayed in front of every prompt (i.e. query for user input).
+		///
+		/// Set to null to disable prompting.
 		/// </summary>
 		public string PromptCharacter = "$";
 
@@ -56,7 +58,9 @@ namespace ConsoleMenu
 					_InputQueue.RemoveAt (0);
 				}
 				else {
-					Console.Write (PromptCharacter + " ");
+					if (PromptCharacter != null) {
+						Console.Write (PromptCharacter + " ");
+					}
 					input = Console.ReadLine ();
 				}
 
