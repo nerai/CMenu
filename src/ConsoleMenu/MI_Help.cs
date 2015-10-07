@@ -39,29 +39,23 @@ namespace ConsoleMenu
 				throw new ArgumentNullException ("context");
 			}
 
-			var cmd = MenuUtil.SplitFirstWord (ref arg);
-
 			// todo refactor
-			if (string.IsNullOrEmpty (cmd)) {
+			if (string.IsNullOrEmpty (arg)) {
 				DisplayItemHelp (context, !context.Any ());
 				DisplayAvailableCommands (context, isInner);
+				return;
 			}
-			else {
-				if (!context.Any ()) {
-					DisplayItemHelp (context, true);
-					if (!string.IsNullOrEmpty (arg)) {
-						Console.WriteLine ("Inner command \"" + arg + "\" not found.");
-					}
-				}
-				else {
-					var inner = context.GetMenuItem (cmd, true);
-					if (inner == null) {
-						return;
-					}
-					else {
-						DisplayHelp (arg, inner, true);
-					}
-				}
+
+			var cmd = arg;
+			var inner = context.GetMenuItem (ref cmd, out arg, false, false);
+			if (inner != null) {
+				DisplayHelp (arg, inner, true);
+				return;
+			}
+
+			DisplayItemHelp (context, true);
+			if (!string.IsNullOrEmpty (arg)) {
+				Console.WriteLine ("Inner command \"" + arg + "\" not found.");
 			}
 		}
 

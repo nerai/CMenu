@@ -144,14 +144,15 @@ namespace ConsoleMenu
 		/// <param name="cmd">A keyword that uniquely identifies the searched menu item</param> TODO
 		/// <param name="complain">If true, clarifications about missing or superfluous matches will be written to stdout</param>
 		/// <returns>The single closest matching menu item, or null in case of 0 or multiple matches</returns>
-		public CMenuItem GetMenuItem (string line, out string args, bool complain, bool useDefault) // todo doc
+		public CMenuItem GetMenuItem (ref string cmd, out string args, bool complain, bool useDefault) // todo doc
 		{
-			if (line == null) {
-				throw new ArgumentNullException ("line");
+			if (cmd == null) {
+				throw new ArgumentNullException ("cmd");
 			}
 
-			args = line;
-			var cmd = MenuUtil.SplitFirstWord (ref args);
+			var original = cmd;
+			args = cmd;
+			cmd = MenuUtil.SplitFirstWord (ref args);
 
 			var its = GetCommands (cmd, StringComparison);
 
@@ -170,7 +171,8 @@ namespace ConsoleMenu
 
 			var def = _Menu[null];
 			if (def != null) {
-				args = line;
+				cmd = null;
+				args = original;
 				return def;
 			}
 
@@ -203,7 +205,8 @@ namespace ConsoleMenu
 		/// <returns>The result of execution, or <c>MenuResult.Normal</c> in case of errors.</returns>
 		protected MenuResult ExecuteInner (string args)
 		{
-			var it = GetMenuItem (args, out args, true, true);
+			var cmd = args;
+			var it = GetMenuItem (ref cmd, out args, true, true);
 			if (it != null) {
 				return it.Execute (args);
 			}
@@ -244,7 +247,8 @@ namespace ConsoleMenu
 
 			for (int i = 1; i <= cmd.Length; i++) {
 				var sub = cmd.Substring (0, i);
-				if (GetMenuItem (sub, false) != null) {
+				string dummy;
+				if (GetMenuItem (ref sub, out dummy, false, false) != null) {
 					return sub;
 				}
 			}
