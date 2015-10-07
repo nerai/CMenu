@@ -15,7 +15,7 @@ namespace ConsoleMenu
 	/// </code>
 	/// </example>
 	/// </summary>
-	public class CMenuItem : MenuItemCollection, IMenuItem
+	public class CMenuItem : MenuItemCollection
 	{
 		/// <summary>
 		/// Keyword to select this item.
@@ -62,10 +62,6 @@ namespace ConsoleMenu
 		/// <param name="help">Descriptive help text</param>
 		public CMenuItem (string selector, Func<string, MenuResult> execute, string help = null)
 		{
-			if (selector == null) {
-				throw new ArgumentNullException ("selector");
-			}
-
 			Selector = selector;
 			HelpText = help;
 			SetAction (execute);
@@ -79,10 +75,6 @@ namespace ConsoleMenu
 		/// <param name="help">Descriptive help text</param>
 		public CMenuItem (string selector, Action<string> execute, string help = null)
 		{
-			if (selector == null) {
-				throw new ArgumentNullException ("selector");
-			}
-
 			Selector = selector;
 			HelpText = help;
 			SetAction (execute);

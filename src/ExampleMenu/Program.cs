@@ -24,10 +24,7 @@ namespace ExampleMenu
 			menu.Add (new MI_Pause ());
 			menu.Add (new MI_Record ());
 			menu.Add (new MI_Replay (menu));
-
-			var mi = menu.Add ("convert");
-			mi.Add ("upper", s => Console.WriteLine (s.ToUpperInvariant ()));
-			mi.Add ("lower", s => Console.WriteLine (s.ToLowerInvariant ()));
+			menu.Add (new MI_Add ());
 
 			return menu;
 		}

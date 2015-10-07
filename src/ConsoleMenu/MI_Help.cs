@@ -26,59 +26,76 @@ namespace ConsoleMenu
 
 		public override MenuResult Execute (string arg)
 		{
-			if (arg == null) {
-				throw new ArgumentNullException ("arg");
-			}
-
-			var cmd = MenuUtil.SplitFirstWord (ref arg);
-			if (string.IsNullOrEmpty (cmd)) {
-				Console.WriteLine ("Available commands:");
-				var commands = _Menu
-					.Select (it => it.Selector)
-					.OrderBy (it => it);
-				foreach (var sel in commands) {
-					var ab = GetAbbreviation (sel);
-					string res;
-					if (ab.Length < sel.Length - 1) {
-						res = ab.PadRight (3) + " | ";
-					}
-					else {
-						res = "      ";
-					}
-					res += sel;
-
-					Console.WriteLine (res);
-				}
-				Console.WriteLine ("Type \"help <command>\" for individual command help.");
-			}
-			else {
-				var it = _Menu.GetMenuItem (cmd, true);
-				if (it != null) {
-					if (it.HelpText == null) {
-						Console.WriteLine ("No help available for " + it.Selector);
-					}
-					else {
-						Console.WriteLine (it.HelpText);
-					}
-				}
-			}
-
+			DisplayHelp (arg, _Menu, false);
 			return MenuResult.Normal;
 		}
 
-		private string GetAbbreviation (string cmd)
+		private static void DisplayHelp (string arg, CMenuItem context, bool isInner)
 		{
-			if (cmd == null) {
-				throw new ArgumentNullException ("cmd");
+			if (arg == null) {
+				throw new ArgumentNullException ("arg");
+			}
+			if (context == null) {
+				throw new ArgumentNullException ("context");
 			}
 
-			for (int i = 1; i <= cmd.Length; i++) {
-				var sub = cmd.Substring (0, i);
-				if (_Menu.GetMenuItem (sub, false) != null) {
-					return sub;
+			if (string.IsNullOrEmpty (arg)) {
+				DisplayItemHelp (context, !context.Any ());
+				DisplayAvailableCommands (context, isInner);
+				return;
+			}
+
+			var cmd = arg;
+			var inner = context.GetMenuItem (ref cmd, out arg, false, false);
+			if (inner != null) {
+				DisplayHelp (arg, inner, true);
+				return;
+			}
+
+			DisplayItemHelp (context, true);
+			if (!string.IsNullOrEmpty (arg)) {
+				Console.WriteLine ("Inner command \"" + arg + "\" not found.");
+			}
+		}
+
+		private static void DisplayItemHelp (CMenuItem item, bool force)
+		{
+			if (item == null) {
+				throw new ArgumentNullException ("item");
+			}
+
+			if (item.HelpText == null) {
+				if (force) {
+					Console.WriteLine ("No help available for " + item.Selector);
 				}
 			}
-			return cmd;
+			else {
+				Console.WriteLine (item.HelpText);
+			}
+		}
+
+		private static void DisplayAvailableCommands (MenuItemCollection menu, bool inner)
+		{
+			if (menu == null) {
+				throw new ArgumentNullException ("menu");
+			}
+
+			if (!inner) {
+				Console.WriteLine ("Available commands:");
+			}
+			var abbreviations = menu.CommandAbbreviations ().OrderBy (it => it.Key);
+			foreach (var ab in abbreviations) {
+				if (ab.Value == null) {
+					Console.Write ("      ");
+				}
+				else {
+					Console.Write (ab.Value.PadRight (3) + " | ");
+				}
+				Console.WriteLine (ab.Key);
+			}
+			if (!inner) {
+				Console.WriteLine ("Type \"help <command>\" for individual command help.");
+			}
 		}
 	}
 }

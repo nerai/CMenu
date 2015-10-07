@@ -17,7 +17,7 @@ namespace ConsoleMenu
 	/// </code>
 	/// </example>
 	/// </summary>
-	public class CMenu : MenuItemCollection
+	public class CMenu : CMenuItem
 	{
 		private readonly List<string> _InputQueue = new List<string> ();
 
@@ -32,14 +32,19 @@ namespace ConsoleMenu
 		/// </list>
 		/// </para>
 		/// </summary>
-		public CMenu ()
+		public CMenu (string selector = null)
+			: base (selector)
 		{
-			Add (new MI_Quit ());
-			Add (new MI_Help (this));
+			if (selector == null) {
+				Add (new MI_Quit ());
+				Add (new MI_Help (this));
+			}
 		}
 
 		/// <summary>
-		/// The string which is displayed in front of every prompt (i.e. query for user input)
+		/// The string which is displayed in front of every prompt (i.e. query for user input).
+		///
+		/// Set to null to disable prompting.
 		/// </summary>
 		public string PromptCharacter = "$";
 
@@ -55,7 +60,9 @@ namespace ConsoleMenu
 					_InputQueue.RemoveAt (0);
 				}
 				else {
-					Console.Write (PromptCharacter + " ");
+					if (PromptCharacter != null) {
+						Console.Write (PromptCharacter + " ");
+					}
 					input = Console.ReadLine ();
 				}
 

@@ -77,14 +77,15 @@
   <ItemGroup>
     <Compile Include="CMenu.cs" />
     <Compile Include="CMenuItem.cs" />
+    <Compile Include="DefaultDictionary.cs" />
     <Compile Include="MI_Help.cs" />
-    <Compile Include="IMenuItem.cs" />
     <Compile Include="MenuItemCollection.cs" />
     <Compile Include="MenuResult.cs" />
     <Compile Include="MenuUtil.cs" />
     <Compile Include="MI_Quit.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringComparisonExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
