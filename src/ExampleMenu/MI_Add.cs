@@ -13,7 +13,7 @@ namespace ExampleMenu
 		{
 			HelpText = ""
 				+ "add\n"
-				+ "Adds numbers until \"=\" is entered.\n";
+				+ "Adds numbers until \"=\" is entered.";
 			PromptCharacter = "+";
 
 			Add ("=", s => MenuResult.Quit, "Prints the sum and quits the add submenu");

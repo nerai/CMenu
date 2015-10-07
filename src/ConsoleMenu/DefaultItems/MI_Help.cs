@@ -40,8 +40,9 @@ namespace ConsoleMenu.DefaultItems
 			}
 
 			if (string.IsNullOrEmpty (arg)) {
-				DisplayItemHelp (context, !context.Any ());
-				DisplayAvailableCommands (context, isInner);
+				if (!DisplayItemHelp (context, !context.Any ())) {
+					DisplayAvailableCommands (context, isInner);
+				}
 				return;
 			}
 
@@ -58,7 +59,7 @@ namespace ConsoleMenu.DefaultItems
 			}
 		}
 
-		private static void DisplayItemHelp (CMenuItem item, bool force)
+		private static bool DisplayItemHelp (CMenuItem item, bool force)
 		{
 			if (item == null) {
 				throw new ArgumentNullException ("item");
@@ -68,9 +69,11 @@ namespace ConsoleMenu.DefaultItems
 				if (force) {
 					Console.WriteLine ("No help available for " + item.Selector);
 				}
+				return false;
 			}
 			else {
 				Console.WriteLine (item.HelpText);
+				return true;
 			}
 		}
 
