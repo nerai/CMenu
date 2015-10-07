@@ -6,7 +6,8 @@ using System.Text;
 namespace ConsoleMenu
 {
 	// todo codedoc
-	public class DefaultDictionary<TKey, TValue> where TValue : class
+	public class DefaultDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
+		where TValue : class
 	{
 		private Dictionary<TKey, TValue> _D = new Dictionary<TKey, TValue> ();
 
@@ -63,6 +64,24 @@ namespace ConsoleMenu
 			}
 			else {
 				_D.Add (key, value);
+			}
+		}
+
+		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
+		{
+			return _D.GetEnumerator ();
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
+		{
+			return GetEnumerator ();
+		}
+
+		public Dictionary<TKey, TValue>.ValueCollection Values
+		{
+			get
+			{
+				return _D.Values;
 			}
 		}
 	}

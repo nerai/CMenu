@@ -18,12 +18,25 @@ namespace ConsoleMenu
 		// todo check all users of ienumerable
 		private readonly DefaultDictionary<string, CMenuItem> _Menu = new DefaultDictionary<string, CMenuItem> ();
 
+		private StringComparison _StringComparison;
+
 		/// <summary>
 		/// Gets or sets how entered commands are compared.
 		///
 		/// By default, the comparison is case insensitive and culture invariant.
 		/// </summary>
-		public StringComparison StringComparison { get; set; }
+		public StringComparison StringComparison
+		{
+			get
+			{
+				return _StringComparison;
+			}
+			set
+			{
+				_StringComparison = value;
+				_Menu.SetComparer (value.GetCorrespondingComparer ());
+			}
+		}
 
 		/// <summary>
 		/// Create a new, empty MenuItemCollection
@@ -49,27 +62,11 @@ namespace ConsoleMenu
 		{
 			get
 			{
-				if (key == null) {
-					return Default;
-				}
-
-				var item = _Menu.FirstOrDefault (it => it.Selector.Equals (key, StringComparison));
-				return item;
+				return _Menu.TryGetValue (key);
 			}
 			set
 			{
-				if (key == null) {
-					Default = value;
-					return;
-				}
-
-				var old = this[key];
-				if (old != null) {
-					_Menu.Remove (old);
-				}
-				if (value != null) {
-					_Menu.Add (value);
-				}
+				_Menu[key] = value;
 			}
 		}
 
@@ -85,7 +82,7 @@ namespace ConsoleMenu
 				throw new ArgumentNullException ("it");
 			}
 
-			_Menu.Add (it);
+			_Menu.Add (it.Selector, it);
 		}
 
 		/// <summary>
@@ -125,15 +122,15 @@ namespace ConsoleMenu
 
 		private CMenuItem[] GetCommands (string cmd, StringComparison comparison)
 		{
-			var its = _Menu
-				.Where (it => it.Selector.Equals (cmd, comparison))
-				.ToArray ();
-			if (its.Length == 0) {
-				its = _Menu
-					.Where (it => it.Selector.StartsWith (cmd, comparison))
-					.OrderBy (it => it.Selector)
-					.ToArray ();
+			var mi = _Menu.TryGetValue (cmd);
+			if (mi != null) {
+				return new[] { mi };
 			}
+
+			var its = _Menu.Values
+				.Where (it => it.Selector.StartsWith (cmd, comparison))
+				.OrderBy (it => it.Selector)
+				.ToArray ();
 			return its;
 		}
 
@@ -168,14 +165,15 @@ namespace ConsoleMenu
 				return null;
 			}
 
-			if (Default != null) {
-				return Default;
+			var def = _Menu[null];
+			if (def != null) {
+				return def;
 			}
 
 			if (complain) {
 				Console.WriteLine ("Unknown command: " + cmd);
 
-				if (UsesCaseSensitiveComparison ()) {
+				if (StringComparison.IsCaseSensitive ()) {
 					var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase);
 					if (suggestions.Length > 0) {
 						if (suggestions.Length == 1) {
@@ -192,14 +190,6 @@ namespace ConsoleMenu
 			}
 
 			return null;
-		}
-
-		private bool UsesCaseSensitiveComparison ()
-		{
-			return false
-				|| StringComparison == StringComparison.CurrentCulture
-				|| StringComparison == StringComparison.InvariantCulture
-				|| StringComparison == StringComparison.Ordinal;
 		}
 
 		/// <summary>
