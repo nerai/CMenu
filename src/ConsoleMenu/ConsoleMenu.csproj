@@ -77,12 +77,12 @@
   <ItemGroup>
     <Compile Include="CMenu.cs" />
     <Compile Include="CMenuItem.cs" />
-    <Compile Include="MI_Help.cs" />
+    <Compile Include="DefaultItems\MI_Help.cs" />
     <Compile Include="MenuItemCollection.cs" />
     <Compile Include="MenuResult.cs" />
     <Compile Include="MenuUtil.cs" />
-    <Compile Include="MI_Quit.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="DefaultItems\MI_Quit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringComparisonExtensions.cs" />
   </ItemGroup>
