@@ -117,5 +117,10 @@ namespace ConsoleMenu
 				};
 			}
 		}
+
+		public override string ToString ()
+		{
+			return "[" + Selector + "]";
+		}
 	}
 }
