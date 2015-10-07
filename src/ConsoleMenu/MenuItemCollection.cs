@@ -141,14 +141,17 @@ namespace ConsoleMenu
 		///
 		/// In case sensitive mode, missing match which could be solved by different casing will re reported if complain is specified.
 		/// </summary>
-		/// <param name="cmd">A keyword that uniquely identifies the searched menu item</param>
+		/// <param name="cmd">A keyword that uniquely identifies the searched menu item</param> TODO
 		/// <param name="complain">If true, clarifications about missing or superfluous matches will be written to stdout</param>
 		/// <returns>The single closest matching menu item, or null in case of 0 or multiple matches</returns>
-		public CMenuItem GetMenuItem (string cmd, bool complain)
+		public CMenuItem GetMenuItem (string line, out string args, bool complain, bool useDefault) // todo doc
 		{
-			if (cmd == null) {
-				throw new ArgumentNullException ("cmd");
+			if (line == null) {
+				throw new ArgumentNullException ("line");
 			}
+
+			args = line;
+			var cmd = MenuUtil.SplitFirstWord (ref args);
 
 			var its = GetCommands (cmd, StringComparison);
 
@@ -167,6 +170,7 @@ namespace ConsoleMenu
 
 			var def = _Menu[null];
 			if (def != null) {
+				args = line;
 				return def;
 			}
 
@@ -195,24 +199,20 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Executes the command specified in the argument and returns its result.
 		/// </summary>
-		/// <param name="arg">Command to execute using contained commands.</param>
+		/// <param name="args">Command to execute using contained commands.</param>
 		/// <returns>The result of execution, or <c>MenuResult.Normal</c> in case of errors.</returns>
-		protected MenuResult ExecuteInner (string arg)
+		protected MenuResult ExecuteInner (string args)
 		{
-			var cmd = MenuUtil.SplitFirstWord (ref arg);
-
-			// xxx cmd must be part of arg if default item is chosen
-			var it = GetMenuItem (cmd, true);
+			var it = GetMenuItem (args, out args, true, true);
 			if (it != null) {
-				return it.Execute (arg);
+				return it.Execute (args);
 			}
-
 			return MenuResult.Normal;
 		}
 
 		public IEnumerator<CMenuItem> GetEnumerator ()
 		{
-			return _Menu.GetEnumerator ();
+			return _Menu.Values.GetEnumerator ();
 		}
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
@@ -224,7 +224,7 @@ namespace ConsoleMenu
 		{
 			var dict = new Dictionary<string, string> ();
 
-			foreach (var it in _Menu) {
+			foreach (var it in _Menu.Values) {
 				var sel = it.Selector;
 				var ab = GetAbbreviation (sel);
 				if (ab.Length >= sel.Length - 1) {
