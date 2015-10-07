@@ -140,9 +140,10 @@ namespace ConsoleMenu
 		/// In case sensitive mode, missing match which could be solved by different casing will re reported if complain is specified.
 		/// </summary>
 		/// <param name="cmd">A keyword that uniquely identifies the searched menu item</param>
-		/// <param name="complain">If true, clarifications about missing or superfluous matches will be written to stdout</param>
+		/// <param name="complainMissing">If true, clarifications about missing matches will be written to stdout</param>
+		/// <param name="complainMultiple">If true, clarifications about superfluous matches will be written to stdout</param>
 		/// <returns>The single closest matching menu item, or null in case of 0 or multiple matches</returns>
-		public CMenuItem GetMenuItem (string cmd, bool complain)
+		public CMenuItem GetMenuItem (string cmd, bool complainMissing, bool complainMultiple)
 		{
 			if (cmd == null) {
 				throw new ArgumentNullException ("cmd");
@@ -154,30 +155,30 @@ namespace ConsoleMenu
 				return its[0];
 			}
 
-			if (!complain) {
+			if (its.Length > 1) {
+				if (complainMultiple) {
+					Console.WriteLine (
+						"Command <" + cmd + "> not unique. Candidates: " +
+						string.Join (", ", its.Select (it => it.Selector)));
+				}
 				return null;
 			}
 
-			if (its.Length > 0) {
-				Console.WriteLine (
-					"Command <" + cmd + "> not unique. Candidates: " +
-					string.Join (", ", its.Select (it => it.Selector)));
-				return null;
-			}
+			if (complainMissing) {
+				Console.WriteLine ("Unknown command: " + cmd);
 
-			Console.WriteLine ("Unknown command: " + cmd);
-
-			if (UsesCaseSensitiveComparison ()) {
-				var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase);
-				if (suggestions.Length > 0) {
-					if (suggestions.Length == 1) {
-						Console.WriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
-					}
-					else if (suggestions.Length <= 5) {
-						Console.Write ("Did you mean ");
-						Console.Write (string.Join (", ", suggestions.Take (suggestions.Length - 1).Select (sug => "\"" + sug.Selector + "\"")));
-						Console.Write (" or \"" + suggestions.Last ().Selector + "\"?");
-						Console.WriteLine ();
+				if (UsesCaseSensitiveComparison ()) {
+					var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase);
+					if (suggestions.Length > 0) {
+						if (suggestions.Length == 1) {
+							Console.WriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
+						}
+						else if (suggestions.Length <= 5) {
+							Console.Write ("Did you mean ");
+							Console.Write (string.Join (", ", suggestions.Take (suggestions.Length - 1).Select (sug => "\"" + sug.Selector + "\"")));
+							Console.Write (" or \"" + suggestions.Last ().Selector + "\"?");
+							Console.WriteLine ();
+						}
 					}
 				}
 			}
