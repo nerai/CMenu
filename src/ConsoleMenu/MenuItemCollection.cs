@@ -12,7 +12,8 @@ namespace ConsoleMenu
 	/// </summary>
 	public class MenuItemCollection : IEnumerable<CMenuItem>
 	{
-		private readonly DefaultDictionary<string, CMenuItem> _Menu = new DefaultDictionary<string, CMenuItem> ();
+		private Dictionary<string, CMenuItem> _Menu = new Dictionary<string, CMenuItem> ();
+		private CMenuItem _Default = null;
 
 		private StringComparison _StringComparison;
 
@@ -30,7 +31,7 @@ namespace ConsoleMenu
 			set
 			{
 				_StringComparison = value;
-				_Menu.SetComparer (value.GetCorrespondingComparer ());
+				_Menu = new Dictionary<string, CMenuItem> (_Menu, value.GetCorrespondingComparer ());
 			}
 		}
 
@@ -62,11 +63,21 @@ namespace ConsoleMenu
 		{
 			get
 			{
-				return _Menu.TryGetValue (key);
+				if (key == null) {
+					return _Default;
+				}
+				CMenuItem it;
+				_Menu.TryGetValue (key, out it);
+				return it;
 			}
 			set
 			{
-				_Menu[key] = value;
+				if (key == null) {
+					_Default = value;
+				}
+				else {
+					_Menu[key] = value;
+				}
 			}
 		}
 
@@ -82,7 +93,15 @@ namespace ConsoleMenu
 				throw new ArgumentNullException ("it");
 			}
 
-			_Menu.Add (it.Selector, it);
+			if (it.Selector != null) {
+				_Menu.Add (it.Selector, it);
+				return;
+			}
+
+			if (_Default != null) {
+				throw new ArgumentException ("The default item was already set.", "it");
+			}
+			_Default = it;
 		}
 
 		/// <summary>
@@ -120,9 +139,15 @@ namespace ConsoleMenu
 			return it;
 		}
 
+		/// <summary>
+		/// Returns the commands equal, or starting with, the specified cmd.
+		///
+		/// Does not return the default menu item.
+		/// </summary>
 		private CMenuItem[] GetCommands (string cmd, StringComparison comparison)
 		{
-			var mi = _Menu.TryGetValue (cmd);
+			CMenuItem mi;
+			_Menu.TryGetValue (cmd, out mi);
 			if (mi != null) {
 				return new[] { mi };
 			}
@@ -182,7 +207,7 @@ namespace ConsoleMenu
 				return null;
 			}
 
-			var def = _Menu[null];
+			var def = this[null];
 			if (def != null) {
 				cmd = null;
 				args = original;
@@ -236,6 +261,13 @@ namespace ConsoleMenu
 			return GetEnumerator ();
 		}
 
+		/// <summary>
+		/// Returns a dictionary containing all contained menu items and their corresponding abbreviation.
+		///
+		/// The abbreviations will be updated if commands are added, changed or removed.
+		///
+		/// The default menu item will not be returned.
+		/// </summary>
 		public IDictionary<string, string> CommandAbbreviations ()
 		{
 			var dict = new Dictionary<string, string> ();
