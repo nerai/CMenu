@@ -14,24 +14,30 @@ namespace ExampleMenu
 			HelpText = ""
 				+ "add\n"
 				+ "Adds numbers until \"=\" is entered.\n";
+			PromptCharacter = "+";
 
-			Default = new CMenuItem (null, s => Add (s));
+			Add ("=", s => MenuResult.Quit, "Quits the add submenu");
+			Add (null, s => Add (s));
 		}
 
 		private int _Sum = 0;
 
-		private MenuResult Add (string s)
+		private void Add (string s)
 		{
-			if ("=".Equals (s)) {
-				return MenuResult.Quit;
+			int i;
+			if (int.TryParse (s, out i)) {
+				_Sum += i;
 			}
-			_Sum += int.Parse (s);
-			return MenuResult.Normal;
+			else {
+				Console.WriteLine (s + " is not a valid number.");
+			}
 		}
 
 		public override MenuResult Execute (string arg)
 		{
-			Console.WriteLine ("Entering menu <Add>. Enter numbers. To print their sum and exit, enter \"=\".");
+			Console.WriteLine ("You're now in submenu <Add>.");
+			Console.WriteLine ("Enter numbers. To print their sum and exit the submenu, enter \"=\".");
+			_Sum = 0;
 			Run ();
 			Console.WriteLine ("Sum = " + _Sum);
 			return MenuResult.Normal;
