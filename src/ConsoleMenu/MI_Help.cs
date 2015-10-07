@@ -26,31 +26,16 @@ namespace ConsoleMenu
 
 		public override MenuResult Execute (string arg)
 		{
-			if (arg == null) {
-				throw new ArgumentNullException ("arg");
-			}
-
-			var cmd = MenuUtil.SplitFirstWord (ref arg);
-
-			if (string.IsNullOrEmpty (cmd)) {
-				DisplayAvailableCommands (_Menu, false);
-			}
-			else {
-				var it = _Menu.GetMenuItem (cmd, true);
-				if (it != null) {
-					DisplayHelp (arg, it);
-				}
-			}
-
+			DisplayHelp (arg, _Menu, false);
 			return MenuResult.Normal;
 		}
 
-		private static void DisplayHelp (string arg, IMenuItem context)
+		private static void DisplayHelp (string arg, IMenuItem context, bool isInner)
 		{
 			if (arg == null) {
 				throw new ArgumentNullException ("arg");
 			}
-			if (context == null) { //XXX?
+			if (context == null) {
 				throw new ArgumentNullException ("context");
 			}
 
@@ -58,14 +43,14 @@ namespace ConsoleMenu
 			var mc = context as MenuItemCollection;
 
 			if (string.IsNullOrEmpty (cmd)) {
-				DisplayItemHelp (context);
+				DisplayItemHelp (context, mc == null);
 				if (mc != null) {
-					DisplayAvailableCommands (mc, true);
+					DisplayAvailableCommands (mc, isInner);
 				}
 			}
 			else {
 				if (mc == null) {
-					DisplayItemHelp (context);
+					DisplayItemHelp (context, true);
 					if (!string.IsNullOrEmpty (arg)) {
 						Console.WriteLine ("Inner command \"" + arg + "\" not found.");
 					}
@@ -76,16 +61,22 @@ namespace ConsoleMenu
 						return;
 					}
 					else {
-						DisplayHelp (arg, inner);
+						DisplayHelp (arg, inner, true);
 					}
 				}
 			}
 		}
 
-		private static void DisplayItemHelp (IMenuItem item)
+		private static void DisplayItemHelp (IMenuItem item, bool force)
 		{
+			if (item == null) {
+				throw new ArgumentNullException ("item");
+			}
+
 			if (item.HelpText == null) {
-				Console.WriteLine ("No help available for " + item.Selector);
+				if (force) {
+					Console.WriteLine ("No help available for " + item.Selector);
+				}
 			}
 			else {
 				Console.WriteLine (item.HelpText);
@@ -94,6 +85,10 @@ namespace ConsoleMenu
 
 		private static void DisplayAvailableCommands (MenuItemCollection menu, bool inner)
 		{
+			if (menu == null) {
+				throw new ArgumentNullException ("menu");
+			}
+
 			if (!inner) {
 				Console.WriteLine ("Available commands:");
 			}
