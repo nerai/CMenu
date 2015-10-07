@@ -17,7 +17,7 @@ namespace ConsoleMenu
 	/// </code>
 	/// </example>
 	/// </summary>
-	public class CMenu : MenuItemCollection, IMenuItem
+	public class CMenu : CMenuItem
 	{
 		private readonly List<string> _InputQueue = new List<string> ();
 
@@ -33,6 +33,7 @@ namespace ConsoleMenu
 		/// </para>
 		/// </summary>
 		public CMenu ()
+			: base (null)
 		{
 			Add (new MI_Quit ());
 			Add (new MI_Help (this));
@@ -84,41 +85,6 @@ namespace ConsoleMenu
 			else {
 				_InputQueue.Add (line);
 			}
-		}
-
-		public string Selector
-		{
-			get
-			{
-				return "main menu";
-			}
-			set
-			{
-				throw new InvalidOperationException ("Cannot set selector for main menu.");
-			}
-		}
-
-		public string HelpText
-		{
-			get
-			{
-				return null;
-			}
-			set
-			{
-				throw new InvalidOperationException ("Cannot set help text for main menu.");
-			}
-		}
-
-		public MenuResult Execute (string arg)
-		{
-			if (!string.IsNullOrEmpty (arg)) {
-				throw new ArgumentException ("No arguments supported for main menu.");
-			}
-
-			Run ();
-
-			return MenuResult.Normal;
 		}
 	}
 }

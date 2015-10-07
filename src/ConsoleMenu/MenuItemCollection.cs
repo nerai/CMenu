@@ -10,9 +10,9 @@ namespace ConsoleMenu
 	///
 	/// Offers various ways to add, retrieve and use items.
 	/// </summary>
-	public class MenuItemCollection : IEnumerable<IMenuItem>
+	public class MenuItemCollection : IEnumerable<CMenuItem>
 	{
-		private readonly List<IMenuItem> _Menu = new List<IMenuItem> ();
+		private readonly List<CMenuItem> _Menu = new List<CMenuItem> ();
 
 		/// <summary>
 		/// Gets or sets how entered commands are compared.
@@ -41,7 +41,7 @@ namespace ConsoleMenu
 		/// <returns>
 		/// The menu item associated with the specified keyword.
 		/// </returns>
-		public IMenuItem this[string key]
+		public CMenuItem this[string key]
 		{
 			get
 			{
@@ -74,7 +74,7 @@ namespace ConsoleMenu
 		/// The menu's internal structure and abbreviations are updated automatically.
 		/// </summary>
 		/// <param name="it">Command to add.</param>
-		public void Add (IMenuItem it)
+		public void Add (CMenuItem it)
 		{
 			if (it == null) {
 				throw new ArgumentNullException ("it");
@@ -118,7 +118,7 @@ namespace ConsoleMenu
 			return it;
 		}
 
-		private IMenuItem[] GetCommands (string cmd, StringComparison comparison)
+		private CMenuItem[] GetCommands (string cmd, StringComparison comparison)
 		{
 			var its = _Menu
 				.Where (it => it.Selector.Equals (cmd, comparison))
@@ -142,7 +142,7 @@ namespace ConsoleMenu
 		/// <param name="cmd">A keyword that uniquely identifies the searched menu item</param>
 		/// <param name="complain">If true, clarifications about missing or superfluous matches will be written to stdout</param>
 		/// <returns>The single closest matching menu item, or null in case of 0 or multiple matches</returns>
-		public IMenuItem GetMenuItem (string cmd, bool complain)
+		public CMenuItem GetMenuItem (string cmd, bool complain)
 		{
 			if (cmd == null) {
 				throw new ArgumentNullException ("cmd");
@@ -210,7 +210,7 @@ namespace ConsoleMenu
 			return MenuResult.Normal;
 		}
 
-		public IEnumerator<IMenuItem> GetEnumerator ()
+		public IEnumerator<CMenuItem> GetEnumerator ()
 		{
 			return _Menu.GetEnumerator ();
 		}

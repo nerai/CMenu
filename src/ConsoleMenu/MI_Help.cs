@@ -30,7 +30,7 @@ namespace ConsoleMenu
 			return MenuResult.Normal;
 		}
 
-		private static void DisplayHelp (string arg, IMenuItem context, bool isInner)
+		private static void DisplayHelp (string arg, CMenuItem context, bool isInner)
 		{
 			if (arg == null) {
 				throw new ArgumentNullException ("arg");
@@ -40,23 +40,21 @@ namespace ConsoleMenu
 			}
 
 			var cmd = MenuUtil.SplitFirstWord (ref arg);
-			var mc = context as MenuItemCollection;
 
+			// todo refactor
 			if (string.IsNullOrEmpty (cmd)) {
-				DisplayItemHelp (context, mc == null);
-				if (mc != null) {
-					DisplayAvailableCommands (mc, isInner);
-				}
+				DisplayItemHelp (context, !context.Any ());
+				DisplayAvailableCommands (context, isInner);
 			}
 			else {
-				if (mc == null) {
+				if (!context.Any ()) {
 					DisplayItemHelp (context, true);
 					if (!string.IsNullOrEmpty (arg)) {
 						Console.WriteLine ("Inner command \"" + arg + "\" not found.");
 					}
 				}
 				else {
-					var inner = mc.GetMenuItem (cmd, true);
+					var inner = context.GetMenuItem (cmd, true);
 					if (inner == null) {
 						return;
 					}
@@ -67,7 +65,7 @@ namespace ConsoleMenu
 			}
 		}
 
-		private static void DisplayItemHelp (IMenuItem item, bool force)
+		private static void DisplayItemHelp (CMenuItem item, bool force)
 		{
 			if (item == null) {
 				throw new ArgumentNullException ("item");

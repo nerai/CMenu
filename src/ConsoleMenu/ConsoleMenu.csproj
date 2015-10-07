@@ -78,7 +78,6 @@
     <Compile Include="CMenu.cs" />
     <Compile Include="CMenuItem.cs" />
     <Compile Include="MI_Help.cs" />
-    <Compile Include="IMenuItem.cs" />
     <Compile Include="MenuItemCollection.cs" />
     <Compile Include="MenuResult.cs" />
     <Compile Include="MenuUtil.cs" />

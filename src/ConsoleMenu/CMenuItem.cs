@@ -15,7 +15,7 @@ namespace ConsoleMenu
 	/// </code>
 	/// </example>
 	/// </summary>
-	public class CMenuItem : MenuItemCollection, IMenuItem
+	public class CMenuItem : MenuItemCollection
 	{
 		/// <summary>
 		/// Keyword to select this item.
