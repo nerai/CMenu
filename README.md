@@ -150,14 +150,22 @@ Check out how the "repeat" command adds its argument to the input queue two time
 
 If a command needs further choices, you may want to select those in a similar manner as in the menu. To do that, simply add sub-items to the main item. If no other behavior is specified, the main item will continue selection within those embedded items.
 
-	var mi = menu.Add ("convert");
-	mi.Add ("upper", s => Console.WriteLine (s.ToUpperInvariant ()));
-	mi.Add ("lower", s => Console.WriteLine (s.ToLowerInvariant ()));
+	var mi = menu.Add ("convert", "convert upper|lower [text]\nConverts the text to upper or lower case");
+	mi.Add ("upper", s => Console.WriteLine (s.ToUpperInvariant ()), "Converts to upper case");
+	mi.Add ("lower", s => Console.WriteLine (s.ToLowerInvariant ()), "Converts to lower case");
 
 	$ convert upper aBcD
 	ABCD
 	$ convert lower aBcD
 	abcd
+
+The integrated help is able to "peek" into commands.
+
+	$ help convert
+	convert upper|lower [text]
+	Converts the text to upper or lower case
+	$ help c u
+	Converts to upper case
 
 
 
