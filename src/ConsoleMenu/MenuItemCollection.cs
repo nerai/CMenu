@@ -12,7 +12,11 @@ namespace ConsoleMenu
 	/// </summary>
 	public class MenuItemCollection : IEnumerable<CMenuItem>
 	{
-		private readonly List<CMenuItem> _Menu = new List<CMenuItem> ();
+		// todo descr of detault
+		// todo clarifications and/or refactoring about where this is used
+		// todo change all null checks appropriately
+		// todo check all users of ienumerable
+		private readonly DefaultDictionary<string, CMenuItem> _Menu = new DefaultDictionary<string, CMenuItem> ();
 
 		/// <summary>
 		/// Gets or sets how entered commands are compared.
@@ -20,11 +24,6 @@ namespace ConsoleMenu
 		/// By default, the comparison is case insensitive and culture invariant.
 		/// </summary>
 		public StringComparison StringComparison { get; set; }
-
-		// todo descr
-		// todo clarifications and/or refactoring about where this is used
-		// todo change all null checks appropriately
-		public CMenuItem Default = null;
 
 		/// <summary>
 		/// Create a new, empty MenuItemCollection
