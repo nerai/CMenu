@@ -6,11 +6,15 @@ CMenu aims to simplify writing console menus. Instead of manually prompting the 
 CMenu offers:
 
 * very simple and short creation of menus
-* effortless command detection, including automatic abbreviations and partial matching
 * flexible inner commands and even nested menus
-* integrated useful help which also works in command tree branches
 * a library of example commands, including a conditional operator and a macro recorder
 * comprehensive, documented code in case you want to dig into the details
+
+Users will also be delighted by:
+
+* effortless command detection, including automatic abbreviations and partial matching
+* intelligent corrections for mistyped commands
+* integrated useful help which also works in command tree branches
 
 
 
