@@ -20,7 +20,7 @@ namespace ExampleMenu
 				+ "Recording can be stopped by the command \"" + EndrecordCommand + "\"\n"
 				+ "Stored records can be played via the \"replay\" command.\n"
 				+ "\n"
-				+ "Nested recording is not supported.\n";
+				+ "Nested recording is not supported.";
 		}
 
 		public override MenuResult Execute (string arg)

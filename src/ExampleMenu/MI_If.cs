@@ -24,7 +24,7 @@ namespace ExampleMenu
 				+ "\n"
 				+ "It is allowed to specify multiple concurrent <not>, each of which invert the condition again.\n"
 				+ "By default, the conditons \"true\" and \"false\" are known. Further conditions can be added by the developer.\n"
-				+ "Condition combination is not currently supported, though it can be emulated via chaining (\"if <c1> if <c2> ...\")\n";
+				+ "Condition combination is not currently supported, though it can be emulated via chaining (\"if <c1> if <c2> ...\")";
 			if (menu == null) {
 				throw new ArgumentNullException ("menu");
 			}

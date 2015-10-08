@@ -12,7 +12,7 @@ namespace ConsoleMenu.DefaultItems
 		{
 			HelpText = ""
 				+ "quit\n"
-				+ "Quits menu processing.\n";
+				+ "Quits menu processing.";
 		}
 
 		public override MenuResult Execute (string arg)

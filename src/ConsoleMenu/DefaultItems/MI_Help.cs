@@ -21,7 +21,7 @@ namespace ConsoleMenu.DefaultItems
 			HelpText = ""
 				+ "help [command]\n"
 				+ "Displays a help text for the specified command, or\n"
-				+ "Displays a list of all available commands.\n";
+				+ "Displays a list of all available commands.";
 		}
 
 		public override MenuResult Execute (string arg)

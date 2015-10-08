@@ -19,7 +19,7 @@ namespace ExampleMenu
 				+ "Replays all commands stored in the specified file name.\n"
 				+ "Replaying puts all stored commands in the same order on the stack as they were originally entered.\n"
 				+ "\n"
-				+ "Nested replaying is supported.\n";
+				+ "Nested replaying is supported.";
 
 			if (menu == null) {
 				throw new ArgumentNullException ("menu");

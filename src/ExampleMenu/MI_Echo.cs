@@ -13,7 +13,7 @@ namespace ExampleMenu
 		{
 			HelpText = ""
 				+ "echo [text]\n"
-				+ "Prints the specified text to stdout.\n";
+				+ "Prints the specified text to stdout.";
 		}
 
 		public override MenuResult Execute (string arg)

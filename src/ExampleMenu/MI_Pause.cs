@@ -13,7 +13,7 @@ namespace ExampleMenu
 		{
 			HelpText = ""
 				+ "pause\n"
-				+ "Stops further operation until the enter key is pressed.\n";
+				+ "Stops further operation until the enter key is pressed.";
 		}
 
 		public override MenuResult Execute (string arg)
