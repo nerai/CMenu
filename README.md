@@ -234,6 +234,9 @@ The source code contains an example project. It offers commands, which illustrat
 	echo [text]
 	Prints the specified text to stdout.
 
+	$ echo 123
+	123
+
 ### if
 
 	if [not] <condition> <command>
@@ -243,6 +246,12 @@ The source code contains an example project. It offers commands, which illustrat
 	It is allowed to specify multiple concurrent <not>, each of which invert the condition again.
 	By default, the conditons "true" and "false" are known. Further conditions can be added by the developer.
 	Condition combination is not currently supported, though it can be emulated via chaining ("if <c1> if <c2> ...")
+
+	$ if true echo 1
+	1
+	$ if not true echo 1
+	$ if not false echo 1
+	1
 
 ### pause
 
