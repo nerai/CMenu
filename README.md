@@ -258,6 +258,12 @@ The source code contains an example project. It offers commands, which illustrat
 	
 	Nested recording is not supported.
 
+	$ record r1
+	Recording started. Enter "endrecord" to finish.
+	record> echo 1
+	record> echo 2
+	record> endrecord
+
 ### replay
 
 	replay name
@@ -265,3 +271,7 @@ The source code contains an example project. It offers commands, which illustrat
 	Replaying puts all stored commands in the same order on the stack as they were originally entered.
 	
 	Nested replaying is supported.
+
+	$ replay r1
+	1
+	2

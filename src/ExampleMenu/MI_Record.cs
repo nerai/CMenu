@@ -27,6 +27,7 @@ namespace ExampleMenu
 				+ "Stored records can be played via the \"replay\" command.\n"
 				+ "\n"
 				+ "Nested recording is not supported.";
+			PromptCharacter = "record>";
 
 			Add (EndRecordCommand, s => MenuResult.Quit, "Finishes recording.");
 			Add (null, s => _Lines.Add (s));
@@ -52,6 +53,7 @@ namespace ExampleMenu
 				return MenuResult.Normal;
 			}
 
+			Console.WriteLine ("Recording started. Enter \"" + EndRecordCommand + "\" to finish.");
 			_Lines = new List<string> ();
 			Run ();
 			_Store.AddRecord (arg, _Lines);
