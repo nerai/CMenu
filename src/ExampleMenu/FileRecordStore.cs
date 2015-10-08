@@ -22,13 +22,13 @@ namespace ExampleMenu
 		public void AddRecord (string name, IEnumerable<string> lines)
 		{
 			Directory.CreateDirectory (RecordDirectory);
-			var path = RecordDirectory + name + ".txt";
+			var path = RecordDirectory + name;
 			File.WriteAllLines (path, lines);
 		}
 
 		public IEnumerable<string> GetRecord (string name)
 		{
-			var path = RecordDirectory + name + ".txt";
+			var path = RecordDirectory + name;
 			if (!File.Exists (path)) {
 				return null;
 			}
@@ -41,7 +41,9 @@ namespace ExampleMenu
 			if (!Directory.Exists (RecordDirectory)) {
 				return new string[0];
 			}
-			var files = Directory.EnumerateFiles (RecordDirectory);
+			var files = Directory
+				.EnumerateFiles (RecordDirectory)
+				.Select (f => f.Substring (RecordDirectory.Length));
 			return files;
 		}
 	}

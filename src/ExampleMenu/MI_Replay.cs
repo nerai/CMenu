@@ -19,10 +19,11 @@ namespace ExampleMenu
 			_Store = store;
 
 			HelpText = ""
-				+ "replay name\n"
-				+ "Replays all commands stored in the specified file name.\n"
-				+ "Replaying puts all stored commands in the same order on the stack as they were originally entered.\n"
+				+ "replay [name]\n"
+				+ "Replays all commands stored in the specified file name, or\n"
+				+ "Displays a list of all records.\n"
 				+ "\n"
+				+ "Replaying puts all stored commands in the same order on the stack as they were originally entered.\n"
 				+ "Nested replaying is supported.";
 
 			if (menu == null) {
@@ -35,7 +36,7 @@ namespace ExampleMenu
 		public override MenuResult Execute (string arg)
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
-				Console.WriteLine ("You must enter a name to identify this command group.");
+				Console.WriteLine ("Known records: " + string.Join (", ", _Store.GetRecordNames ()));
 				return MenuResult.Normal;
 			}
 
