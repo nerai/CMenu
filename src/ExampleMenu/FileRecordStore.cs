@@ -8,28 +8,41 @@ namespace ExampleMenu
 {
 	public class FileRecordStore : IRecordStore
 	{
-		private readonly string _Dir;
-
-		public FileRecordStore (string dir = ".\\Records\\") // todo
+		public FileRecordStore ()
 		{
-			_Dir = dir;
-			Directory.CreateDirectory (_Dir);
+			RecordDirectory = ".\\Records\\";
+		}
+
+		public string RecordDirectory
+		{
+			get;
+			set;
 		}
 
 		public void AddRecord (string name, IEnumerable<string> lines)
 		{
-			File.WriteAllLines (_Dir + name + ".txt", lines);
+			Directory.CreateDirectory (RecordDirectory);
+			var path = RecordDirectory + name + ".txt";
+			File.WriteAllLines (path, lines);
 		}
 
 		public IEnumerable<string> GetRecord (string name)
 		{
-			var lines = File.ReadAllLines (".\\Records\\" + name + ".txt");
+			var path = RecordDirectory + name + ".txt";
+			if (!File.Exists (path)) {
+				return null;
+			}
+			var lines = File.ReadAllLines (path);
 			return lines;
 		}
 
 		public IEnumerable<string> GetRecordNames ()
 		{
-			throw new NotImplementedException (); // todo
+			if (!Directory.Exists (RecordDirectory)) {
+				return new string[0];
+			}
+			var files = Directory.EnumerateFiles (RecordDirectory);
+			return files;
 		}
 	}
 }
