@@ -11,9 +11,13 @@ namespace ExampleMenu
 	{
 		private readonly CMenu _Menu;
 
-		public MI_Replay (CMenu menu)
+		private readonly IRecordStore _Store;
+
+		public MI_Replay (CMenu menu, IRecordStore store)
 			: base ("replay")
 		{
+			_Store = store;
+
 			HelpText = ""
 				+ "replay name\n"
 				+ "Replays all commands stored in the specified file name.\n"
@@ -35,8 +39,7 @@ namespace ExampleMenu
 				return MenuResult.Normal;
 			}
 
-			Directory.CreateDirectory (".\\Records\\");
-			var lines = File.ReadAllLines (".\\Records\\" + arg + ".txt");
+			var lines = _Store.GetRecord (arg);
 			foreach (var line in lines) {
 				_Menu.Input (line, false);
 			}

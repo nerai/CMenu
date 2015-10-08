@@ -13,6 +13,25 @@ namespace ExampleMenu
 
 		private string _EndRecordCommand = "endrecord";
 
+		private readonly IRecordStore _Store;
+
+		public MI_Record (IRecordStore store)
+			: base ("record")
+		{
+			_Store = store;
+
+			HelpText = ""
+				+ Selector + " name\n"
+				+ "Records all subsequent commands to the specified file name.\n"
+				+ "Recording can be stopped by the command \"" + EndRecordCommand + "\"\n"
+				+ "Stored records can be played via the \"replay\" command.\n"
+				+ "\n"
+				+ "Nested recording is not supported.";
+
+			Add (EndRecordCommand, s => MenuResult.Quit, "Finishes recording.");
+			Add (null, s => _Lines.Add (s));
+		}
+
 		public string EndRecordCommand
 		{
 			get
@@ -26,21 +45,6 @@ namespace ExampleMenu
 			}
 		}
 
-		public MI_Record ()
-			: base ("record")
-		{
-			HelpText = ""
-				+ Selector + " name\n"
-				+ "Records all subsequent commands to the specified file name.\n"
-				+ "Recording can be stopped by the command \"" + EndRecordCommand + "\"\n"
-				+ "Stored records can be played via the \"replay\" command.\n"
-				+ "\n"
-				+ "Nested recording is not supported.";
-
-			Add (EndRecordCommand, s => MenuResult.Quit, "Finishes recording.");
-			Add (null, s => _Lines.Add (s));
-		}
-
 		public override MenuResult Execute (string arg)
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
@@ -50,9 +54,8 @@ namespace ExampleMenu
 
 			_Lines = new List<string> ();
 			Run ();
-
-			Directory.CreateDirectory (".\\Records\\");
-			File.WriteAllLines (".\\Records\\" + arg + ".txt", _Lines);
+			_Store.AddRecord (arg, _Lines);
+			_Lines = null;
 
 			return MenuResult.Normal;
 		}
