@@ -87,7 +87,8 @@ namespace ConsoleMenu
 		/// The menu's internal structure and abbreviations are updated automatically.
 		/// </summary>
 		/// <param name="it">Command to add.</param>
-		public void Add (CMenuItem it)
+		/// <returns>The added CMenuItem</returns>
+		public T Add<T> (T it) where T : CMenuItem
 		{
 			if (it == null) {
 				throw new ArgumentNullException ("it");
@@ -95,13 +96,15 @@ namespace ConsoleMenu
 
 			if (it.Selector != null) {
 				_Menu.Add (it.Selector, it);
-				return;
+			}
+			else {
+				if (_Default != null) {
+					throw new ArgumentException ("The default item was already set.", "it");
+				}
+				_Default = it;
 			}
 
-			if (_Default != null) {
-				throw new ArgumentException ("The default item was already set.", "it");
-			}
-			_Default = it;
+			return it;
 		}
 
 		/// <summary>
@@ -110,6 +113,7 @@ namespace ConsoleMenu
 		/// <param name="selector">Keyword</param>
 		/// <param name="execute">Behavior when selected. The behavior provides feedback to the menu.</param>
 		/// <param name="help">Descriptive help text</param>
+		/// <returns>The added CMenuItem</returns>
 		public CMenuItem Add (string selector, Func<string, MenuResult> execute, string help = null)
 		{
 			var it = new CMenuItem (selector, execute, help);
@@ -121,6 +125,7 @@ namespace ConsoleMenu
 		/// Adds a new command from keyword and help.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
+		/// <returns>The added CMenuItem</returns>
 		public CMenuItem Add (string selector, string help = null)
 		{
 			return Add (selector, (Func<string, MenuResult>) null, help);
@@ -132,6 +137,7 @@ namespace ConsoleMenu
 		/// <param name="selector">Keyword</param>
 		/// <param name="execute">Behavior when selected.</param>
 		/// <param name="help">Descriptive help text</param>
+		/// <returns>The added CMenuItem</returns>
 		public CMenuItem Add (string selector, Action<string> execute, string help = null)
 		{
 			var it = new CMenuItem (selector, execute, help);
