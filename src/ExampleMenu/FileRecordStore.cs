@@ -30,7 +30,12 @@ namespace ExampleMenu
 		{
 			var path = RecordDirectory + name;
 			if (!File.Exists (path)) {
-				return null;
+				name = GetRecordNames ().FirstOrDefault (n => n.StartsWith (name, StringComparison.InvariantCultureIgnoreCase));
+				name = name ?? GetRecordNames ().FirstOrDefault (n => n.Contains (name));
+				if (name == null) {
+					return null;
+				}
+				path = RecordDirectory + name;
 			}
 			var lines = File.ReadAllLines (path);
 			return lines;
