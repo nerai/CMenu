@@ -6,6 +6,9 @@ using System.Text;
 
 namespace ExampleMenu
 {
+	/// <summary>
+	/// Stores records to files
+	/// </summary>
 	public class FileRecordStore : IRecordStore
 	{
 		public FileRecordStore ()
@@ -26,6 +29,14 @@ namespace ExampleMenu
 			File.WriteAllLines (path, lines);
 		}
 
+		/// <summary>
+		/// Retrieves the specified record.
+		///
+		/// The record chosen is the first one to match, in order, any of the following:
+		/// a) an exact match
+		/// b) a record name starting with the specified name
+		/// c) a record name containing the specified name
+		/// </summary>
 		public IEnumerable<string> GetRecord (string name)
 		{
 			var path = RecordDirectory + name;
