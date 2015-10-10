@@ -17,6 +17,9 @@ namespace ConsoleMenu
 
 		private StringComparison _StringComparison;
 
+		// todo: should be CMenuItem
+		public MenuItemCollection Parent { get; private set; }
+
 		/// <summary>
 		/// Gets or sets how entered commands are compared.
 		///
@@ -93,6 +96,9 @@ namespace ConsoleMenu
 			if (it == null) {
 				throw new ArgumentNullException ("it");
 			}
+			if (it.Parent != null) {
+				throw new ArgumentException ("Menuitem already has a parent.", "it");
+			}
 
 			if (it.Selector != null) {
 				_Menu.Add (it.Selector, it);
@@ -103,6 +109,8 @@ namespace ConsoleMenu
 				}
 				_Default = it;
 			}
+
+			it.Parent = this;
 
 			return it;
 		}
