@@ -42,6 +42,12 @@ namespace ExampleMenu
 
 			var lines = _Store.GetRecord (arg);
 			foreach (var line in lines) {
+				// todo: konfigurierbar
+				// todo: normale comparison verwenden
+				// todo: dynamisch (zB als body von if)
+				if ("endreplay".Equals (line)) {
+					break;
+				}
 				_Menu.Input (line, false);
 			}
 
