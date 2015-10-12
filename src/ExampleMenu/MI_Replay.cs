@@ -49,7 +49,7 @@ namespace ExampleMenu
 				if (line.Equals (EndReplayCommand)) {
 					break;
 				}
-				_Menu.Input (line, false);
+				_Menu.Input (line);
 			}
 
 			return MenuResult.Normal;

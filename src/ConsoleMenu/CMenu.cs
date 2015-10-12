@@ -20,7 +20,7 @@ namespace ConsoleMenu
 	/// </summary>
 	public class CMenu : CMenuItem
 	{
-		private readonly List<string> _InputQueue = new List<string> ();
+		private bool StopMenu;
 
 		/// <summary>
 		/// Create a new CMenu.
@@ -54,43 +54,25 @@ namespace ConsoleMenu
 		/// </summary>
 		public void Run ()
 		{
-			while (true) {
-				string input;
-				if (_InputQueue.Count > 0) {
-					input = _InputQueue.First ();
-					_InputQueue.RemoveAt (0);
+			StopMenu = false;
+			while (!StopMenu) {
+				if (PromptCharacter != null) {
+					Console.Write (PromptCharacter + " ");
 				}
-				else {
-					if (PromptCharacter != null) {
-						Console.Write (PromptCharacter + " ");
-					}
-					input = Console.ReadLine ();
-				}
-
+				var input = Console.ReadLine ();
 				if (string.IsNullOrWhiteSpace (input)) {
 					continue;
 				}
 
-				var result = ExecuteInner (input);
-				if (result == MenuResult.Quit) {
-					break;
-				}
+				Input (input);
 			}
 		}
 
-		/// <summary>
-		/// Add line to input queue.
-		/// </summary>
-		/// <param name="line">
-		/// The line to add to the input queue.
-		/// </param>
-		public void Input (string line, bool atBeginning)
+		public void Input (string input)
 		{
-			if (atBeginning) {
-				_InputQueue.Insert (0, line);
-			}
-			else {
-				_InputQueue.Add (line);
+			var result = ExecuteInner (input);
+			if (result == MenuResult.Quit) {
+				StopMenu = true;
 			}
 		}
 	}

@@ -97,8 +97,8 @@ namespace ExampleMenu
 
 		static void Repeat (string s)
 		{
-			menu.Input (s, true);
-			menu.Input (s, true);
+			menu.Input (s);
+			menu.Input (s);
 		}
 
 		static void InnerCommands ()
@@ -116,7 +116,7 @@ namespace ExampleMenu
 			menu.Add (new MI_Add ());
 
 			Console.WriteLine ("New command <add> available.");
-			menu.Input ("help add", true);
+			menu.Input ("help add");
 			menu.Run ();
 		}
 
@@ -131,7 +131,7 @@ namespace ExampleMenu
 			menu.Add (new MI_Replay (menu, frs));
 
 			Console.WriteLine ("Several example commands were added to the menu.");
-			menu.Input ("help", true);
+			menu.Input ("help");
 			menu.Run ();
 		}
 	}
