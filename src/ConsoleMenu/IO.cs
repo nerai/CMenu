@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ConsoleMenu
 {
+	// todo doc
 	public static class IO
 	{
 		private class Frame
@@ -25,6 +26,7 @@ namespace ConsoleMenu
 			AddInput (DefaultInputSource ());
 		}
 
+		// todo doc
 		public static string QueryInput ()
 		{
 			for (; ; ) {
@@ -54,21 +56,25 @@ namespace ConsoleMenu
 			}
 		}
 
+		// todo doc
 		public static void AddInput (IEnumerable<string> source)
 		{
 			_Frames.Push (new Frame (source));
 		}
 
+		// todo doc
 		public static void ImmediateInput (string source)
 		{
 			AddInput (new string[] { source });
 		}
 
+		// todo doc
 		public static void PushPromptCharacter (string prompt)
 		{
 			_PromptCharacters.Push (prompt);
 		}
 
+		// todo doc
 		public static void PopPromptCharacter ()
 		{
 			_PromptCharacters.Pop ();

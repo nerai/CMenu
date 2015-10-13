@@ -59,7 +59,7 @@ namespace ConsoleMenu
 				IO.PushPromptCharacter (PromptCharacter);
 				while (!StopMenu) {
 					var input = IO.QueryInput ();
-					Input_ (input);
+					DirectInput (input);
 				}
 			}
 			finally {
@@ -68,8 +68,7 @@ namespace ConsoleMenu
 		}
 
 		// todo doc
-		// todo public?? ermöglicht fehler...
-		public void Input_ (string input)
+		public void DirectInput (string input)
 		{
 			var result = ExecuteInner (input);
 			if (result == MenuResult.Quit) {
