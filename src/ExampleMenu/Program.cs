@@ -17,12 +17,20 @@ namespace ExampleMenu
 		{
 			Console.WriteLine ("Simple CMenu demonstration");
 
+			var mainmenu = new CMenu ();
+			mainmenu.Add ("tutorial", s => Tutorial ());
+			mainmenu.Add ("examples", s => Examples ());
+			mainmenu.Input ("help");
+			mainmenu.Run ();
+		}
+
+		static void Tutorial ()
+		{
 			Basics ();
 			CaseSensitivity ();
 			InputModification ();
 			InnerCommands ();
 			NestedCommands ();
-			Examples ();
 		}
 
 		static void Basics ()
@@ -122,17 +130,24 @@ namespace ExampleMenu
 
 		static void Examples ()
 		{
-			menu.Add (new MI_Echo ());
-			menu.Add (new MI_If (menu));
-			menu.Add (new MI_Pause ());
+			var m = new CMenu ();
+
+			m.Add (new MI_Add ());
+
+			m.Add (new MI_Echo ());
+			m.Add (new MI_If (m));
+			m.Add (new MI_Pause ());
 
 			var frs = new FileRecordStore ();
-			menu.Add (new MI_Record (frs));
-			menu.Add (new MI_Replay (menu, frs));
+			m.Add (new MI_Record (frs));
+			m.Add (new MI_Replay (m, frs));
 
-			Console.WriteLine ("Several example commands were added to the menu.");
-			menu.Input ("help");
-			menu.Run ();
+			m.Add (new MI_Proc ());
+			m.Add (new MI_Call (m));
+			m.Add (new MI_Return (m));
+
+			m.Input ("help");
+			m.Run ();
 		}
 	}
 }

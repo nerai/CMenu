@@ -271,7 +271,9 @@ The source code contains an example project. It offers commands, which illustrat
 	pause
 	Stops further operation until the enter key is pressed.
 
-### record
+### record, replay
+
+#### record
 
 	record name
 	Records all subsequent commands to the specified file name.
@@ -280,13 +282,7 @@ The source code contains an example project. It offers commands, which illustrat
 	
 	Nested recording is not supported.
 
-	$ record r1
-	Recording started. Enter "endrecord" to finish.
-	record> echo 1
-	record> echo 2
-	record> endrecord
-
-### replay
+#### replay
 
 	replay name
 	Replays all commands stored in the specified file name.
@@ -294,9 +290,29 @@ The source code contains an example project. It offers commands, which illustrat
 	
 	Nested replaying is supported.
 
+#### Example
+
+	$ record r1
+	Recording started. Enter "endrecord" to finish.
+	record> echo 1
+	record> echo 2
+	record> endrecord
 	$ replay r1
 	1
 	2
+
+### proc, return, call
+
+#### Example
+
+    $ proc p1
+	Recording started. Enter "endproc" to finish.
+	proc> echo In proc p1
+	proc> return
+	proc> echo This line will never be displayed.
+	proc> endproc
+	$ call p1
+	In proc p1
 
 
 
