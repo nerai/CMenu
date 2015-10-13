@@ -7,7 +7,17 @@ namespace ConsoleMenu
 {
 	public static class IO
 	{
-		private static readonly Stack<IEnumerator<string>> _Frames = new Stack<IEnumerator<string>> ();
+		private class Frame
+		{
+			public IEnumerator<string> E;
+
+			public Frame (IEnumerable<string> source)
+			{
+				E = source.GetEnumerator ();
+			}
+		}
+
+		private static readonly Stack<Frame> _Frames = new Stack<Frame> ();
 
 		static IO ()
 		{
@@ -16,12 +26,18 @@ namespace ConsoleMenu
 
 		public static string QueryInput ()
 		{
-			var f = _Frames.Peek ();
-			while (!f.MoveNext ()) {
-				_Frames.Pop ();
-				f = _Frames.Peek ();
+			for (; ; ) {
+				var f = _Frames.Peek ();
+				while (!f.E.MoveNext ()) {
+					_Frames.Pop ();
+					f = _Frames.Peek ();
+				}
+
+				var input = f.E.Current;
+				if (!string.IsNullOrWhiteSpace (input)) {
+					return input;
+				}
 			}
-			return f.Current;
 		}
 
 		private static IEnumerable<string> DefaultInputSource ()
@@ -33,7 +49,7 @@ namespace ConsoleMenu
 
 		public static void AddInput (IEnumerable<string> source)
 		{
-			_Frames.Push (source.GetEnumerator ());
+			_Frames.Push (new Frame (source));
 		}
 
 		public static void ImmediateInput (string source)
