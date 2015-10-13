@@ -21,8 +21,10 @@ namespace ExampleMenu
 
 		public override MenuResult Execute (string arg)
 		{
-			// todo error checks
-			var lines = _Mgr.Procs[arg];
+			List<string> lines;
+			if (!_Mgr.Procs.TryGetValue (arg, out lines)) {
+				Console.WriteLine ("Unknown procedure: " + arg);
+			}
 			IO.AddInput (CreateInput (lines));
 			return MenuResult.Normal;
 		}
