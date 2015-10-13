@@ -10,12 +10,15 @@ namespace ExampleMenu
 	public class MI_Proc : CMenu
 	{
 		private List<string> _Lines;
-
 		private string _EndRecordCommand = "endproc";
 
-		public MI_Proc ()
+		private readonly ProcManager _Mgr;
+
+		public MI_Proc (ProcManager mgr)
 			: base ("proc")
 		{
+			_Mgr = mgr;
+
 			PromptCharacter = "proc>";
 			Add (EndRecordCommand, s => MenuResult.Quit);
 			Add (null, s => _Lines.Add (s));
@@ -44,7 +47,7 @@ namespace ExampleMenu
 			Console.WriteLine ("Recording started. Enter \"" + EndRecordCommand + "\" to finish.");
 			_Lines = new List<string> ();
 			Run ();
-			ProcManager.Instance.Procs[arg] = _Lines;
+			_Mgr.Procs[arg] = _Lines;
 			_Lines = null;
 
 			return MenuResult.Normal;
