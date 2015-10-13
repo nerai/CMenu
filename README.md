@@ -290,6 +290,8 @@ Simple conditional execution. By default only supports the `not` operator and th
 ### record, replay
 `record` and `replay` allow persisting several commands to disk for later reading them as input. This can be used for basic batch processing.
 
+Replaying can be stopped via if `endreplay` is encountered as a direct command in the file. It does not work as an indirect statement (e.g. `if true endreplay`). For an example of how that functionality can be achieved, see `return`.
+
 #### record
 
 	record name
@@ -301,11 +303,12 @@ Simple conditional execution. By default only supports the `not` operator and th
 
 #### replay
 
-	replay name
-	Replays all commands stored in the specified file name.
+	replay [name]
+	Replays all commands stored in the specified file name, or
+	Displays a list of all records.
+
 	Replaying puts all stored commands in the same order on the stack as they were originally entered.
-	
-	Nested replaying is supported.
+	Replaying stops when the line "endreplay" is encountered.
 
 #### Example
 
@@ -319,7 +322,7 @@ Simple conditional execution. By default only supports the `not` operator and th
 	2
 
 ### proc, return, call
-These implement a basic procedural calling system. Reentrant calls are supported.
+These implement a basic procedural calling system. Early exiting and reentrant calls are supported.
 
 #### Example
 

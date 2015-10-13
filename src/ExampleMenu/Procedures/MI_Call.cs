@@ -10,24 +10,34 @@ namespace ExampleMenu
 	public class MI_Call : CMenuItem
 	{
 		private readonly CMenu _Menu;
+		private readonly ProcManager _Mgr;
 
-		public MI_Call (CMenu menu)
+		public MI_Call (CMenu menu, ProcManager mgr)
 			: base ("call")
 		{
 			_Menu = menu;
+			_Mgr = mgr;
 		}
 
 		public override MenuResult Execute (string arg)
 		{
-			var lines = ProcManager.Instance.Procs[arg];
+			List<string> lines;
+			if (!_Mgr.Procs.TryGetValue (arg, out lines)) {
+				Console.WriteLine ("Unknown procedure: " + arg);
+			}
+			IO.AddInput (CreateInput (lines));
+			return MenuResult.Normal;
+		}
+
+		private IEnumerable<string> CreateInput (List<string> lines)
+		{
 			foreach (var line in lines) {
-				_Menu.Input (line);
-				if (ProcManager.Instance.ShouldReturn) {
-					ProcManager.Instance.ShouldReturn = false;
+				yield return line;
+				if (_Mgr.ShouldReturn) {
+					_Mgr.ShouldReturn = false;
 					break;
 				}
 			}
-			return MenuResult.Normal;
 		}
 	}
 }

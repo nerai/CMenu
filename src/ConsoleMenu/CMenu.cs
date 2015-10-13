@@ -20,8 +20,6 @@ namespace ConsoleMenu
 	/// </summary>
 	public class CMenu : CMenuItem
 	{
-		private bool StopMenu;
-
 		/// <summary>
 		/// Create a new CMenu.
 		///
@@ -45,7 +43,7 @@ namespace ConsoleMenu
 		/// <summary>
 		/// The string which is displayed in front of every prompt (i.e. query for user input).
 		///
-		/// Set to null to disable prompting.
+		/// Set to null to disable explicit prompting.
 		/// </summary>
 		public string PromptCharacter = "$";
 
@@ -54,25 +52,18 @@ namespace ConsoleMenu
 		/// </summary>
 		public void Run ()
 		{
-			StopMenu = false;
-			while (!StopMenu) {
-				if (PromptCharacter != null) {
-					Console.Write (PromptCharacter + " ");
+			try {
+				IO.PushPromptCharacter (PromptCharacter);
+				for (; ; ) {
+					var input = IO.QueryInput ();
+					var result = ExecuteInner (input);
+					if (result == MenuResult.Quit) {
+						break;
+					}
 				}
-				var input = Console.ReadLine ();
-				if (string.IsNullOrWhiteSpace (input)) {
-					continue;
-				}
-
-				Input (input);
 			}
-		}
-
-		public void Input (string input)
-		{
-			var result = ExecuteInner (input);
-			if (result == MenuResult.Quit) {
-				StopMenu = true;
+			finally {
+				IO.PopPromptCharacter ();
 			}
 		}
 	}

@@ -9,14 +9,17 @@ namespace ExampleMenu
 {
 	public class MI_Return : CMenuItem
 	{
-		public MI_Return (CMenu menu)
+		private readonly ProcManager _Mgr;
+
+		public MI_Return (CMenu menu, ProcManager mgr)
 			: base ("return")
 		{
+			_Mgr = mgr;
 		}
 
 		public override MenuResult Execute (string arg)
 		{
-			ProcManager.Instance.ShouldReturn = true;
+			_Mgr.ShouldReturn = true;
 			return MenuResult.Normal;
 		}
 	}
