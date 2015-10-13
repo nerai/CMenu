@@ -20,7 +20,8 @@ namespace ExampleMenu
 			var mainmenu = new CMenu ();
 			mainmenu.Add ("tutorial", s => Tutorial ());
 			mainmenu.Add ("examples", s => Examples ());
-			mainmenu.DirectInput ("help");
+
+			IO.ImmediateInput ("help");
 			mainmenu.Run ();
 		}
 

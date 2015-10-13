@@ -20,8 +20,6 @@ namespace ConsoleMenu
 	/// </summary>
 	public class CMenu : CMenuItem
 	{
-		private bool StopMenu;
-
 		/// <summary>
 		/// Create a new CMenu.
 		///
@@ -54,25 +52,18 @@ namespace ConsoleMenu
 		/// </summary>
 		public void Run ()
 		{
-			StopMenu = false;
 			try {
 				IO.PushPromptCharacter (PromptCharacter);
-				while (!StopMenu) {
+				for (; ; ) {
 					var input = IO.QueryInput ();
-					DirectInput (input);
+					var result = ExecuteInner (input);
+					if (result == MenuResult.Quit) {
+						break;
+					}
 				}
 			}
 			finally {
 				IO.PopPromptCharacter ();
-			}
-		}
-
-		// todo doc
-		public void DirectInput (string input)
-		{
-			var result = ExecuteInner (input);
-			if (result == MenuResult.Quit) {
-				StopMenu = true;
 			}
 		}
 	}
