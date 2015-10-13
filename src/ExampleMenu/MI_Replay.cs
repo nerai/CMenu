@@ -33,6 +33,8 @@ namespace ExampleMenu
 			_Menu = menu;
 		}
 
+		public string EndReplayCommand = "endreplay";
+
 		public override MenuResult Execute (string arg)
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
@@ -42,7 +44,12 @@ namespace ExampleMenu
 
 			var lines = _Store.GetRecord (arg);
 			foreach (var line in lines) {
-				_Menu.Input (line, false);
+				// todo: normale comparison verwenden
+				// todo: dynamisch (zB als body von if)
+				if (line.Equals (EndReplayCommand)) {
+					break;
+				}
+				_Menu.Input (line);
 			}
 
 			return MenuResult.Normal;
