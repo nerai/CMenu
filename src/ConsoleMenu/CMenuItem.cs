@@ -24,7 +24,9 @@ namespace ConsoleMenu
 
 		private StringComparison _StringComparison;
 
-		// todo doc
+		/// <summary>
+		/// Parent of this item, if any.
+		/// </summary>
 		public CMenuItem Parent { get; private set; }
 
 		/// <summary>
@@ -337,7 +339,11 @@ namespace ConsoleMenu
 			return MenuResult.Normal;
 		}
 
-		// todo doc
+		/// <summary>
+		/// Returns an enumerator over all menu items contained in this item.
+		///
+		/// The default item will not be enumerated.
+		/// </summary>
 		public IEnumerator<CMenuItem> GetEnumerator ()
 		{
 			return _Menu.Values.GetEnumerator ();

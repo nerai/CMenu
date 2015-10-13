@@ -5,7 +5,9 @@ using System.Text;
 
 namespace ConsoleMenu
 {
-	// todo doc
+	/// <summary>
+	/// Provides global I/O functions in the context of CMenu.
+	/// </summary>
 	public static class IO
 	{
 		private class Frame
@@ -26,7 +28,9 @@ namespace ConsoleMenu
 			AddInput (DefaultInputSource ());
 		}
 
-		// todo doc
+		/// <summary>
+		/// Returns the next available line of input.
+		/// </summary>
 		public static string QueryInput ()
 		{
 			for (; ; ) {
@@ -56,25 +60,35 @@ namespace ConsoleMenu
 			}
 		}
 
-		// todo doc
+		/// <summary>
+		/// Adds a new input source on top of the input stack.
+		///
+		/// This source will be used until it is exhausted, then the previous source will be used in the same manner.
+		/// </summary>
 		public static void AddInput (IEnumerable<string> source)
 		{
 			_Frames.Push (new Frame (source));
 		}
 
-		// todo doc
+		/// <summary>
+		/// Puts a single line of input on top of the stack.
+		/// </summary>
 		public static void ImmediateInput (string source)
 		{
 			AddInput (new string[] { source });
 		}
 
-		// todo doc
+		/// <summary>
+		/// Sets the current prompt character in case of console input.
+		/// </summary>
 		public static void PushPromptCharacter (string prompt)
 		{
 			_PromptCharacters.Push (prompt);
 		}
 
-		// todo doc
+		/// <summary>
+		/// Restores the prompt character valid prior to its last change.
+		/// </summary>
 		public static void PopPromptCharacter ()
 		{
 			_PromptCharacters.Pop ();
