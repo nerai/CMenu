@@ -18,6 +18,7 @@ namespace ConsoleMenu
 		}
 
 		private static readonly Stack<Frame> _Frames = new Stack<Frame> ();
+		private static readonly Stack<string> _PromptCharacters = new Stack<string> ();
 
 		static IO ()
 		{
@@ -43,6 +44,12 @@ namespace ConsoleMenu
 		private static IEnumerable<string> DefaultInputSource ()
 		{
 			for (; ; ) {
+				if (_PromptCharacters.Any ()) {
+					var prompt = _PromptCharacters.Peek ();
+					if (prompt != null) {
+						Console.Write (prompt + " ");
+					}
+				}
 				yield return Console.ReadLine ();
 			}
 		}
@@ -55,6 +62,16 @@ namespace ConsoleMenu
 		public static void ImmediateInput (string source)
 		{
 			AddInput (new string[] { source });
+		}
+
+		public static void PushPromptCharacter (string prompt)
+		{
+			_PromptCharacters.Push (prompt);
+		}
+
+		public static void PopPromptCharacter ()
+		{
+			_PromptCharacters.Pop ();
 		}
 	}
 }

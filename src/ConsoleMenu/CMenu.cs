@@ -45,7 +45,7 @@ namespace ConsoleMenu
 		/// <summary>
 		/// The string which is displayed in front of every prompt (i.e. query for user input).
 		///
-		/// Set to null to disable prompting.
+		/// Set to null to disable explicit prompting.
 		/// </summary>
 		public string PromptCharacter = "$";
 
@@ -55,16 +55,15 @@ namespace ConsoleMenu
 		public void Run ()
 		{
 			StopMenu = false;
-			while (!StopMenu) {
-				if (PromptCharacter != null) {
-					Console.Write (PromptCharacter + " ");
+			try {
+				IO.PushPromptCharacter (PromptCharacter);
+				while (!StopMenu) {
+					var input = IO.QueryInput ();
+					Input_ (input);
 				}
-				var input = IO.QueryInput ();
-				if (string.IsNullOrWhiteSpace (input)) {
-					continue;
-				}
-
-				Input_ (input);
+			}
+			finally {
+				IO.PopPromptCharacter ();
 			}
 		}
 
