@@ -18,6 +18,7 @@ namespace ExampleMenu
 			Console.WriteLine ("Simple CMenu demonstration");
 
 			var mainmenu = new CMenu ();
+			mainmenu.PromptCharacter = "main>";
 			mainmenu.Add ("tutorial", s => Tutorial ());
 			mainmenu.Add ("examples", s => Examples ());
 
@@ -32,6 +33,7 @@ namespace ExampleMenu
 			InputModification ();
 			InnerCommands ();
 			NestedCommands ();
+			IO.ImmediateInput ("help");
 		}
 
 		static void Basics ()
