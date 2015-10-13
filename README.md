@@ -238,20 +238,35 @@ Let's see an example for a command which calculactes the sum of integers entered
 
 
 
+## Project history and developer information
+
+Another (much much larger) project of mine uses a somewhat complex console menu, and I finally got annoyed enough by repeated, virtually equal code fragments to extract the control code into a separate, specialiced project. As I noticed a bunch of queries for something like this, and figured it was complete enough to be useful to others, I put it on github.
+
+For the future, there are certainly a lot of things to improve about CMenu, and I would definitely not call it complete or particularly well made. The changes and issues found on this project are mostly caused by improvements and requirement changes in said larger project. I update CMenu with the relevant changes in parallel when I find the time and will continue to do so for the foreseeable future.
+
+I'm happy to hear if you found this useful, and open to suggestions to improve it.
+
+
+
 ## Example project
 
 The source code contains an example project. It offers commands, which illustrate several (more or less advanced) use cases. It may be useful to reference them in your own projects.
 
 ### echo
+Simply prints text to the console. This is probably most useful in batch processing.
 
+#### Help text
 	echo [text]
 	Prints the specified text to stdout.
 
+#### Example
 	$ echo 123
 	123
 
 ### if
+Simple conditional execution. By default only supports the `not` operator and the constants `true` and `false`, but can be extended with arbitrary additional conditions. 
 
+#### Help text
 	if [not] <condition> <command>
 	Executes <command> if <condition> is met.
 	If the modifier <not> is given, the condition result is reversed.
@@ -260,6 +275,7 @@ The source code contains an example project. It offers commands, which illustrat
 	By default, the conditons "true" and "false" are known. Further conditions can be added by the developer.
 	Condition combination is not currently supported, though it can be emulated via chaining ("if <c1> if <c2> ...")
 
+#### Example
 	$ if true echo 1
 	1
 	$ if not true echo 1
@@ -272,6 +288,7 @@ The source code contains an example project. It offers commands, which illustrat
 	Stops further operation until the enter key is pressed.
 
 ### record, replay
+`record` and `replay` allow persisting several commands to disk for later reading them as input. This can be used for basic batch processing.
 
 #### record
 
@@ -302,6 +319,7 @@ The source code contains an example project. It offers commands, which illustrat
 	2
 
 ### proc, return, call
+These implement a basic procedural calling system. Reentrant calls are supported.
 
 #### Example
 
@@ -313,13 +331,3 @@ The source code contains an example project. It offers commands, which illustrat
 	proc> endproc
 	$ call p1
 	In proc p1
-
-
-
-## Project history and developer information
-
-Another (much much larger) project of mine uses a somewhat complex console menu, and I finally got annoyed enough by repeated, virtually equal code fragments to extract the control code into a separate, specialiced project. As I noticed a bunch of queries for something like this, and figured it was complete enough to be useful to others, I put it on github.
-
-For the future, there are certainly a lot of things to improve about CMenu, and I would definitely not call it complete or particularly well made. The changes and issues found on this project are mostly caused by improvements and requirement changes in said larger project. I update CMenu with the relevant changes in parallel when I find the time and will continue to do so for the foreseeable future.
-
-I'm happy to hear if you found this useful, and open to suggestions to improve it.
