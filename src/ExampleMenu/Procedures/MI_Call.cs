@@ -21,6 +21,7 @@ namespace ExampleMenu
 
 		public override MenuResult Execute (string arg)
 		{
+			// todo error checks
 			var lines = _Mgr.Procs[arg];
 			IO.AddInput (CreateInput (lines));
 			return MenuResult.Normal;
