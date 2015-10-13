@@ -20,7 +20,7 @@ namespace ExampleMenu
 			var mainmenu = new CMenu ();
 			mainmenu.Add ("tutorial", s => Tutorial ());
 			mainmenu.Add ("examples", s => Examples ());
-			mainmenu.Input ("help");
+			mainmenu.Input_ ("help");
 			mainmenu.Run ();
 		}
 
@@ -105,8 +105,8 @@ namespace ExampleMenu
 
 		static void Repeat (string s)
 		{
-			menu.Input (s);
-			menu.Input (s);
+			IO.ImmediateInput (s);
+			IO.ImmediateInput (s);
 		}
 
 		static void InnerCommands ()
@@ -124,7 +124,7 @@ namespace ExampleMenu
 			menu.Add (new MI_Add ());
 
 			Console.WriteLine ("New command <add> available.");
-			menu.Input ("help add");
+			IO.ImmediateInput ("help add");
 			menu.Run ();
 		}
 
@@ -142,11 +142,12 @@ namespace ExampleMenu
 			m.Add (new MI_Record (frs));
 			m.Add (new MI_Replay (m, frs));
 
-			m.Add (new MI_Proc ());
-			m.Add (new MI_Call (m));
-			m.Add (new MI_Return (m));
+			var procmgr = new ProcManager ();
+			m.Add (new MI_Proc (procmgr));
+			m.Add (new MI_Call (m, procmgr));
+			m.Add (new MI_Return (m, procmgr));
 
-			m.Input ("help");
+			IO.ImmediateInput ("help");
 			m.Run ();
 		}
 	}

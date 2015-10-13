@@ -22,14 +22,19 @@ namespace ExampleMenu
 		public override MenuResult Execute (string arg)
 		{
 			var lines = _Mgr.Procs[arg];
+			IO.AddInput (CreateInput (lines));
+			return MenuResult.Normal;
+		}
+
+		private IEnumerable<string> CreateInput (List<string> lines)
+		{
 			foreach (var line in lines) {
-				_Menu.Input (line);
-				if (ProcManager.Instance.ShouldReturn) {
-					ProcManager.Instance.ShouldReturn = false;
+				yield return line;
+				if (_Mgr.ShouldReturn) {
+					_Mgr.ShouldReturn = false;
 					break;
 				}
 			}
-			return MenuResult.Normal;
 		}
 	}
 }

@@ -59,16 +59,18 @@ namespace ConsoleMenu
 				if (PromptCharacter != null) {
 					Console.Write (PromptCharacter + " ");
 				}
-				var input = Console.ReadLine ();
+				var input = IO.QueryInput ();
 				if (string.IsNullOrWhiteSpace (input)) {
 					continue;
 				}
 
-				Input (input);
+				Input_ (input);
 			}
 		}
 
-		public void Input (string input)
+		// todo doc
+		// todo public?? ermöglicht fehler...
+		public void Input_ (string input)
 		{
 			var result = ExecuteInner (input);
 			if (result == MenuResult.Quit) {

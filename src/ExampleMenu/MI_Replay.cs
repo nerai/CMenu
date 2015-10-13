@@ -42,15 +42,13 @@ namespace ExampleMenu
 				return MenuResult.Normal;
 			}
 
-			var lines = _Store.GetRecord (arg);
-			foreach (var line in lines) {
-				// todo: normale comparison verwenden
-				// todo: dynamisch (zB als body von if)
-				if (line.Equals (EndReplayCommand)) {
-					break;
-				}
-				_Menu.Input (line);
-			}
+			// todo: normale comparison verwenden
+			// todo: dynamisch (zB als body von if)
+			var lines = _Store
+				.GetRecord (arg)
+				.TakeWhile (line => !line.Equals (EndReplayCommand));
+
+			IO.AddInput (lines);
 
 			return MenuResult.Normal;
 		}
