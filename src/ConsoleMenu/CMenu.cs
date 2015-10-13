@@ -20,8 +20,6 @@ namespace ConsoleMenu
 	/// </summary>
 	public class CMenu : CMenuItem
 	{
-		private readonly List<string> _InputQueue = new List<string> ();
-
 		/// <summary>
 		/// Create a new CMenu.
 		///
@@ -45,7 +43,7 @@ namespace ConsoleMenu
 		/// <summary>
 		/// The string which is displayed in front of every prompt (i.e. query for user input).
 		///
-		/// Set to null to disable prompting.
+		/// Set to null to disable explicit prompting.
 		/// </summary>
 		public string PromptCharacter = "$";
 
@@ -54,43 +52,18 @@ namespace ConsoleMenu
 		/// </summary>
 		public void Run ()
 		{
-			while (true) {
-				string input;
-				if (_InputQueue.Count > 0) {
-					input = _InputQueue.First ();
-					_InputQueue.RemoveAt (0);
-				}
-				else {
-					if (PromptCharacter != null) {
-						Console.Write (PromptCharacter + " ");
+			try {
+				IO.PushPromptCharacter (PromptCharacter);
+				for (; ; ) {
+					var input = IO.QueryInput ();
+					var result = ExecuteInner (input);
+					if (result == MenuResult.Quit) {
+						break;
 					}
-					input = Console.ReadLine ();
-				}
-
-				if (string.IsNullOrWhiteSpace (input)) {
-					continue;
-				}
-
-				var result = ExecuteInner (input);
-				if (result == MenuResult.Quit) {
-					break;
 				}
 			}
-		}
-
-		/// <summary>
-		/// Add line to input queue.
-		/// </summary>
-		/// <param name="line">
-		/// The line to add to the input queue.
-		/// </param>
-		public void Input (string line, bool atBeginning)
-		{
-			if (atBeginning) {
-				_InputQueue.Insert (0, line);
-			}
-			else {
-				_InputQueue.Add (line);
+			finally {
+				IO.PopPromptCharacter ();
 			}
 		}
 	}

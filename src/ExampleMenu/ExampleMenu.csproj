@@ -83,6 +83,10 @@
     <Compile Include="MI_Record.cs" />
     <Compile Include="MI_If.cs" />
     <Compile Include="MI_Echo.cs" />
+    <Compile Include="Procedures\MI_Return.cs" />
+    <Compile Include="Procedures\MI_Call.cs" />
+    <Compile Include="Procedures\ProcManager.cs" />
+    <Compile Include="Procedures\MI_Proc.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

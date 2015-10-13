@@ -77,7 +77,7 @@ namespace ConsoleMenu.DefaultItems
 			}
 		}
 
-		private static void DisplayAvailableCommands (MenuItemCollection menu, bool inner)
+		private static void DisplayAvailableCommands (CMenuItem menu, bool inner)
 		{
 			if (menu == null) {
 				throw new ArgumentNullException ("menu");

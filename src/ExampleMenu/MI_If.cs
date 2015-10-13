@@ -66,7 +66,7 @@ namespace ExampleMenu
 			ok ^= invert;
 
 			if (ok) {
-				_Menu.Input (arg, true);
+				IO.ImmediateInput (arg);
 			}
 
 			return MenuResult.Normal;

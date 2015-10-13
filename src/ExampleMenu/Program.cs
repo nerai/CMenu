@@ -17,12 +17,23 @@ namespace ExampleMenu
 		{
 			Console.WriteLine ("Simple CMenu demonstration");
 
+			var mainmenu = new CMenu ();
+			mainmenu.PromptCharacter = "main>";
+			mainmenu.Add ("tutorial", s => Tutorial ());
+			mainmenu.Add ("examples", s => Examples ());
+
+			IO.ImmediateInput ("help");
+			mainmenu.Run ();
+		}
+
+		static void Tutorial ()
+		{
 			Basics ();
 			CaseSensitivity ();
 			InputModification ();
 			InnerCommands ();
 			NestedCommands ();
-			Examples ();
+			IO.ImmediateInput ("help");
 		}
 
 		static void Basics ()
@@ -97,8 +108,8 @@ namespace ExampleMenu
 
 		static void Repeat (string s)
 		{
-			menu.Input (s, true);
-			menu.Input (s, true);
+			IO.ImmediateInput (s);
+			IO.ImmediateInput (s);
 		}
 
 		static void InnerCommands ()
@@ -116,23 +127,31 @@ namespace ExampleMenu
 			menu.Add (new MI_Add ());
 
 			Console.WriteLine ("New command <add> available.");
-			menu.Input ("help add", true);
+			IO.ImmediateInput ("help add");
 			menu.Run ();
 		}
 
 		static void Examples ()
 		{
-			menu.Add (new MI_Echo ());
-			menu.Add (new MI_If (menu));
-			menu.Add (new MI_Pause ());
+			var m = new CMenu ();
+
+			m.Add (new MI_Add ());
+
+			m.Add (new MI_Echo ());
+			m.Add (new MI_If (m));
+			m.Add (new MI_Pause ());
 
 			var frs = new FileRecordStore ();
-			menu.Add (new MI_Record (frs));
-			menu.Add (new MI_Replay (menu, frs));
+			m.Add (new MI_Record (frs));
+			m.Add (new MI_Replay (m, frs));
 
-			Console.WriteLine ("Several example commands were added to the menu.");
-			menu.Input ("help", true);
-			menu.Run ();
+			var procmgr = new ProcManager ();
+			m.Add (new MI_Proc (procmgr));
+			m.Add (new MI_Call (m, procmgr));
+			m.Add (new MI_Return (m, procmgr));
+
+			IO.ImmediateInput ("help");
+			m.Run ();
 		}
 	}
 }
