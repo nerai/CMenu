@@ -259,17 +259,16 @@ Simply prints text to the console. This is probably most useful in batch process
 	123
 
 ### if
-Simple conditional execution. By default only supports the `not` operator and the constants `true` and `false`, but can be extended with arbitrary additional conditions. 
+Simple conditional execution. By default only supports the `not` operator and the constants `true` and `false`, but can be extended with arbitrary additional conditions.
+
+Condition combination is not currently supported, though it can in part be emulated via chaining ("if <c1> if <c2> ...")
+It is allowed to specify multiple concurrent `not`, each of which invert the condition again.
 
 #### Help text
 	if [not] <condition> <command>
 	Executes <command> if <condition> is met.
 	If the modifier <not> is given, the condition result is reversed.
 	
-	It is allowed to specify multiple concurrent <not>, each of which invert the condition again.
-	By default, the conditons "true" and "false" are known. Further conditions can be added by the developer.
-	Condition combination is not currently supported, though it can be emulated via chaining ("if <c1> if <c2> ...")
-
 #### Example
 	$ if true echo 1
 	1
@@ -293,8 +292,6 @@ Replaying can be stopped via if `endreplay` is encountered as a direct command i
 	Records all subsequent commands to the specified file name.
 	Recording can be stopped by the command endrecord
 	Stored records can be played via the "replay" command.
-	
-	Nested recording is not supported.
 
 #### replay
 
