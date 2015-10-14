@@ -133,22 +133,17 @@ When in case sensitive mode, CMenu will helpfully point out similar commands wit
 
 ## Modifying the input queue
 
-It is also possible to modify the input queue by adding input:
-* Either at its beginning, so that it will be executed immediately after
-* or at its end, so that it will be processed when the complete current queue has been processed.
+It is also possible to modify the input queue. The `IO` class provides flexible means to add input either directly or via an `IEnumerable<string>`. The latter allows you to stay in control over the input even after you added it, for instance by changing its content or canceling it.
 
 Check out how the "repeat" command adds its argument to the input queue two times.
 
 	// Add a command which repeats another command
 	menu.Add ("repeat",
-		s => Repeat (s),
+		s => {
+			IO.ImmediateInput (s);
+			IO.ImmediateInput (s);
+		},
 		"Repeats a command two times.");
-
-	static void Repeat (string s)
-	{
-		menu.Input (s, true);
-		menu.Input (s, true);
-	}
 
 	$ repeat hello
 	Hello world!
@@ -264,17 +259,16 @@ Simply prints text to the console. This is probably most useful in batch process
 	123
 
 ### if
-Simple conditional execution. By default only supports the `not` operator and the constants `true` and `false`, but can be extended with arbitrary additional conditions. 
+Simple conditional execution. By default only supports the `not` operator and the constants `true` and `false`, but can be extended with arbitrary additional conditions.
+
+Condition combination is not currently supported, though it can in part be emulated via chaining ("if <c1> if <c2> ...")
+It is allowed to specify multiple concurrent `not`, each of which invert the condition again.
 
 #### Help text
 	if [not] <condition> <command>
 	Executes <command> if <condition> is met.
 	If the modifier <not> is given, the condition result is reversed.
 	
-	It is allowed to specify multiple concurrent <not>, each of which invert the condition again.
-	By default, the conditons "true" and "false" are known. Further conditions can be added by the developer.
-	Condition combination is not currently supported, though it can be emulated via chaining ("if <c1> if <c2> ...")
-
 #### Example
 	$ if true echo 1
 	1
@@ -298,8 +292,6 @@ Replaying can be stopped via if `endreplay` is encountered as a direct command i
 	Records all subsequent commands to the specified file name.
 	Recording can be stopped by the command endrecord
 	Stored records can be played via the "replay" command.
-	
-	Nested recording is not supported.
 
 #### replay
 

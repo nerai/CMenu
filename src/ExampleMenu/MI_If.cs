@@ -20,11 +20,7 @@ namespace ExampleMenu
 			HelpText = ""
 				+ "if [not] <condition> <command>\n"
 				+ "Executes <command> if <condition> is met.\n"
-				+ "If the modifier <not> is given, the condition result is reversed.\n"
-				+ "\n"
-				+ "It is allowed to specify multiple concurrent <not>, each of which invert the condition again.\n"
-				+ "By default, the conditons \"true\" and \"false\" are known. Further conditions can be added by the developer.\n"
-				+ "Condition combination is not currently supported, though it can be emulated via chaining (\"if <c1> if <c2> ...\")";
+				+ "If the modifier <not> is given, the condition result is reversed.";
 			if (menu == null) {
 				throw new ArgumentNullException ("menu");
 			}
