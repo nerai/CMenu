@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using ConsoleMenu;
 
-namespace ExampleMenu
+namespace ExampleMenu.Procedures
 {
 	public class MI_Call : CMenuItem
 	{
