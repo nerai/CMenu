@@ -7,21 +7,19 @@ using ConsoleMenu;
 
 namespace ExampleMenu.Procedures
 {
-	public class MI_Call : CMenuItem
+	public class MI_Goto : CMenuItem
 	{
-		private readonly CMenu _Menu;
 		private readonly ProcManager _Mgr;
 
-		public MI_Call (CMenu menu, ProcManager mgr)
-			: base ("call")
+		public MI_Goto (ProcManager mgr)
+			: base ("goto")
 		{
-			_Menu = menu;
 			_Mgr = mgr;
 		}
 
 		public override MenuResult Execute (string arg)
 		{
-			IO.AddInput (_Mgr.GenerateInput (arg));
+			_Mgr.Jump (arg);
 			return MenuResult.Normal;
 		}
 	}

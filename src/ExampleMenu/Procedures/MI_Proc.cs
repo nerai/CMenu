@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using ConsoleMenu;
 
-namespace ExampleMenu
+namespace ExampleMenu.Procedures
 {
 	public class MI_Proc : CMenu
 	{
@@ -47,7 +47,7 @@ namespace ExampleMenu
 			Console.WriteLine ("Recording started. Enter \"" + EndRecordCommand + "\" to finish.");
 			_Lines = new List<string> ();
 			Run ();
-			_Mgr.Procs[arg] = _Lines;
+			_Mgr.AddProc(arg, _Lines);
 			_Lines = null;
 
 			return MenuResult.Normal;

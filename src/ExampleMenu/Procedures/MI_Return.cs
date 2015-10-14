@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using ConsoleMenu;
 
-namespace ExampleMenu
+namespace ExampleMenu.Procedures
 {
 	public class MI_Return : CMenuItem
 	{
@@ -19,7 +19,7 @@ namespace ExampleMenu
 
 		public override MenuResult Execute (string arg)
 		{
-			_Mgr.ShouldReturn = true;
+			_Mgr.Return ();
 			return MenuResult.Normal;
 		}
 	}

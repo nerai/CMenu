@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ConsoleMenu;
+using ExampleMenu.Procedures;
+using ExampleMenu.Recording;
 
 namespace ExampleMenu
 {
@@ -146,6 +148,7 @@ namespace ExampleMenu
 			m.Add (new MI_Proc (procmgr));
 			m.Add (new MI_Call (m, procmgr));
 			m.Add (new MI_Return (m, procmgr));
+			m.Add (new MI_Goto (procmgr));
 
 			IO.ImmediateInput ("help");
 			m.Run ();

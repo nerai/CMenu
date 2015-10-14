@@ -235,9 +235,9 @@ Let's see an example for a command which calculactes the sum of integers entered
 
 ## Project history and developer information
 
-Another (much much larger) project of mine uses a somewhat complex console menu, and I finally got annoyed enough by repeated, virtually equal code fragments to extract the control code into a separate, specialiced project. As I noticed a bunch of queries for something like this, and figured it was complete enough to be useful to others, I put it on github.
+Another (much larger) project of mine uses a somewhat complex console menu, and I finally got annoyed enough by repeated, virtually equal code fragments to refactor and extract those pieces of code into a separate project. As I figured it was complete enough to be useful to others, I called it CMenu and put it on github.
 
-For the future, there are certainly a lot of things to improve about CMenu, and I would definitely not call it complete or particularly well made. The changes and issues found on this project are mostly caused by improvements and requirement changes in said larger project. I update CMenu with the relevant changes in parallel when I find the time and will continue to do so for the foreseeable future.
+In the future, there are certainly a lot of things to improve about CMenu, and I would definitely not call it complete or particularly well made. The changes and issues found on this project are mostly caused by improvements and requirement changes in said larger project. I update CMenu with the relevant changes in parallel when I find the time and will continue to do so for the foreseeable future.
 
 I'm happy to hear if you found this useful, and open to suggestions to improve it.
 
@@ -313,8 +313,8 @@ Replaying can be stopped via if `endreplay` is encountered as a direct command i
 	1
 	2
 
-### proc, return, call
-These implement a basic procedural calling system. Early exiting and reentrant calls are supported.
+### proc, call, returnm goto
+These implement a basic procedural calling system. Early exiting, jumping within the local procedure and reentrant calls are supported.
 
 #### Example
 
@@ -326,3 +326,16 @@ These implement a basic procedural calling system. Early exiting and reentrant c
 	proc> endproc
 	$ call p1
 	In proc p1
+
+	$ proc p2
+	Recording started. Enter "endproc" to finish.
+	proc> echo 1 - entered p2
+	proc> goto g
+	proc> echo 2 - this line will not be displayed.
+	proc> :g
+	proc> echo 3 - p2 completed
+	proc> endproc
+	$ call p2
+	1 - entered p2
+	3 - p2 completed
+
