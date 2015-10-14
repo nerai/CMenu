@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Procedures\MI_Goto.cs" />
     <Compile Include="Recording\FileRecordStore.cs" />
     <Compile Include="Recording\IRecordStore.cs" />
     <Compile Include="MI_Add.cs" />

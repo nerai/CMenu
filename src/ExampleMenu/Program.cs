@@ -148,6 +148,7 @@ namespace ExampleMenu
 			m.Add (new MI_Proc (procmgr));
 			m.Add (new MI_Call (m, procmgr));
 			m.Add (new MI_Return (m, procmgr));
+			m.Add (new MI_Goto (procmgr));
 
 			IO.ImmediateInput ("help");
 			m.Run ();
