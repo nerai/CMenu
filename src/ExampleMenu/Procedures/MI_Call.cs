@@ -21,23 +21,8 @@ namespace ExampleMenu.Procedures
 
 		public override MenuResult Execute (string arg)
 		{
-			List<string> lines;
-			if (!_Mgr.Procs.TryGetValue (arg, out lines)) {
-				Console.WriteLine ("Unknown procedure: " + arg);
-			}
-			IO.AddInput (CreateInput (lines));
+			IO.AddInput (_Mgr.GenerateInput (arg));
 			return MenuResult.Normal;
-		}
-
-		private IEnumerable<string> CreateInput (List<string> lines)
-		{
-			foreach (var line in lines) {
-				yield return line;
-				if (_Mgr.ShouldReturn) {
-					_Mgr.ShouldReturn = false;
-					break;
-				}
-			}
 		}
 	}
 }
