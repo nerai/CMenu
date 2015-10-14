@@ -8,25 +8,19 @@ namespace ExampleMenu
 {
 	public class MI_If : CMenuItem
 	{
-		private readonly CMenu _Menu;
-
 		public delegate bool ConditionCheck (ref string arg);
 
-		public readonly Dictionary<string, ConditionCheck> Conditions = new Dictionary<string, ConditionCheck> ();
+		public readonly Dictionary<string, ConditionCheck> Conditions;
 
-		public MI_If (CMenu menu)
+		public MI_If ()
 			: base ("if")
 		{
 			HelpText = ""
 				+ "if [not] <condition> <command>\n"
 				+ "Executes <command> if <condition> is met.\n"
 				+ "If the modifier <not> is given, the condition result is reversed.";
-			if (menu == null) {
-				throw new ArgumentNullException ("menu");
-			}
 
-			_Menu = menu;
-
+			Conditions = new Dictionary<string, ConditionCheck> (StringComparison.GetCorrespondingComparer ());
 			Conditions.Add ("true", True);
 			Conditions.Add ("false", False);
 		}
@@ -41,13 +35,25 @@ namespace ExampleMenu
 			return false;
 		}
 
+		public override StringComparison StringComparison
+		{
+			get
+			{
+				return base.StringComparison;
+			}
+			set
+			{
+				base.StringComparison = value;
+			}
+		}
+
 		public override MenuResult Execute (string arg)
 		{
 			var cond = MenuUtil.SplitFirstWord (ref arg);
 			bool ok = false;
 			bool invert = false;
 
-			while ("not".Equals (cond, _Menu.StringComparison)) {
+			while ("not".Equals (cond, StringComparison)) {
 				invert = !invert;
 				cond = MenuUtil.SplitFirstWord (ref arg);
 			}

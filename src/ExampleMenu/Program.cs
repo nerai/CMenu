@@ -137,7 +137,7 @@ namespace ExampleMenu
 			m.Add (new MI_Add ());
 
 			m.Add (new MI_Echo ());
-			m.Add (new MI_If (m));
+			m.Add (new MI_If ());
 			m.Add (new MI_Pause ());
 
 			var frs = new FileRecordStore ();

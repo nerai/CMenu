@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections;
 
 namespace ConsoleMenu
 {
@@ -19,10 +20,10 @@ namespace ConsoleMenu
 	/// </summary>
 	public class CMenuItem : IEnumerable<CMenuItem>
 	{
-		private Dictionary<string, CMenuItem> _Menu = new Dictionary<string, CMenuItem> ();
+		private Dictionary<string, CMenuItem> _Menu = new Dictionary<string, CMenuItem> (StringComparer.InvariantCultureIgnoreCase);
 		private CMenuItem _Default = null;
 
-		private StringComparison _StringComparison;
+		private StringComparison? _StringComparison;
 
 		/// <summary>
 		/// Parent of this item, if any.
@@ -34,11 +35,17 @@ namespace ConsoleMenu
 		///
 		/// By default, the comparison is case insensitive and culture invariant.
 		/// </summary>
-		public StringComparison StringComparison
+		public virtual StringComparison StringComparison
 		{
 			get
 			{
-				return _StringComparison;
+				if (_StringComparison.HasValue) {
+					return _StringComparison.Value;
+				}
+				if (Parent != null) {
+					return Parent.StringComparison;
+				}
+				return StringComparison.InvariantCultureIgnoreCase;
 			}
 			set
 			{
@@ -92,7 +99,6 @@ namespace ConsoleMenu
 		/// <param name="help">Descriptive help text</param>
 		public CMenuItem (string selector, Func<string, MenuResult> execute, string help = null)
 		{
-			StringComparison = StringComparison.InvariantCultureIgnoreCase;
 			Selector = selector;
 			HelpText = help;
 			SetAction (execute);
@@ -106,7 +112,6 @@ namespace ConsoleMenu
 		/// <param name="help">Descriptive help text</param>
 		public CMenuItem (string selector, Action<string> execute, string help = null)
 		{
-			StringComparison = StringComparison.InvariantCultureIgnoreCase;
 			Selector = selector;
 			HelpText = help;
 			SetAction (execute);
@@ -349,7 +354,7 @@ namespace ConsoleMenu
 			return _Menu.Values.GetEnumerator ();
 		}
 
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
+		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator ();
 		}
