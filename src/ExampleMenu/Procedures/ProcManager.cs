@@ -37,6 +37,11 @@ namespace ExampleMenu.Procedures
 
 		public void AddProc (string name, IEnumerable<string> content)
 		{
+			if (_Procs.ContainsKey (name)) {
+				Console.WriteLine ("Procedure \"" + name + "\" is already defined.");
+				return;
+			}
+
 			var proc = new Proc (content);
 			_Procs.Add (name, proc);
 		}
@@ -53,6 +58,7 @@ namespace ExampleMenu.Procedures
 			while (i < proc.Commands.Count) {
 				var line = proc.Commands[i];
 				yield return line;
+				i++;
 
 				if (_RequestReturn) {
 					_RequestReturn = false;
@@ -61,7 +67,6 @@ namespace ExampleMenu.Procedures
 				if (_RequestJump != null) {
 					i = proc.JumpMarks[_RequestJump]; // todo check
 					_RequestJump = null;
-					break;
 				}
 			}
 		}
