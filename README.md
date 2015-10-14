@@ -313,7 +313,7 @@ Replaying can be stopped via if `endreplay` is encountered as a direct command i
 	1
 	2
 
-### proc, call, returnm goto
+### proc, call, return, goto
 These implement a basic procedural calling system. Early exiting, jumping within the local procedure and reentrant calls are supported.
 
 #### Example
