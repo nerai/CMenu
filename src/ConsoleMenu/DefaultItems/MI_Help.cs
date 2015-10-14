@@ -53,10 +53,11 @@ namespace ConsoleMenu.DefaultItems
 				return;
 			}
 
-			DisplayItemHelp (context, true);
-			if (!string.IsNullOrEmpty (arg)) {
-				Console.WriteLine ("Inner command \"" + arg + "\" not found.");
+			Console.WriteLine ("Could not find inner command \"" + cmd + "\".");
+			if (context.Selector != null) {
+				Console.WriteLine ("Help for " + context.Selector + ":");
 			}
+			DisplayItemHelp (context, true);
 		}
 
 		private static bool DisplayItemHelp (CMenuItem item, bool force)
