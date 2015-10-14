@@ -133,22 +133,17 @@ When in case sensitive mode, CMenu will helpfully point out similar commands wit
 
 ## Modifying the input queue
 
-It is also possible to modify the input queue by adding input:
-* Either at its beginning, so that it will be executed immediately after
-* or at its end, so that it will be processed when the complete current queue has been processed.
+It is also possible to modify the input queue. The `IO` class provides flexible means to add input either directly or via an `IEnumerable<string>`. The latter allows you to stay in control over the input even after you added it, for instance by changing its content or canceling it.
 
 Check out how the "repeat" command adds its argument to the input queue two times.
 
 	// Add a command which repeats another command
 	menu.Add ("repeat",
-		s => Repeat (s),
+		s => {
+			IO.ImmediateInput (s);
+			IO.ImmediateInput (s);
+		},
 		"Repeats a command two times.");
-
-	static void Repeat (string s)
-	{
-		menu.Input (s, true);
-		menu.Input (s, true);
-	}
 
 	$ repeat hello
 	Hello world!

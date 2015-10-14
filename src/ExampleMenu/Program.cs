@@ -99,17 +99,14 @@ namespace ExampleMenu
 			 * Check out how the "repeat" command adds its argument to the input queue two times.
 			 */
 			menu.Add ("repeat",
-				s => Repeat (s),
+				s => {
+					IO.ImmediateInput (s);
+					IO.ImmediateInput (s);
+				},
 				"Repeats a command two times.");
 
 			Console.WriteLine ("New command available: repeat");
 			menu.Run ();
-		}
-
-		static void Repeat (string s)
-		{
-			IO.ImmediateInput (s);
-			IO.ImmediateInput (s);
 		}
 
 		static void InnerCommands ()
