@@ -65,7 +65,14 @@ namespace ExampleMenu.Procedures
 					break;
 				}
 				if (_RequestJump != null) {
-					i = proc.JumpMarks[_RequestJump]; // todo check
+					int to;
+					if (proc.JumpMarks.TryGetValue (_RequestJump, out to)) {
+						i = to;
+					}
+					else {
+						Console.WriteLine ("Could not find jump target \"" + _RequestJump+"\", aborting.");
+						yield break;
+					}
 					_RequestJump = null;
 				}
 			}
