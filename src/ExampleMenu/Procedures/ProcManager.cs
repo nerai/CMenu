@@ -85,7 +85,7 @@ namespace ExampleMenu.Procedures
 						i = to;
 					}
 					else {
-						Console.WriteLine ("Could not find jump target \"" + _RequestJump+"\", aborting.");
+						Console.WriteLine ("Could not find jump target \"" + _RequestJump + "\", aborting.");
 						yield break;
 					}
 					_RequestJump = null;

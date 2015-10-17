@@ -51,7 +51,7 @@ namespace ExampleMenu.Procedures
 			Console.WriteLine ("Recording started. Enter \"" + EndRecordCommand + "\" to finish.");
 			_Lines = new List<string> ();
 			Run ();
-			_Mgr.AddProc(arg, _Lines);
+			_Mgr.AddProc (arg, _Lines);
 			_Lines = null;
 
 			return MenuResult.Normal;
