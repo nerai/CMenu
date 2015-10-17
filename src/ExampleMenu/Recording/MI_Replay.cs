@@ -17,6 +17,13 @@ namespace ExampleMenu.Recording
 		public MI_Replay (CMenu menu, IRecordStore store)
 			: base ("replay")
 		{
+			if (menu == null) {
+				throw new ArgumentNullException ("menu");
+			}
+			if (store == null) {
+				throw new ArgumentNullException ("store");
+			}
+
 			_Store = store;
 
 			HelpText = ""

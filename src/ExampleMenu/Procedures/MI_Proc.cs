@@ -17,6 +17,10 @@ namespace ExampleMenu.Procedures
 		public MI_Proc (ProcManager mgr)
 			: base ("proc")
 		{
+			if (mgr == null) {
+				throw new ArgumentNullException ("mgr");
+			}
+
 			_Mgr = mgr;
 
 			PromptCharacter = "proc>";
@@ -47,7 +51,7 @@ namespace ExampleMenu.Procedures
 			Console.WriteLine ("Recording started. Enter \"" + EndRecordCommand + "\" to finish.");
 			_Lines = new List<string> ();
 			Run ();
-			_Mgr.AddProc(arg, _Lines);
+			_Mgr.AddProc (arg, _Lines);
 			_Lines = null;
 
 			return MenuResult.Normal;

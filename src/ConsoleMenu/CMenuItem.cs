@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Collections;
 
 namespace ConsoleMenu
 {
@@ -239,6 +239,10 @@ namespace ConsoleMenu
 		/// </summary>
 		private CMenuItem[] GetCommands (string cmd, StringComparison comparison)
 		{
+			if (cmd == null) {
+				throw new ArgumentNullException ("cmd");
+			}
+
 			CMenuItem mi;
 			_Menu.TryGetValue (cmd, out mi);
 			if (mi != null) {

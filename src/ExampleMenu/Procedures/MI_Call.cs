@@ -15,13 +15,20 @@ namespace ExampleMenu.Procedures
 		public MI_Call (CMenu menu, ProcManager mgr)
 			: base ("call")
 		{
+			if (menu == null) {
+				throw new ArgumentNullException ("menu");
+			}
+			if (mgr == null) {
+				throw new ArgumentNullException ("mgr");
+			}
+
 			_Menu = menu;
 			_Mgr = mgr;
 		}
 
 		public override MenuResult Execute (string arg)
 		{
-			IO.AddInput (_Mgr.GenerateInput (arg));
+			IO.AddInput (_Mgr.GenerateInputForProc (arg));
 			return MenuResult.Normal;
 		}
 	}
