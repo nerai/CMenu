@@ -57,14 +57,14 @@ namespace ExampleMenu.Procedures
 			_Procs.Add (name, proc);
 		}
 
-		public IEnumerable<string> GenerateInput (string procname)
+		public IEnumerable<string> GenerateInputForProc (string name)
 		{
 			if (name == null) {
 				throw new ArgumentNullException ("procname");
 			}
 
 			Proc proc;
-			if (!_Procs.TryGetValue (procname, out proc)) {
+			if (!_Procs.TryGetValue (name, out proc)) {
 				Console.WriteLine ("Unknown procedure: " + proc);
 				yield break;
 			}
