@@ -17,6 +17,10 @@ namespace ExampleMenu.Procedures
 		public MI_Proc (ProcManager mgr)
 			: base ("proc")
 		{
+			if (mgr == null) {
+				throw new ArgumentNullException ("mgr");
+			}
+
 			_Mgr = mgr;
 
 			PromptCharacter = "proc>";

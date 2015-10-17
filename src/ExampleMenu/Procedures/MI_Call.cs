@@ -15,6 +15,13 @@ namespace ExampleMenu.Procedures
 		public MI_Call (CMenu menu, ProcManager mgr)
 			: base ("call")
 		{
+			if (menu == null) {
+				throw new ArgumentNullException ("menu");
+			}
+			if (mgr == null) {
+				throw new ArgumentNullException ("mgr");
+			}
+
 			_Menu = menu;
 			_Mgr = mgr;
 		}

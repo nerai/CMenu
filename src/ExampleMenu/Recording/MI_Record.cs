@@ -18,6 +18,10 @@ namespace ExampleMenu.Recording
 		public MI_Record (IRecordStore store)
 			: base ("record")
 		{
+			if (store == null) {
+				throw new ArgumentNullException ("store");
+			}
+
 			_Store = store;
 
 			HelpText = ""

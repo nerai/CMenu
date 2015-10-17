@@ -239,6 +239,10 @@ namespace ConsoleMenu
 		/// </summary>
 		private CMenuItem[] GetCommands (string cmd, StringComparison comparison)
 		{
+			if (cmd == null) {
+				throw new ArgumentNullException ("cmd");
+			}
+
 			CMenuItem mi;
 			_Menu.TryGetValue (cmd, out mi);
 			if (mi != null) {

@@ -14,6 +14,10 @@ namespace ExampleMenu.Procedures
 		public MI_Goto (ProcManager mgr)
 			: base ("goto")
 		{
+			if (mgr == null) {
+				throw new ArgumentNullException ("mgr");
+			}
+
 			_Mgr = mgr;
 		}
 

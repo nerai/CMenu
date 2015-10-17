@@ -16,6 +16,10 @@ namespace ExampleMenu.Procedures
 
 			public Proc (IEnumerable<string> content)
 			{
+				if (content == null) {
+					throw new ArgumentNullException ("content");
+				}
+
 				Commands = new List<string> (content);
 
 				for (int i = 0; i < Commands.Count; i++) {
@@ -37,6 +41,13 @@ namespace ExampleMenu.Procedures
 
 		public void AddProc (string name, IEnumerable<string> content)
 		{
+			if (name == null) {
+				throw new ArgumentNullException ("name");
+			}
+			if (content == null) {
+				throw new ArgumentNullException ("content");
+			}
+
 			if (_Procs.ContainsKey (name)) {
 				Console.WriteLine ("Procedure \"" + name + "\" is already defined.");
 				return;
@@ -48,6 +59,10 @@ namespace ExampleMenu.Procedures
 
 		public IEnumerable<string> GenerateInput (string procname)
 		{
+			if (name == null) {
+				throw new ArgumentNullException ("procname");
+			}
+
 			Proc proc;
 			if (!_Procs.TryGetValue (procname, out proc)) {
 				Console.WriteLine ("Unknown procedure: " + proc);

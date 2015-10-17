@@ -24,6 +24,13 @@ namespace ExampleMenu.Recording
 
 		public void AddRecord (string name, IEnumerable<string> lines)
 		{
+			if (name == null) {
+				throw new ArgumentNullException ("name");
+			}
+			if (lines == null) {
+				throw new ArgumentNullException ("lines");
+			}
+
 			Directory.CreateDirectory (RecordDirectory);
 			var path = RecordDirectory + name;
 			File.WriteAllLines (path, lines);
@@ -39,6 +46,10 @@ namespace ExampleMenu.Recording
 		/// </summary>
 		public IEnumerable<string> GetRecord (string name)
 		{
+			if (name == null) {
+				throw new ArgumentNullException ("name");
+			}
+
 			var path = RecordDirectory + name;
 			if (!File.Exists (path)) {
 				name = GetRecordNames ().FirstOrDefault (n => n.StartsWith (name, StringComparison.InvariantCultureIgnoreCase));

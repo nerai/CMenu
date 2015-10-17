@@ -14,6 +14,13 @@ namespace ExampleMenu.Procedures
 		public MI_Return (CMenu menu, ProcManager mgr)
 			: base ("return")
 		{
+			if (menu == null) {
+				throw new ArgumentNullException ("menu");
+			}
+			if (mgr == null) {
+				throw new ArgumentNullException ("mgr");
+			}
+
 			_Mgr = mgr;
 		}
 
