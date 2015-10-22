@@ -16,6 +16,10 @@ namespace ExampleMenu.Procedures
 
 			public Proc (IEnumerable<string> content)
 			{
+				if (content == null) {
+					throw new ArgumentNullException ("content");
+				}
+
 				Commands = new List<string> (content);
 
 				for (int i = 0; i < Commands.Count; i++) {
@@ -37,6 +41,13 @@ namespace ExampleMenu.Procedures
 
 		public void AddProc (string name, IEnumerable<string> content)
 		{
+			if (name == null) {
+				throw new ArgumentNullException ("name");
+			}
+			if (content == null) {
+				throw new ArgumentNullException ("content");
+			}
+
 			if (_Procs.ContainsKey (name)) {
 				Console.WriteLine ("Procedure \"" + name + "\" is already defined.");
 				return;
@@ -46,10 +57,14 @@ namespace ExampleMenu.Procedures
 			_Procs.Add (name, proc);
 		}
 
-		public IEnumerable<string> GenerateInput (string procname)
+		public IEnumerable<string> GenerateInputForProc (string name)
 		{
+			if (name == null) {
+				throw new ArgumentNullException ("procname");
+			}
+
 			Proc proc;
-			if (!_Procs.TryGetValue (procname, out proc)) {
+			if (!_Procs.TryGetValue (name, out proc)) {
 				Console.WriteLine ("Unknown procedure: " + proc);
 				yield break;
 			}
@@ -65,7 +80,14 @@ namespace ExampleMenu.Procedures
 					break;
 				}
 				if (_RequestJump != null) {
-					i = proc.JumpMarks[_RequestJump]; // todo check
+					int to;
+					if (proc.JumpMarks.TryGetValue (_RequestJump, out to)) {
+						i = to;
+					}
+					else {
+						Console.WriteLine ("Could not find jump target \"" + _RequestJump + "\", aborting.");
+						yield break;
+					}
 					_RequestJump = null;
 				}
 			}

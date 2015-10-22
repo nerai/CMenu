@@ -67,6 +67,10 @@ namespace ConsoleMenu
 		/// </summary>
 		public static void AddInput (IEnumerable<string> source)
 		{
+			if (source == null) {
+				throw new ArgumentNullException ("source");
+			}
+
 			_Frames.Push (new Frame (source));
 		}
 
@@ -75,12 +79,19 @@ namespace ConsoleMenu
 		/// </summary>
 		public static void ImmediateInput (string source)
 		{
+			if (source == null) {
+				throw new ArgumentNullException ("source");
+			}
+
 			AddInput (new string[] { source });
 		}
 
 		/// <summary>
 		/// Sets the current prompt character in case of console input.
 		/// </summary>
+		/// <param name="prompt">
+		/// String to prompt, or null.
+		/// </param>
 		public static void PushPromptCharacter (string prompt)
 		{
 			_PromptCharacters.Push (prompt);
