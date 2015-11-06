@@ -212,10 +212,21 @@ namespace ConsoleMenu
 		/// Adds a new command from keyword and help.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
+		/// <param name="help">Descriptive help text</param>
 		/// <returns>The added CMenuItem</returns>
-		public CMenuItem Add (string selector, string help = null)
+		public CMenuItem Add (string selector, string help)
 		{
 			return Add (selector, (Func<string, MenuResult>) null, help);
+		}
+
+		/// <summary>
+		/// Adds a new command from keyword.
+		/// </summary>
+		/// <param name="selector">Keyword</param>
+		/// <returns>The added CMenuItem</returns>
+		public CMenuItem Add (string selector)
+		{
+			return Add (selector, null);
 		}
 
 		/// <summary>
