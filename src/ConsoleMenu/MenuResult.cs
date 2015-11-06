@@ -12,7 +12,24 @@ namespace ConsoleMenu
 	/// </summary>
 	public enum MenuResult
 	{
-		Normal = 0,
+		/// <summary>
+		/// Use default action based on context
+		/// </summary>
+		Default = 0,
+
+		/// <summary>
+		/// Do not process child menu items.
+		/// </summary>
+		Return = 0,
+
+		/// <summary>
+		/// Do continue execution in child menu items.
+		/// </summary>
+		Proceed = 10,
+
+		/// <summary>
+		/// Quit current menu execution (return control to containing menu).
+		/// </summary>
 		Quit = 255,
 	}
 }
