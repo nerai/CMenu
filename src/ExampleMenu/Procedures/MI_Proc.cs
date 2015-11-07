@@ -45,7 +45,7 @@ namespace ExampleMenu.Procedures
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
 				Console.WriteLine ("You must enter a name to identify this proc.");
-				return MenuResult.Normal;
+				return MenuResult.Default;
 			}
 
 			Console.WriteLine ("Recording started. Enter \"" + EndRecordCommand + "\" to finish.");
@@ -54,7 +54,7 @@ namespace ExampleMenu.Procedures
 			_Mgr.AddProc (arg, _Lines);
 			_Lines = null;
 
-			return MenuResult.Normal;
+			return MenuResult.Default;
 		}
 	}
 }

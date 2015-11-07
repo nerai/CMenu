@@ -27,7 +27,7 @@ namespace ConsoleMenu.DefaultItems
 		public override MenuResult Execute (string arg)
 		{
 			DisplayHelp (arg, _Menu, false);
-			return MenuResult.Normal;
+			return MenuResult.Default;
 		}
 
 		private static void DisplayHelp (string arg, CMenuItem context, bool isInner)

@@ -35,6 +35,7 @@ namespace ExampleMenu
 			InputModification ();
 			InnerCommands ();
 			NestedCommands ();
+			InnerWithShared ();
 			IO.ImmediateInput ("help");
 		}
 
@@ -152,6 +153,48 @@ namespace ExampleMenu
 
 			IO.ImmediateInput ("help");
 			m.Run ();
+		}
+
+		private class SharedViaOverride : CMenuItem
+		{
+			public SharedViaOverride ()
+				: base ("shared-override")
+			{
+				Add ("1", s => Console.WriteLine ("First child"));
+				Add ("2", s => Console.WriteLine ("Second child"));
+			}
+
+			public override MenuResult Execute (string arg)
+			{
+				Console.WriteLine ("This code is shared between all children of this menu item.");
+				if (DateTime.UtcNow.Millisecond < 500) {
+					return MenuResult.Default;
+				}
+				else {
+					// Proceed normally.
+					return base.Execute (arg);
+				}
+			}
+		}
+
+		static void InnerWithShared ()
+		{
+			menu.Add (new SharedViaOverride ());
+
+			var msr = menu.Add ("shared-result", s => {
+				Console.WriteLine ("This code is shared between all children of this menu item.");
+				if (DateTime.UtcNow.Millisecond < 500) {
+					return MenuResult.Proceed;
+				}
+				else {
+					return MenuResult.Return;
+				}
+			});
+			msr.Add ("1", s => Console.WriteLine ("First child"));
+			msr.Add ("2", s => Console.WriteLine ("Second child"));
+
+			Console.WriteLine ("New commands <shared-override> and <shared-result> available.");
+			menu.Run ();
 		}
 	}
 }

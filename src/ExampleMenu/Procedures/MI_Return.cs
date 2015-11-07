@@ -27,7 +27,7 @@ namespace ExampleMenu.Procedures
 		public override MenuResult Execute (string arg)
 		{
 			_Mgr.Return ();
-			return MenuResult.Normal;
+			return MenuResult.Default;
 		}
 	}
 }

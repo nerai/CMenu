@@ -54,7 +54,7 @@ namespace ExampleMenu.Recording
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
 				Console.WriteLine ("You must enter a name to identify this command group.");
-				return MenuResult.Normal;
+				return MenuResult.Default;
 			}
 
 			Console.WriteLine ("Recording started. Enter \"" + EndRecordCommand + "\" to finish.");
@@ -63,7 +63,7 @@ namespace ExampleMenu.Recording
 			_Store.AddRecord (arg, _Lines);
 			_Lines = null;
 
-			return MenuResult.Normal;
+			return MenuResult.Default;
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace ExampleMenu
 		{
 			Console.ReadLine ();
 
-			return MenuResult.Normal;
+			return MenuResult.Default;
 		}
 	}
 }
