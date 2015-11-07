@@ -29,7 +29,7 @@ namespace ExampleMenu.Procedures
 		public override MenuResult Execute (string arg)
 		{
 			IO.AddInput (_Mgr.GenerateInputForProc (arg));
-			return MenuResult.Normal;
+			return MenuResult.Default;
 		}
 	}
 }

@@ -40,7 +40,7 @@ namespace ExampleMenu
 			_Sum = 0;
 			Run ();
 			Console.WriteLine ("Sum = " + _Sum);
-			return MenuResult.Normal;
+			return MenuResult.Default;
 		}
 	}
 }

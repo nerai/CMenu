@@ -61,7 +61,7 @@ namespace ExampleMenu
 			ConditionCheck cc;
 			if (!Conditions.TryGetValue (cond, out cc)) {
 				Console.WriteLine ("Unknown condition: " + cond);
-				return MenuResult.Normal;
+				return MenuResult.Default;
 			}
 
 			ok = cc (ref arg);
@@ -71,7 +71,7 @@ namespace ExampleMenu
 				IO.ImmediateInput (arg);
 			}
 
-			return MenuResult.Normal;
+			return MenuResult.Default;
 		}
 	}
 }
