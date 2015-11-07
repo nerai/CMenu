@@ -131,7 +131,7 @@ namespace ExampleMenu
 			menu.Run ();
 		}
 
-		private class SharedViaOverride : CMenuItem
+		class SharedViaOverride : CMenuItem
 		{
 			public SharedViaOverride ()
 				: base ("shared-override")
@@ -160,7 +160,7 @@ namespace ExampleMenu
 			 * implement this.
 			 *
 			 * First option: Override Execute in their parent menu item so it first executes the shared code,
-			 * then resums normal processing.
+			 * then resumes normal processing.
 			 */
 			menu.Add (new SharedViaOverride ());
 
@@ -179,6 +179,12 @@ namespace ExampleMenu
 			});
 			msr.Add ("1", s => Console.WriteLine ("First child"));
 			msr.Add ("2", s => Console.WriteLine ("Second child"));
+
+			/*
+			 * Which option you chose is up to you. MenuResults have the advantage of compactness and do not
+			 * require a deriving from CMenuItem. For larger commands, it may be preferable to use a separate
+			 * class. Note that you are still free to use MenuResult values within an overridden Execute.
+			 */
 
 			Console.WriteLine ("New commands <shared-override> and <shared-result> available.");
 			menu.Run ();
