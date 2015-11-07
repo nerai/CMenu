@@ -131,30 +131,6 @@ namespace ExampleMenu
 			menu.Run ();
 		}
 
-		static void Examples ()
-		{
-			var m = new CMenu ();
-
-			m.Add (new MI_Add ());
-
-			m.Add (new MI_Echo ());
-			m.Add (new MI_If ());
-			m.Add (new MI_Pause ());
-
-			var frs = new FileRecordStore ();
-			m.Add (new MI_Record (frs));
-			m.Add (new MI_Replay (m, frs));
-
-			var procmgr = new ProcManager ();
-			m.Add (new MI_Proc (procmgr));
-			m.Add (new MI_Call (m, procmgr));
-			m.Add (new MI_Return (m, procmgr));
-			m.Add (new MI_Goto (procmgr));
-
-			IO.ImmediateInput ("help");
-			m.Run ();
-		}
-
 		private class SharedViaOverride : CMenuItem
 		{
 			public SharedViaOverride ()
@@ -179,8 +155,19 @@ namespace ExampleMenu
 
 		static void InnerWithShared ()
 		{
+			/*
+			 * If your inner menu items should share code (e.g. common basic validation), there are two ways to
+			 * implement this.
+			 *
+			 * First option: Override Execute in their parent menu item so it first executes the shared code,
+			 * then resums normal processing.
+			 */
 			menu.Add (new SharedViaOverride ());
 
+			/*
+			 * Second option: Use the return values of Execute to indicate if processing should continue with
+			 * the children, or return immediately. Returning is the default.
+			 */
 			var msr = menu.Add ("shared-result", s => {
 				Console.WriteLine ("This code is shared between all children of this menu item.");
 				if (DateTime.UtcNow.Millisecond < 500) {
@@ -195,6 +182,30 @@ namespace ExampleMenu
 
 			Console.WriteLine ("New commands <shared-override> and <shared-result> available.");
 			menu.Run ();
+		}
+
+		static void Examples ()
+		{
+			var m = new CMenu ();
+
+			m.Add (new MI_Add ());
+
+			m.Add (new MI_Echo ());
+			m.Add (new MI_If ());
+			m.Add (new MI_Pause ());
+
+			var frs = new FileRecordStore ();
+			m.Add (new MI_Record (frs));
+			m.Add (new MI_Replay (m, frs));
+
+			var procmgr = new ProcManager ();
+			m.Add (new MI_Proc (procmgr));
+			m.Add (new MI_Call (m, procmgr));
+			m.Add (new MI_Return (m, procmgr));
+			m.Add (new MI_Goto (procmgr));
+
+			IO.ImmediateInput ("help");
+			m.Run ();
 		}
 	}
 }
