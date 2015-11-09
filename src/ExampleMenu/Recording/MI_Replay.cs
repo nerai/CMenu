@@ -45,7 +45,7 @@ namespace ExampleMenu.Recording
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
 				Console.WriteLine ("Known records: " + string.Join (", ", _Store.GetRecordNames ()));
-				return MenuResult.Normal;
+				return MenuResult.Default;
 			}
 
 			var lines = _Store
@@ -54,7 +54,7 @@ namespace ExampleMenu.Recording
 
 			IO.AddInput (lines);
 
-			return MenuResult.Normal;
+			return MenuResult.Default;
 		}
 	}
 }

@@ -78,7 +78,10 @@ namespace ConsoleMenu
 		public virtual MenuResult Execute (string arg)
 		{
 			if (_Execute != null) {
-				return _Execute (arg);
+				var res = _Execute (arg);
+				if (res != MenuResult.Proceed) {
+					return res;
+				}
 			}
 
 			if (this.Any ()) {
@@ -356,7 +359,7 @@ namespace ConsoleMenu
 			if (it != null) {
 				return it.Execute (args);
 			}
-			return MenuResult.Normal;
+			return MenuResult.Default;
 		}
 
 		/// <summary>
@@ -438,7 +441,7 @@ namespace ConsoleMenu
 			else {
 				_Execute = s => {
 					action (s);
-					return MenuResult.Normal;
+					return MenuResult.Default;
 				};
 			}
 		}

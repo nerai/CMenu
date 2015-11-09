@@ -19,7 +19,7 @@ namespace ExampleMenu
 		public override MenuResult Execute (string arg)
 		{
 			Console.WriteLine (arg);
-			return MenuResult.Normal;
+			return MenuResult.Default;
 		}
 	}
 }

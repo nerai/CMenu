@@ -35,6 +35,7 @@ namespace ExampleMenu
 			InputModification ();
 			InnerCommands ();
 			NestedCommands ();
+			InnerWithShared ();
 			IO.ImmediateInput ("help");
 		}
 
@@ -127,6 +128,65 @@ namespace ExampleMenu
 
 			Console.WriteLine ("New command <add> available.");
 			IO.ImmediateInput ("help add");
+			menu.Run ();
+		}
+
+		class SharedViaOverride : CMenuItem
+		{
+			public SharedViaOverride ()
+				: base ("shared-override")
+			{
+				Add ("1", s => Console.WriteLine ("First child"));
+				Add ("2", s => Console.WriteLine ("Second child"));
+			}
+
+			public override MenuResult Execute (string arg)
+			{
+				Console.WriteLine ("This code is shared between all children of this menu item.");
+				if (DateTime.UtcNow.Millisecond < 500) {
+					return MenuResult.Default;
+				}
+				else {
+					// Proceed normally.
+					return base.Execute (arg);
+				}
+			}
+		}
+
+		static void InnerWithShared ()
+		{
+			/*
+			 * If your inner menu items should share code (e.g. common basic validation), there are two ways to
+			 * implement this.
+			 *
+			 * First option: Override Execute in their parent menu item so it first executes the shared code,
+			 * then resumes normal processing.
+			 */
+			menu.Add (new SharedViaOverride ());
+
+			/*
+			 * Second option: Use the return values of Execute to indicate if processing should continue with
+			 * the children, or return immediately. Returning is the default.
+			 */
+			var msr = menu.Add ("shared-result", s => {
+				Console.WriteLine ("This code is shared between all children of this menu item.");
+				if (DateTime.UtcNow.Millisecond < 500) {
+					return MenuResult.Proceed;
+				}
+				else {
+					return MenuResult.Return;
+				}
+			});
+			msr.Add ("1", s => Console.WriteLine ("First child"));
+			msr.Add ("2", s => Console.WriteLine ("Second child"));
+
+			/*
+			 * Which option you chose is up to you. MenuResults have the advantage of compactness and do not
+			 * require a deriving from CMenuItem. For larger commands, it may be preferable to use a separate
+			 * class. Note that you are still free to use MenuResult values within an overridden Execute.
+			 */
+
+			Console.WriteLine ("New commands <shared-override> and <shared-result> available.");
 			menu.Run ();
 		}
 
