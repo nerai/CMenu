@@ -52,12 +52,12 @@ namespace ExampleMenu.Recording
 
 			var path = RecordDirectory + name;
 			if (!File.Exists (path)) {
-				name = GetRecordNames ().FirstOrDefault (n => n.StartsWith (name, StringComparison.InvariantCultureIgnoreCase));
-				name = name ?? GetRecordNames ().FirstOrDefault (n => n.Contains (name));
-				if (name == null) {
+				var rec = GetRecordNames ().FirstOrDefault (n => n.StartsWith (name, StringComparison.InvariantCultureIgnoreCase));
+				rec = rec ?? GetRecordNames ().FirstOrDefault (n => n.Contains (name));
+				if (rec == null) {
 					return null;
 				}
-				path = RecordDirectory + name;
+				path = RecordDirectory + rec;
 			}
 			var lines = File.ReadAllLines (path);
 			return lines;
