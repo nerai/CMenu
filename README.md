@@ -4,6 +4,7 @@ A simple console menu manager for C#
 CMenu aims to simplify writing console menus. Instead of manually prompting the user for input and parsing it, you define commands in a short, structured and comprehensive way. You do not have to worry about all the annoying details and can do much more with less code.
 
 
+
 ## Advantages
 
 * Simple, short syntax
@@ -26,126 +27,52 @@ CMenu aims to simplify writing console menus. Instead of manually prompting the 
 
 
 
-## Creating and using basic commands
+## Quickstart
 
-A single command is comprised of a keyword (selector), an optional help text describing it, and, most importantly, its behavior. The behavior can be defined as a simple lambda, and it is not unusual for a whole command to be defined in a single line.
+A single command is comprised of a keyword (selector), an optional help text describing it, and, most importantly, its behavior. The behavior can be defined as a simple lambda.
 
-	// Create menu
 	var menu = new CMenu ();
-
-	// Add simple Hello World command
-	menu.Add ("hello", s => Console.WriteLine ("Hello world!"));
-
-	// Run menu. The menu will run until quit by the user.
+	menu.Add ("test", s => Console.WriteLine ("Hello world!"));
 	menu.Run ();
 
-While running, CMenu will continuously prompt the user for input, then feeds it to the respective command. Let's see how to use the "hello" command defined above:
-
-	$ hello
+	$ test
 	Hello world!
 
-If the command happens to be more complex, you can just put it in a separate method.
-	
-	menu.Add ("len", s => PrintLen (s));
-
-	static void PrintLen (string s)
-	{
-		Console.WriteLine ("String \"" + s + "\" has length " + s.Length);
-	}
-
-	$ len 54321
-	String "54321" has length 5
-
-It is also possible to return an exit code to signal that processing should be stopped.
-By default, the command "quit" exists for this purpose. Let's add an alternative way to stop processing input.
-
-	menu.Add ("exit", s => MenuResult.Quit);
-
-To create a command with help text, simply add it during definition.
+To create a command with help text, simply add it during definition. Use the integrated "help" command to view help texts.
 
 	menu.Add ("time",
 		s => Console.WriteLine (DateTime.UtcNow),
-		"Help for \"time\": Writes the current time");
+		"Writes the current time");
 
 	$ time
 	2015.10.01 17:54:38
 	$ help time
-	Help for "time": Writes the current time
-	
-You can also access individual commands to edit them later, though this is rarely required.
-
-	menu["time"].HelpText += " (UTC).";
-	
-	$ help time
-	Help for "time": Writes the current time (UTC).
-
-
-
-## Command abbreviations and integrated help 
+	Writes the current time
 
 CMenu keeps an index of all available commands and lists them upon user request via typing "help". Moreover, it also automatically assigns abbreviations to all commands (if useful) and keeps them up-to-date when you later add new commands with similar keywords.
 
 	$ help
 	Available commands:
 	e   | exit
-	      hello
-	      help
-	l   | len
+	h   | help
 	q   | quit
-	t   | time
+	ti  | time
+	te  | test
 	Type "help <command>" for individual command help.
-
-The builtin command "help" also displays usage information of individual commands:
-
-	$ help q
-	quit
-	Quits menu processing.
-	$ help help
-	help [command]
-	Displays a help text for the specified command, or
-	Displays a list of all available commands.
-
-Commands can by entered abbreviated, as long as it is clear which one was intended. If it is not clear, then the possible options will be displayed.
-
-	$ hel
-	Command <hel> not unique. Candidates: hello, help
-	$ hell
+	$ te
 	Hello world!
-
-Commands are case *in*sensitive by default. This can be changed using the `StringComparison` property.
-When in case sensitive mode, CMenu will helpfully point out similar commands with different caseing.
-
-	menu.StringComparison = StringComparison.InvariantCulture;
-	menu.Add ("Hello", s => Console.WriteLine ("Hi!"));
-
-	$ help
-	Available commands:
-	e   | exit
-	H   | Hello
-	      hello
-	      help
-	l   | len
-	q   | quit
-	r   | repeat
-	t   | time
-	Type "help <command>" for individual command help.
-	$ H
-	Hi!
-	$ h
-	Command <h> not unique. Candidates: hello, help
-	$ hE
-	Unknown command: hE
-	Did you mean "hello", "Hello" or "help"?
 
 
 	
-## Advanced usage
+## Further reading
 
-There is documentation about [more complex use cases](doc/advanced.md).
+### Common usage
+Refer to [common use cases](doc/common-usage.md). This includes command creation, integrated help, automatic command abbreviations and case sensitivity.
 
+### Advanced usage
+There is documentation about [more complex use cases](doc/advanced.md), including input queue modification, inner commands, nested menus and default commands and sharing code between items.
 
-
-## Example project
+### Example project
 
 The source code contains an [example project](doc/example_project.md). It offers commands, which illustrate several (more or less advanced) use cases. It may be useful to reference them in your own projects.
 
