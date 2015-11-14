@@ -4,6 +4,7 @@ A simple console menu manager for C#
 CMenu aims to simplify writing console menus. Instead of manually prompting the user for input and parsing it, you define commands in a short, structured and comprehensive way. You do not have to worry about all the annoying details and can do much more with less code.
 
 
+
 ## Advantages
 
 * Simple, short syntax
@@ -26,265 +27,57 @@ CMenu aims to simplify writing console menus. Instead of manually prompting the 
 
 
 
-## Creating and using basic commands
+## Quickstart
 
-A single command is comprised of a keyword (selector), an optional help text describing it, and, most importantly, its behavior. The behavior can be defined as a simple lambda, and it is not unusual for a whole command to be defined in a single line.
+A single command is comprised of a keyword (selector), an optional help text describing it, and, most importantly, its behavior. The behavior can be defined as a simple lambda.
 
-	// Create menu
 	var menu = new CMenu ();
-
-	// Add simple Hello World command
-	menu.Add ("hello", s => Console.WriteLine ("Hello world!"));
-
-	// Run menu. The menu will run until quit by the user.
+	menu.Add ("test", s => Console.WriteLine ("Hello world!"));
 	menu.Run ();
 
-While running, CMenu will continuously prompt the user for input, then feeds it to the respective command. Let's see how to use the "hello" command defined above:
-
-	$ hello
+	$ test
 	Hello world!
 
-If the command happens to be more complex, you can just put it in a separate method.
-	
-	menu.Add ("len", s => PrintLen (s));
-
-	static void PrintLen (string s)
-	{
-		Console.WriteLine ("String \"" + s + "\" has length " + s.Length);
-	}
-
-	$ len 54321
-	String "54321" has length 5
-
-It is also possible to return an exit code to signal that processing should be stopped.
-By default, the command "quit" exists for this purpose. Let's add an alternative way to stop processing input.
-
-	menu.Add ("exit", s => MenuResult.Quit);
-
-To create a command with help text, simply add it during definition.
+To create a command with help text, simply add it during definition. Use the integrated "help" command to view help texts.
 
 	menu.Add ("time",
 		s => Console.WriteLine (DateTime.UtcNow),
-		"Help for \"time\": Writes the current time");
+		"Writes the current time");
 
 	$ time
 	2015.10.01 17:54:38
 	$ help time
-	Help for "time": Writes the current time
-	
-You can also access individual commands to edit them later, though this is rarely required.
-
-	menu["time"].HelpText += " (UTC).";
-	
-	$ help time
-	Help for "time": Writes the current time (UTC).
-
-
-
-## Command abbreviations and integrated help 
+	Writes the current time
 
 CMenu keeps an index of all available commands and lists them upon user request via typing "help". Moreover, it also automatically assigns abbreviations to all commands (if useful) and keeps them up-to-date when you later add new commands with similar keywords.
 
 	$ help
 	Available commands:
 	e   | exit
-	      hello
-	      help
-	l   | len
+	h   | help
 	q   | quit
-	t   | time
+	ti  | time
+	te  | test
 	Type "help <command>" for individual command help.
-
-The builtin command "help" also displays usage information of individual commands:
-
-	$ help q
-	quit
-	Quits menu processing.
-	$ help help
-	help [command]
-	Displays a help text for the specified command, or
-	Displays a list of all available commands.
-
-Commands can by entered abbreviated, as long as it is clear which one was intended. If it is not clear, then the possible options will be displayed.
-
-	$ hel
-	Command <hel> not unique. Candidates: hello, help
-	$ hell
+	$ te
 	Hello world!
 
-Commands are case *in*sensitive by default. This can be changed using the `StringComparison` property.
-When in case sensitive mode, CMenu will helpfully point out similar commands with different caseing.
 
-	menu.StringComparison = StringComparison.InvariantCulture;
-	menu.Add ("Hello", s => Console.WriteLine ("Hi!"));
+	
+## Further reading
 
-	$ help
-	Available commands:
-	e   | exit
-	H   | Hello
-	      hello
-	      help
-	l   | len
-	q   | quit
-	r   | repeat
-	t   | time
-	Type "help <command>" for individual command help.
-	$ H
-	Hi!
-	$ h
-	Command <h> not unique. Candidates: hello, help
-	$ hE
-	Unknown command: hE
-	Did you mean "hello", "Hello" or "help"?
+### Common usage
+Refer to [common use cases](doc/common-usage.md). This includes command creation, integrated help, automatic command abbreviations and case sensitivity.
+
+### Advanced usage
+There is documentation about [more complex use cases](doc/advanced.md), including input queue modification, inner commands, nested menus and default commands and sharing code between items.
+
+### Example project
+
+The source code contains an [example project](doc/example_project.md). It offers commands, which illustrate several (more or less advanced) use cases. It may be useful to reference them in your own projects.
 
 
-
-## Modifying the input queue
-
-It is also possible to modify the input queue. The `IO` class provides flexible means to add input either directly or via an `IEnumerable<string>`. The latter allows you to stay in control over the input even after you added it, for instance by changing its content or canceling it.
-
-Check out how the "repeat" command adds its argument to the input queue two times.
-
-	// Add a command which repeats another command
-	menu.Add ("repeat",
-		s => {
-			IO.ImmediateInput (s);
-			IO.ImmediateInput (s);
-		},
-		"Repeats a command two times.");
-
-	$ repeat hello
-	Hello world!
-	Hello world!
-	$ r l 123
-	String "123" has length 3
-	String "123" has length 3
-
-
-
-## Inner commands
-
-If a command needs further choices, you may want to select those in a similar manner as in the menu. To do that, simply add sub-items to the main item. If no other behavior is specified, the main item will continue selection within those embedded items.
-
-	var mi = menu.Add ("convert", "convert upper|lower [text]\nConverts the text to upper or lower case");
-	mi.Add ("upper", s => Console.WriteLine (s.ToUpperInvariant ()), "Converts to upper case");
-	mi.Add ("lower", s => Console.WriteLine (s.ToLowerInvariant ()), "Converts to lower case");
-
-	$ convert upper aBcD
-	ABCD
-	$ convert lower aBcD
-	abcd
-
-The integrated help is able to "peek" into commands.
-
-	$ help convert
-	convert upper|lower [text]
-	Converts the text to upper or lower case
-	$ help c u
-	Converts to upper case
-
-
-
-## Nested menus and default commands
-
-If a command requires several lines of input itself, you can add a CMenu instead of a CMenuItem. A CMenu always offers input prompts in addition to the usual behavior and subitems of a CMenuItem. You may also opt for a custom prompt character, or even disable it.
-
-It may be useful to capture all input which lacks a corresponding command in a "default" command. The default command has the unique selector null.
-
-Let's see an example for a command which calculactes the sum of integers entered by the user. The sum is calculated and output once the user enters "=", which will be implemented as a subcommand. Capturing the integers is done with a default command. To clarify to the user that this is a different menu, we also replace the prompt character with a "+".
-
-	public class MI_Add : CMenu
-	{
-		public MI_Add ()
-			: base ("add")
-		{
-			HelpText = ""
-				+ "add\n"
-				+ "Adds numbers until \"=\" is entered.\n";
-			PromptCharacter = "+";
-
-			Add ("=", s => MenuResult.Quit, "Prints the sum and quits the add submenu");
-			Add (null, s => Add (s));
-		}
-
-		private int _Sum = 0;
-
-		private void Add (string s)
-		{
-			int i;
-			if (int.TryParse (s, out i)) {
-				_Sum += i;
-			}
-			else {
-				Console.WriteLine (s + " is not a valid number.");
-			}
-		}
-
-		public override MenuResult Execute (string arg)
-		{
-			Console.WriteLine ("You're now in submenu <Add>.");
-			Console.WriteLine ("Enter numbers. To print their sum and exit the submenu, enter \"=\".");
-			_Sum = 0;
-			Run ();
-			Console.WriteLine ("Sum = " + _Sum);
-			return MenuResult.Default;
-		}
-	}
-
-	$ add
-	You're now in submenu <Add>.
-	Enter numbers. To print their sum and exit the submenu, enter "=".
-	+ 2
-	+ 3
-	+ =
-	Sum = 5
-
-### Sharing code between nested items
-
-If your inner menu items should share code (e.g. common basic validation), there are two ways to implement this.
-
-First option: Override Execute in their parent menu item so it first executes the shared code, then resumes normal processing.
-
-	class SharedViaOverride : CMenuItem
-	{
-		public SharedViaOverride ()
-			: base ("shared-override")
-		{
-			Add ("1", s => Console.WriteLine ("First child"));
-			Add ("2", s => Console.WriteLine ("Second child"));
-		}
-
-		public override MenuResult Execute (string arg)
-		{
-			Console.WriteLine ("This code is shared between all children of this menu item.");
-			if (DateTime.UtcNow.Millisecond < 500) {
-				return MenuResult.Default;
-			}
-			else {
-				// Proceed normally.
-				return base.Execute (arg);
-			}
-		}
-	}
-
-Second option: Use the return values of Execute to indicate if processing should continue with the children, or return immediately. Returning is the default.
-
-	var msr = menu.Add ("shared-result", s => {
-		Console.WriteLine ("This code is shared between all children of this menu item.");
-		if (DateTime.UtcNow.Millisecond < 500) {
-			return MenuResult.Proceed;
-		}
-		else {
-			return MenuResult.Return;
-		}
-	});
-	msr.Add ("1", s => Console.WriteLine ("First child"));
-	msr.Add ("2", s => Console.WriteLine ("Second child"));
-
-Which option you chose is up to you. MenuResults have the advantage of compactness and do not require a deriving from CMenuItem. For larger commands, it may be preferable to use a separate class. Note that you are still free to use MenuResult values within an overridden Execute.
-
-
-
+	
 ## Project history and developer information
 
 Another (much larger) project of mine uses a somewhat complex console menu, and I finally got annoyed enough by repeated, virtually equal code fragments to refactor and extract those pieces of code into a separate project. As I figured it was complete enough to be useful to others, I called it CMenu and put it on github.
@@ -292,102 +85,4 @@ Another (much larger) project of mine uses a somewhat complex console menu, and 
 In the future, there are certainly a lot of things to improve about CMenu, and I would definitely not call it complete or particularly well made. The changes and issues found on this project are mostly caused by improvements and requirement changes in said larger project. I update CMenu with the relevant changes in parallel when I find the time and will continue to do so for the foreseeable future.
 
 I'm happy to hear if you found this useful, and open to suggestions to improve it.
-
-
-
-## Example project
-
-The source code contains an example project. It offers commands, which illustrate several (more or less advanced) use cases. It may be useful to reference them in your own projects.
-
-### echo
-Simply prints text to the console. This is probably most useful in batch processing.
-
-#### Help text
-	echo [text]
-	Prints the specified text to stdout.
-
-#### Example
-	$ echo 123
-	123
-
-### if
-Simple conditional execution. By default only supports the `not` operator and the constants `true` and `false`, but can be extended with arbitrary additional conditions.
-
-Condition combination is not currently supported, though it can in part be emulated via chaining ("if <c1> if <c2> ...")
-It is allowed to specify multiple concurrent `not`, each of which invert the condition again.
-
-#### Help text
-	if [not] <condition> <command>
-	Executes <command> if <condition> is met.
-	If the modifier <not> is given, the condition result is reversed.
-	
-#### Example
-	$ if true echo 1
-	1
-	$ if not true echo 1
-	$ if not false echo 1
-	1
-
-### pause
-
-	pause
-	Stops further operation until the enter key is pressed.
-
-### record, replay
-`record` and `replay` allow persisting several commands to disk for later reading them as input. This can be used for basic batch processing.
-
-Replaying can be stopped via if `endreplay` is encountered as a direct command in the file. It does not work as an indirect statement (e.g. `if true endreplay`). For an example of how that functionality can be achieved, see `return`.
-
-#### record
-
-	record name
-	Records all subsequent commands to the specified file name.
-	Recording can be stopped by the command endrecord
-	Stored records can be played via the "replay" command.
-
-#### replay
-
-	replay [name]
-	Replays all commands stored in the specified file name, or
-	Displays a list of all records.
-
-	Replaying puts all stored commands in the same order on the stack as they were originally entered.
-	Replaying stops when the line "endreplay" is encountered.
-
-#### Example
-
-	$ record r1
-	Recording started. Enter "endrecord" to finish.
-	record> echo 1
-	record> echo 2
-	record> endrecord
-	$ replay r1
-	1
-	2
-
-### proc, call, return, goto
-These implement a basic procedural calling system. Early exiting, jumping within the local procedure and reentrant calls are supported.
-
-#### Example
-
-    $ proc p1
-	Recording started. Enter "endproc" to finish.
-	proc> echo In proc p1
-	proc> return
-	proc> echo This line will never be displayed.
-	proc> endproc
-	$ call p1
-	In proc p1
-
-	$ proc p2
-	Recording started. Enter "endproc" to finish.
-	proc> echo 1 - entered p2
-	proc> goto g
-	proc> echo 2 - this line will not be displayed.
-	proc> :g
-	proc> echo 3 - p2 completed
-	proc> endproc
-	$ call p2
-	1 - entered p2
-	3 - p2 completed
 
