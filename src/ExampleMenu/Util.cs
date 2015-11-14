@@ -27,7 +27,7 @@ namespace ExampleMenu
 			select = select.Replace (" ", "");
 			var ec = sc.GetCorrespondingComparer ();
 			var matches = new List<string> ();
-			int bestQuality = -1;
+			int bestQuality = 0;
 
 			foreach (var s in source) {
 				int quality = -1;
@@ -43,9 +43,6 @@ namespace ExampleMenu
 				}
 				else if (StringContainsSequence (s, select)) {
 					quality = 3;
-				}
-				else {
-					quality = 0;
 				}
 
 				if (quality >= bestQuality) {
