@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -19,6 +20,21 @@ namespace ConsoleMenu
 				|| sc == StringComparison.CurrentCulture
 				|| sc == StringComparison.InvariantCulture
 				|| sc == StringComparison.Ordinal;
+		}
+
+		/// <summary>
+		/// Returns a culture which is appropriate for usage with the specified StringComparison.
+		/// </summary>
+		public static CultureInfo RelatedCulture (this StringComparison sc)
+		{
+			if (false
+				|| sc == StringComparison.InvariantCulture
+				|| sc == StringComparison.InvariantCultureIgnoreCase
+				|| sc == StringComparison.Ordinal
+				|| sc == StringComparison.OrdinalIgnoreCase) {
+				return CultureInfo.InvariantCulture;
+			}
+			return CultureInfo.CurrentCulture;
 		}
 
 		/// <summary>
@@ -48,6 +64,52 @@ namespace ConsoleMenu
 				default:
 					throw new InvalidOperationException ("Unknown string comparison value.");
 			}
+		}
+
+		/// <summary>
+		/// Returns true if a string contains a substring, using the specified culture and comparison options.
+		/// </summary>
+		public static bool Contains (this string s, string value, CultureInfo culture, CompareOptions options = CompareOptions.None)
+		{
+			return 0 <= culture.CompareInfo.IndexOf (s, value, options);
+		}
+
+		/// <summary>
+		/// Returns true if a string contains a substring, using the specified StringComparison.
+		/// </summary>
+		public static bool Contains (this string s, string value, StringComparison sc)
+		{
+			CompareOptions co;
+			switch (sc) {
+				case StringComparison.CurrentCulture:
+					co = CompareOptions.None;
+					break;
+
+				case StringComparison.CurrentCultureIgnoreCase:
+					co = CompareOptions.IgnoreCase;
+					break;
+
+				case StringComparison.InvariantCulture:
+					co = CompareOptions.None;
+					break;
+
+				case StringComparison.InvariantCultureIgnoreCase:
+					co = CompareOptions.IgnoreCase;
+					break;
+
+				case StringComparison.Ordinal:
+					co = CompareOptions.Ordinal;
+					break;
+
+				case StringComparison.OrdinalIgnoreCase:
+					co = CompareOptions.OrdinalIgnoreCase;
+					break;
+
+				default:
+					throw new InvalidOperationException ("Unknown string comparison value.");
+			}
+
+			return s.Contains (value, sc.RelatedCulture (), co);
 		}
 	}
 }
