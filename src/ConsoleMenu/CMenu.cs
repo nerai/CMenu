@@ -52,18 +52,12 @@ namespace ConsoleMenu
 		/// </summary>
 		public void Run ()
 		{
-			try {
-				IO.PushPromptCharacter (PromptCharacter);
-				for (; ; ) {
-					var input = IO.QueryInput ();
-					var result = ExecuteInner (input);
-					if (result == MenuResult.Quit) {
-						break;
-					}
+			for (; ; ) {
+				var input = IO.QueryInput (PromptCharacter);
+				var result = ExecuteInner (input);
+				if (result == MenuResult.Quit) {
+					break;
 				}
-			}
-			finally {
-				IO.PopPromptCharacter ();
 			}
 		}
 	}
