@@ -31,6 +31,24 @@ namespace ConsoleMenu
 		public CMenuItem Parent { get; private set; }
 
 		/// <summary>
+		/// This menu item.
+		///
+		/// <remarks>
+		/// This property can be used to combine object and collection initializers.
+		/// <example>
+		/// var m = new CMenuItem ("parent") {
+		///	HelpText = "help", // object initializer
+		///	MenuItem = { // collection initializer
+		///		new CMenuItem ("child 1"),
+		///		new CMenuItem ("child 2"),
+		///	}
+		/// };
+		/// </example>
+		/// </remarks>
+		/// </summary>
+		public CMenuItem MenuItem { get { return this; } }
+
+		/// <summary>
 		/// Gets or sets how entered commands are compared.
 		///
 		/// By default, the comparison is case insensitive and culture invariant.
