@@ -43,6 +43,7 @@ namespace ExampleMenu.Recording
 		/// a) an exact match
 		/// b) a record name starting with the specified name
 		/// c) a record name containing the specified name
+		/// d) a record name containing the specified name nonconsecutively
 		/// </summary>
 		public IEnumerable<string> GetRecord (string name)
 		{
@@ -52,8 +53,7 @@ namespace ExampleMenu.Recording
 
 			var path = RecordDirectory + name;
 			if (!File.Exists (path)) {
-				var rec = GetRecordNames ().FirstOrDefault (n => n.StartsWith (name, StringComparison.InvariantCultureIgnoreCase));
-				rec = rec ?? GetRecordNames ().FirstOrDefault (n => n.Contains (name));
+				var rec = Util.LooseSelect (GetRecordNames (), name, StringComparison.CurrentCultureIgnoreCase);
 				if (rec == null) {
 					return null;
 				}
