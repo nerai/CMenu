@@ -6,8 +6,22 @@ using ConsoleMenu;
 
 namespace ExampleMenu
 {
-	class Util
+	public class Util
 	{
+		/// <summary>
+		/// Loose string comparison. Returns the best match using increasingly inaccurate comparisons.
+		/// Also makes sure there is a sole match at that level of accuracy.
+		///
+		/// Spaces in the select string are ignored.
+		///
+		/// The levels are:
+		/// <list>
+		/// <item>Perfect match (abcd in abcd)</item>
+		/// <item>Prefix match (ab in abcd)</item>
+		/// <item>Containing match (bc in abcd)</item>
+		/// <item>Matching ordered sequence of characters (bd in abcd)</item>
+		/// </list>
+		/// </summary>
 		public static string LooseSelect (IEnumerable<string> source, string select, StringComparison sc)
 		{
 			select = select.Replace (" ", "");
