@@ -144,3 +144,36 @@ Second option: Use the return values of Execute to indicate if processing should
 
 Which option you chose is up to you. MenuResults have the advantage of compactness and do not require a deriving from CMenuItem. For larger commands, it may be preferable to use a separate class. Note that you are still free to use MenuResult values within an overridden Execute.
 
+
+
+## Initialization syntax for menu trees
+
+It may be useful to create complex menu trees using collection initializers.
+
+	var m = new CMenu () {
+		new CMenuItem ("1") {
+			new CMenuItem ("1", s => Console.WriteLine ("1-1")),
+			new CMenuItem ("2", s => Console.WriteLine ("1-2")),
+		},
+		new CMenuItem ("2") {
+			new CMenuItem ("1", s => Console.WriteLine ("2-1")),
+			new CMenuItem ("2", s => Console.WriteLine ("2-2")),
+		},
+		//new CMenuItem ("quit", s => MenuResult.Quit),
+	};
+	
+	$2 1
+	2-1
+
+You can also combine object and collection initializers
+
+	m = new CMenu () {
+		PromptCharacter = "combined>",
+		MenuItem = {
+			new CMenuItem ("1", s => Console.WriteLine ("1")),
+			new CMenuItem ("2", s => Console.WriteLine ("2")),
+		}
+	};
+
+
+

@@ -22,6 +22,7 @@ namespace ExampleMenu
 			var mainmenu = new CMenu ();
 			mainmenu.PromptCharacter = "main>";
 			mainmenu.Add ("tutorial", s => Tutorial ());
+			mainmenu.Add ("tree-init", s => TreeInitialization ());
 			mainmenu.Add ("examples", s => Examples ());
 
 			IO.ImmediateInput ("help");
@@ -188,6 +189,38 @@ namespace ExampleMenu
 
 			Console.WriteLine ("New commands <shared-override> and <shared-result> available.");
 			menu.Run ();
+		}
+
+		static void TreeInitialization ()
+		{
+			/*
+			 * It may be useful to create complex menu trees using collection initializers
+			 */
+			var m = new CMenu () {
+				new CMenuItem ("1") {
+					new CMenuItem ("1", s => Console.WriteLine ("1-1")),
+					new CMenuItem ("2", s => Console.WriteLine ("1-2")),
+				},
+				new CMenuItem ("2") {
+					new CMenuItem ("1", s => Console.WriteLine ("2-1")),
+					new CMenuItem ("2", s => Console.WriteLine ("2-2")),
+				},
+				//new CMenuItem ("quit", s => MenuResult.Quit),
+			};
+			m.PromptCharacter = "tree>";
+			m.Run ();
+
+			/*
+			 * You can also combine object and collection initializers
+			 */
+			m = new CMenu () {
+				PromptCharacter = "combined>",
+				MenuItem = {
+					new CMenuItem ("1", s => Console.WriteLine ("1")),
+					new CMenuItem ("2", s => Console.WriteLine ("2")),
+				}
+			};
+			m.Run ();
 		}
 
 		static void Examples ()
