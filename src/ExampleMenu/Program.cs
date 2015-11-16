@@ -141,13 +141,13 @@ namespace ExampleMenu
 			 * This allows you to alter the command received by the children, or to omit their
 			 * processing altogether (e.g. in case a common verification failed).
 			 */
-			var msr = menu.Add ("shared");
-			msr.SetAction (s => {
-				Console.WriteLine ("This code is shared between all children of this menu item.");
-				msr.ExecuteChild (s);
+			var m = menu.Add ("shared");
+			m.SetAction (s => {
+				Console.Write ("You picked: ");
+				m.ExecuteChild (s);
 			});
-			msr.Add ("1", s => Console.WriteLine ("First child"));
-			msr.Add ("2", s => Console.WriteLine ("Second child"));
+			m.Add ("1", s => Console.WriteLine ("Option 1"));
+			m.Add ("2", s => Console.WriteLine ("Option 2"));
 
 			Console.WriteLine ("New command <shared> available.");
 			menu.Run ();
