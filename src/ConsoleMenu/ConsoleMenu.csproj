@@ -82,7 +82,6 @@
     <Compile Include="CMenuItem.cs" />
     <Compile Include="DefaultItems\MI_Help.cs" />
     <Compile Include="IO.cs" />
-    <Compile Include="MenuResult.cs" />
     <Compile Include="MenuUtil.cs" />
     <Compile Include="DefaultItems\MI_Quit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

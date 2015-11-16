@@ -16,10 +16,9 @@ namespace ExampleMenu
 				+ "Prints the specified text to stdout.";
 		}
 
-		public override MenuResult Execute (string arg)
+		public override void Execute (string arg)
 		{
 			Console.WriteLine (arg);
-			return MenuResult.Default;
 		}
 	}
 }

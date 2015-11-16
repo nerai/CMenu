@@ -47,7 +47,7 @@ namespace ExampleMenu
 			}
 		}
 
-		public override MenuResult Execute (string arg)
+		public override void Execute (string arg)
 		{
 			var cond = MenuUtil.SplitFirstWord (ref arg);
 			bool ok = false;
@@ -61,7 +61,7 @@ namespace ExampleMenu
 			ConditionCheck cc;
 			if (!Conditions.TryGetValue (cond, out cc)) {
 				Console.WriteLine ("Unknown condition: " + cond);
-				return MenuResult.Default;
+				return;
 			}
 
 			ok = cc (ref arg);
@@ -70,8 +70,6 @@ namespace ExampleMenu
 			if (ok) {
 				IO.ImmediateInput (arg);
 			}
-
-			return MenuResult.Default;
 		}
 	}
 }

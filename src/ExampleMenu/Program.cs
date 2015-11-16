@@ -57,7 +57,7 @@ namespace ExampleMenu
 			 * It is also possible to return an exit code to signal that processing should be stopped.
 			 * By default, the command "quit" exists for this purpose. Let's add an alternative way to stop processing input.
 			 */
-			menu.Add ("exit", s => MenuResult.Quit);
+			menu.Add ("exit", s => menu.Quit ());
 
 			/*
 			 * To create a command with help text, simply add it during definition.
@@ -141,15 +141,11 @@ namespace ExampleMenu
 				Add ("2", s => Console.WriteLine ("Second child"));
 			}
 
-			public override MenuResult Execute (string arg)
+			public override void Execute (string arg)
 			{
 				Console.WriteLine ("This code is shared between all children of this menu item.");
 				if (DateTime.UtcNow.Millisecond < 500) {
-					return MenuResult.Default;
-				}
-				else {
-					// Proceed normally.
-					return base.Execute (arg);
+					base.Execute (arg);
 				}
 			}
 		}
