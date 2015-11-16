@@ -92,18 +92,19 @@ namespace ConsoleMenu
 
 		/// <summary>
 		/// Behavior upon selection.
+		///
+		/// By default, if present, this node's behavior will be executed.
+		/// Else, execution will be delegated to the appropriate child.
 		/// </summary>
 		public virtual void Execute (string arg)
 		{
 			if (_Execute != null) {
-				var res = _Execute (arg);
-				if (res != MenuResult.Proceed) {
-					return res;
-				}
+				_Execute (arg);
+				return;
 			}
 
 			if (this.Any ()) {
-				return ExecuteInner (arg);
+				ExecuteChild (arg);
 			}
 			else {
 				throw new NotImplementedException ("This menu item does not have an associated behavior yet.");
@@ -339,10 +340,10 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Executes the command specified in the argument
+		/// Executes the specified command using only children (instead of this node's own behavior).
 		/// </summary>
 		/// <param name="args">Command to execute using contained commands.</param>
-		protected void ExecuteInner (string args)
+		public void ExecuteChild (string args)
 		{
 			var cmd = args;
 			var it = GetMenuItem (ref cmd, out args, true, true);

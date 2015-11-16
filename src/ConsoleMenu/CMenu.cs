@@ -20,7 +20,7 @@ namespace ConsoleMenu
 	/// </summary>
 	public class CMenu : CMenuItem
 	{
-		private bool _Quit = false;
+		private bool _Quit;
 
 		/// <summary>
 		/// Create a new CMenu.
@@ -54,9 +54,10 @@ namespace ConsoleMenu
 		/// </summary>
 		public void Run ()
 		{
+			_Quit = false;
 			while (!_Quit) {
 				var input = IO.QueryInput (PromptCharacter);
-				ExecuteInner (input);
+				ExecuteChild (input);
 			}
 		}
 

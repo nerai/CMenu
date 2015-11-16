@@ -144,9 +144,7 @@ namespace ExampleMenu
 			public override void Execute (string arg)
 			{
 				Console.WriteLine ("This code is shared between all children of this menu item.");
-				if (DateTime.UtcNow.Millisecond < 500) {
-					base.Execute (arg);
-				}
+				base.Execute (arg);
 			}
 		}
 
@@ -165,14 +163,10 @@ namespace ExampleMenu
 			 * Second option: Use the return values of Execute to indicate if processing should continue with
 			 * the children, or return immediately. Returning is the default.
 			 */
-			var msr = menu.Add ("shared-result", s => {
+			var msr = menu.Add ("shared-result");
+			msr.SetAction (s => {
 				Console.WriteLine ("This code is shared between all children of this menu item.");
-				if (DateTime.UtcNow.Millisecond < 500) {
-					return MenuResult.Proceed;
-				}
-				else {
-					return MenuResult.Return;
-				}
+				msr.ExecuteChild (s);
 			});
 			msr.Add ("1", s => Console.WriteLine ("First child"));
 			msr.Add ("2", s => Console.WriteLine ("Second child"));
