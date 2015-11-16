@@ -16,11 +16,9 @@ namespace ExampleMenu
 				+ "Stops further operation until the enter key is pressed.";
 		}
 
-		public override MenuResult Execute (string arg)
+		public override void Execute (string arg)
 		{
 			Console.ReadLine ();
-
-			return MenuResult.Default;
 		}
 	}
 }

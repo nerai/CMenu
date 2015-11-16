@@ -7,17 +7,20 @@ namespace ConsoleMenu.DefaultItems
 {
 	public class MI_Quit : CMenuItem
 	{
-		public MI_Quit ()
+		private readonly CMenu _Menu;
+
+		public MI_Quit (CMenu menu)
 			: base ("quit")
 		{
+			_Menu = menu;
 			HelpText = ""
 				+ "quit\n"
 				+ "Quits menu processing.";
 		}
 
-		public override MenuResult Execute (string arg)
+		public override void Execute (string arg)
 		{
-			return MenuResult.Quit;
+			_Menu.Quit ();
 		}
 	}
 }

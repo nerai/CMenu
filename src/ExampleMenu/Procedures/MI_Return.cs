@@ -24,10 +24,9 @@ namespace ExampleMenu.Procedures
 			_Mgr = mgr;
 		}
 
-		public override MenuResult Execute (string arg)
+		public override void Execute (string arg)
 		{
 			_Mgr.Return ();
-			return MenuResult.Default;
 		}
 	}
 }

@@ -92,38 +92,26 @@ namespace ConsoleMenu
 
 		/// <summary>
 		/// Behavior upon selection.
+		///
+		/// By default, if present, this node's behavior will be executed.
+		/// Else, execution will be delegated to the appropriate child.
 		/// </summary>
-		public virtual MenuResult Execute (string arg)
+		public virtual void Execute (string arg)
 		{
 			if (_Execute != null) {
-				var res = _Execute (arg);
-				if (res != MenuResult.Proceed) {
-					return res;
-				}
+				_Execute (arg);
+				return;
 			}
 
 			if (this.Any ()) {
-				return ExecuteInner (arg);
+				ExecuteChild (arg);
 			}
 			else {
 				throw new NotImplementedException ("This menu item does not have an associated behavior yet.");
 			}
 		}
 
-		private Func<string, MenuResult> _Execute;
-
-		/// <summary>
-		/// Creates a new CMenuItem from keyword, behavior and help text.
-		/// </summary>
-		/// <param name="selector">Keyword</param>
-		/// <param name="execute">Behavior when selected. The behavior provides feedback to the menu.</param>
-		/// <param name="help">Descriptive help text</param>
-		public CMenuItem (string selector, Func<string, MenuResult> execute, string help = null)
-		{
-			Selector = selector;
-			HelpText = help;
-			SetAction (execute);
-		}
+		private Action<string> _Execute;
 
 		/// <summary>
 		/// Creates a new CMenuItem from keyword, behavior and help text.
@@ -143,7 +131,7 @@ namespace ConsoleMenu
 		/// </summary>
 		/// <param name="selector">Keyword</param>
 		public CMenuItem (string selector)
-			: this (selector, (Func<string, MenuResult>) null)
+			: this (selector, (Action<string>) null)
 		{ }
 
 		/// <summary>
@@ -216,20 +204,6 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Adds a new command from keyword, behavior and help.
-		/// </summary>
-		/// <param name="selector">Keyword</param>
-		/// <param name="execute">Behavior when selected. The behavior provides feedback to the menu.</param>
-		/// <param name="help">Descriptive help text</param>
-		/// <returns>The added CMenuItem</returns>
-		public CMenuItem Add (string selector, Func<string, MenuResult> execute, string help = null)
-		{
-			var it = new CMenuItem (selector, execute, help);
-			Add (it);
-			return it;
-		}
-
-		/// <summary>
 		/// Adds a new command from keyword and help.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
@@ -237,7 +211,7 @@ namespace ConsoleMenu
 		/// <returns>The added CMenuItem</returns>
 		public CMenuItem Add (string selector, string help)
 		{
-			return Add (selector, (Func<string, MenuResult>) null, help);
+			return Add (selector, (Action<string>) null, help);
 		}
 
 		/// <summary>
@@ -366,18 +340,16 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Executes the command specified in the argument and returns its result.
+		/// Executes the specified command using only children (instead of this node's own behavior).
 		/// </summary>
 		/// <param name="args">Command to execute using contained commands.</param>
-		/// <returns>The result of execution, or <c>MenuResult.Normal</c> in case of errors.</returns>
-		protected MenuResult ExecuteInner (string args)
+		public void ExecuteChild (string args)
 		{
 			var cmd = args;
 			var it = GetMenuItem (ref cmd, out args, true, true);
 			if (it != null) {
-				return it.Execute (args);
+				it.Execute (args);
 			}
-			return MenuResult.Default;
 		}
 
 		/// <summary>
@@ -438,30 +410,11 @@ namespace ConsoleMenu
 		/// Sets the behavior upon selection
 		/// </summary>
 		/// <param name="action">
-		/// Behavior when selected. The behavior provides feedback to the menu.
-		/// </param>
-		public void SetAction (Func<string, MenuResult> action)
-		{
-			_Execute = action;
-		}
-
-		/// <summary>
-		/// Sets the behavior upon selection
-		/// </summary>
-		/// <param name="action">
 		/// Behavior when selected.
 		/// </param>
 		public void SetAction (Action<string> action)
 		{
-			if (action == null) {
-				_Execute = null;
-			}
-			else {
-				_Execute = s => {
-					action (s);
-					return MenuResult.Default;
-				};
-			}
+			_Execute = action;
 		}
 
 		public override string ToString ()

@@ -61,10 +61,10 @@ Let's see an example for a command which calculactes the sum of integers entered
 		{
 			HelpText = ""
 				+ "add\n"
-				+ "Adds numbers until \"=\" is entered.\n";
+				+ "Adds numbers until \"=\" is entered.";
 			PromptCharacter = "+";
 
-			Add ("=", s => MenuResult.Quit, "Prints the sum and quits the add submenu");
+			Add ("=", s => Quit (), "Prints the sum and quits the add submenu");
 			Add (null, s => Add (s));
 		}
 
@@ -81,14 +81,13 @@ Let's see an example for a command which calculactes the sum of integers entered
 			}
 		}
 
-		public override MenuResult Execute (string arg)
+		public override void Execute (string arg)
 		{
 			Console.WriteLine ("You're now in submenu <Add>.");
 			Console.WriteLine ("Enter numbers. To print their sum and exit the submenu, enter \"=\".");
 			_Sum = 0;
 			Run ();
 			Console.WriteLine ("Sum = " + _Sum);
-			return MenuResult.Default;
 		}
 	}
 
@@ -102,47 +101,21 @@ Let's see an example for a command which calculactes the sum of integers entered
 
 ### Sharing code between nested items
 
-If your inner menu items should share code (e.g. common basic validation), there are two ways to implement this.
 
-First option: Override Execute in their parent menu item so it first executes the shared code, then resumes normal processing.
+If your inner menu items should share code, you need to overwrite the menu's Execute method, then call ExecuteChild to resume processing in child nodes.
 
-	class SharedViaOverride : CMenuItem
-	{
-		public SharedViaOverride ()
-			: base ("shared-override")
-		{
-			Add ("1", s => Console.WriteLine ("First child"));
-			Add ("2", s => Console.WriteLine ("Second child"));
-		}
+This allows you to alter the command received by the children, or to omit their processing altogether (e.g. in case a common verification failed).
 
-		public override MenuResult Execute (string arg)
-		{
-			Console.WriteLine ("This code is shared between all children of this menu item.");
-			if (DateTime.UtcNow.Millisecond < 500) {
-				return MenuResult.Default;
-			}
-			else {
-				// Proceed normally.
-				return base.Execute (arg);
-			}
-		}
-	}
-
-Second option: Use the return values of Execute to indicate if processing should continue with the children, or return immediately. Returning is the default.
-
-	var msr = menu.Add ("shared-result", s => {
-		Console.WriteLine ("This code is shared between all children of this menu item.");
-		if (DateTime.UtcNow.Millisecond < 500) {
-			return MenuResult.Proceed;
-		}
-		else {
-			return MenuResult.Return;
-		}
+	var m = menu.Add ("shared");
+	m.SetAction (s => {
+		Console.Write ("You picked: ");
+		m.ExecuteChild (s);
 	});
-	msr.Add ("1", s => Console.WriteLine ("First child"));
-	msr.Add ("2", s => Console.WriteLine ("Second child"));
+	m.Add ("1", s => Console.WriteLine ("Option 1"));
+	m.Add ("2", s => Console.WriteLine ("Option 2"));
 
-Which option you chose is up to you. MenuResults have the advantage of compactness and do not require a deriving from CMenuItem. For larger commands, it may be preferable to use a separate class. Note that you are still free to use MenuResult values within an overridden Execute.
+	$ shared 1
+	You picked: Option 1
 
 
 

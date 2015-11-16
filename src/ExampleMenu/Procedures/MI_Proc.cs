@@ -24,7 +24,7 @@ namespace ExampleMenu.Procedures
 			_Mgr = mgr;
 
 			PromptCharacter = "proc>";
-			Add (EndRecordCommand, s => MenuResult.Quit);
+			Add (EndRecordCommand, s => Quit ());
 			Add (null, s => _Lines.Add (s));
 		}
 
@@ -41,11 +41,11 @@ namespace ExampleMenu.Procedures
 			}
 		}
 
-		public override MenuResult Execute (string arg)
+		public override void Execute (string arg)
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
 				Console.WriteLine ("You must enter a name to identify this proc.");
-				return MenuResult.Default;
+				return;
 			}
 
 			Console.WriteLine ("Recording started. Enter \"" + EndRecordCommand + "\" to finish.");
@@ -53,8 +53,6 @@ namespace ExampleMenu.Procedures
 			Run ();
 			_Mgr.AddProc (arg, _Lines);
 			_Lines = null;
-
-			return MenuResult.Default;
 		}
 	}
 }

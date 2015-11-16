@@ -41,11 +41,11 @@ namespace ExampleMenu.Recording
 			_Menu = menu;
 		}
 
-		public override MenuResult Execute (string arg)
+		public override void Execute (string arg)
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
 				Console.WriteLine ("Known records: " + string.Join (", ", _Store.GetRecordNames ()));
-				return MenuResult.Default;
+				return;
 			}
 
 			var rec = _Store.GetRecord (arg);
@@ -53,8 +53,6 @@ namespace ExampleMenu.Recording
 				var lines = rec.TakeWhile (line => !line.Equals (EndReplayCommand));
 				IO.AddInput (lines);
 			}
-
-			return MenuResult.Default;
 		}
 	}
 }
