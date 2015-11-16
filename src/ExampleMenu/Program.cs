@@ -205,7 +205,6 @@ namespace ExampleMenu
 					new CMenuItem ("1", s => Console.WriteLine ("2-1")),
 					new CMenuItem ("2", s => Console.WriteLine ("2-2")),
 				},
-				//new CMenuItem ("quit", s => MenuResult.Quit),
 			};
 			m.PromptCharacter = "tree>";
 			m.Run ();

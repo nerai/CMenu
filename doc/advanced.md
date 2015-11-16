@@ -159,7 +159,6 @@ It may be useful to create complex menu trees using collection initializers.
 			new CMenuItem ("1", s => Console.WriteLine ("2-1")),
 			new CMenuItem ("2", s => Console.WriteLine ("2-2")),
 		},
-		//new CMenuItem ("quit", s => MenuResult.Quit),
 	};
 	
 	$2 1
