@@ -61,10 +61,10 @@ Let's see an example for a command which calculactes the sum of integers entered
 		{
 			HelpText = ""
 				+ "add\n"
-				+ "Adds numbers until \"=\" is entered.\n";
+				+ "Adds numbers until \"=\" is entered.";
 			PromptCharacter = "+";
 
-			Add ("=", s => MenuResult.Quit, "Prints the sum and quits the add submenu");
+			Add ("=", s => Quit (), "Prints the sum and quits the add submenu");
 			Add (null, s => Add (s));
 		}
 
@@ -81,14 +81,13 @@ Let's see an example for a command which calculactes the sum of integers entered
 			}
 		}
 
-		public override MenuResult Execute (string arg)
+		public override void Execute (string arg)
 		{
 			Console.WriteLine ("You're now in submenu <Add>.");
 			Console.WriteLine ("Enter numbers. To print their sum and exit the submenu, enter \"=\".");
 			_Sum = 0;
 			Run ();
 			Console.WriteLine ("Sum = " + _Sum);
-			return MenuResult.Default;
 		}
 	}
 
