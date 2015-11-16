@@ -21,43 +21,42 @@ namespace ConsoleMenu
 		}
 
 		private static readonly Stack<Frame> _Frames = new Stack<Frame> ();
-		private static readonly Stack<string> _PromptCharacters = new Stack<string> ();
-
-		static IO ()
-		{
-			AddInput (DefaultInputSource ());
-		}
 
 		/// <summary>
 		/// Returns the next available line of input.
 		/// </summary>
-		public static string QueryInput ()
+		/// <param name="prompt">
+		/// String to prompt, or null.
+		/// </param>
+		public static string QueryInput (string prompt)
 		{
 			for (; ; ) {
-				var f = _Frames.Peek ();
-				while (!f.E.MoveNext ()) {
-					_Frames.Pop ();
-					f = _Frames.Peek ();
+				var input = GetNextFrameInput ();
+
+				if (input == null) {
+					if (prompt != null) {
+						Console.Write (prompt + " ");
+					}
+					input = Console.ReadLine ();
 				}
 
-				var input = f.E.Current;
 				if (!string.IsNullOrWhiteSpace (input)) {
 					return input;
 				}
 			}
 		}
 
-		private static IEnumerable<string> DefaultInputSource ()
+		private static string GetNextFrameInput ()
 		{
-			for (; ; ) {
-				if (_PromptCharacters.Any ()) {
-					var prompt = _PromptCharacters.Peek ();
-					if (prompt != null) {
-						Console.Write (prompt + " ");
-					}
+			while (_Frames.Any ()) {
+				var f = _Frames.Peek ();
+				if (!f.E.MoveNext ()) {
+					_Frames.Pop ();
+					continue;
 				}
-				yield return Console.ReadLine ();
+				return f.E.Current;
 			}
+			return null;
 		}
 
 		/// <summary>
@@ -84,25 +83,6 @@ namespace ConsoleMenu
 			}
 
 			AddInput (new string[] { source });
-		}
-
-		/// <summary>
-		/// Sets the current prompt character in case of console input.
-		/// </summary>
-		/// <param name="prompt">
-		/// String to prompt, or null.
-		/// </param>
-		public static void PushPromptCharacter (string prompt)
-		{
-			_PromptCharacters.Push (prompt);
-		}
-
-		/// <summary>
-		/// Restores the prompt character valid prior to its last change.
-		/// </summary>
-		public static void PopPromptCharacter ()
-		{
-			_PromptCharacters.Pop ();
 		}
 	}
 }

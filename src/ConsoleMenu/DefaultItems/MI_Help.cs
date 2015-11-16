@@ -24,10 +24,9 @@ namespace ConsoleMenu.DefaultItems
 				+ "Displays a list of all available commands.";
 		}
 
-		public override MenuResult Execute (string arg)
+		public override void Execute (string arg)
 		{
 			DisplayHelp (arg, _Menu, false);
-			return MenuResult.Default;
 		}
 
 		private static void DisplayHelp (string arg, CMenuItem context, bool isInner)

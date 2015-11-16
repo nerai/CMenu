@@ -31,7 +31,7 @@ If the command happens to be more complex, you can just put it in a separate met
 It is also possible to return an exit code to signal that processing should be stopped.
 By default, the command "quit" exists for this purpose. Let's add an alternative way to stop processing input.
 
-	menu.Add ("exit", s => MenuResult.Quit);
+	menu.Add ("exit", s => menu.Quit ());
 
 To create a command with help text, simply add it during definition.
 

@@ -22,6 +22,7 @@ namespace ExampleMenu
 			var mainmenu = new CMenu ();
 			mainmenu.PromptCharacter = "main>";
 			mainmenu.Add ("tutorial", s => Tutorial ());
+			mainmenu.Add ("tree-init", s => TreeInitialization ());
 			mainmenu.Add ("examples", s => Examples ());
 
 			IO.ImmediateInput ("help");
@@ -35,7 +36,7 @@ namespace ExampleMenu
 			InputModification ();
 			InnerCommands ();
 			NestedCommands ();
-			InnerWithShared ();
+			SharingInInners ();
 			IO.ImmediateInput ("help");
 		}
 
@@ -56,7 +57,7 @@ namespace ExampleMenu
 			 * It is also possible to return an exit code to signal that processing should be stopped.
 			 * By default, the command "quit" exists for this purpose. Let's add an alternative way to stop processing input.
 			 */
-			menu.Add ("exit", s => MenuResult.Quit);
+			menu.Add ("exit", s => menu.Quit ());
 
 			/*
 			 * To create a command with help text, simply add it during definition.
@@ -131,63 +132,56 @@ namespace ExampleMenu
 			menu.Run ();
 		}
 
-		class SharedViaOverride : CMenuItem
+		static void SharingInInners ()
 		{
-			public SharedViaOverride ()
-				: base ("shared-override")
-			{
-				Add ("1", s => Console.WriteLine ("First child"));
-				Add ("2", s => Console.WriteLine ("Second child"));
-			}
+			/*
+			 * If your inner menu items should share code, you need to overwrite the menu's Execute
+			 * method, then call ExecuteChild to resume processing in child nodes.
+			 *
+			 * This allows you to alter the command received by the children, or to omit their
+			 * processing altogether (e.g. in case a common verification failed).
+			 */
+			var m = menu.Add ("shared");
+			m.SetAction (s => {
+				Console.Write ("You picked: ");
+				m.ExecuteChild (s);
+			});
+			m.Add ("1", s => Console.WriteLine ("Option 1"));
+			m.Add ("2", s => Console.WriteLine ("Option 2"));
 
-			public override MenuResult Execute (string arg)
-			{
-				Console.WriteLine ("This code is shared between all children of this menu item.");
-				if (DateTime.UtcNow.Millisecond < 500) {
-					return MenuResult.Default;
-				}
-				else {
-					// Proceed normally.
-					return base.Execute (arg);
-				}
-			}
+			Console.WriteLine ("New command <shared> available.");
+			menu.Run ();
 		}
 
-		static void InnerWithShared ()
+		static void TreeInitialization ()
 		{
 			/*
-			 * If your inner menu items should share code (e.g. common basic validation), there are two ways to
-			 * implement this.
-			 *
-			 * First option: Override Execute in their parent menu item so it first executes the shared code,
-			 * then resumes normal processing.
+			 * It may be useful to create complex menu trees using collection initializers
 			 */
-			menu.Add (new SharedViaOverride ());
+			var m = new CMenu () {
+				new CMenuItem ("1") {
+					new CMenuItem ("1", s => Console.WriteLine ("1-1")),
+					new CMenuItem ("2", s => Console.WriteLine ("1-2")),
+				},
+				new CMenuItem ("2") {
+					new CMenuItem ("1", s => Console.WriteLine ("2-1")),
+					new CMenuItem ("2", s => Console.WriteLine ("2-2")),
+				},
+			};
+			m.PromptCharacter = "tree>";
+			m.Run ();
 
 			/*
-			 * Second option: Use the return values of Execute to indicate if processing should continue with
-			 * the children, or return immediately. Returning is the default.
+			 * You can also combine object and collection initializers
 			 */
-			var msr = menu.Add ("shared-result", s => {
-				Console.WriteLine ("This code is shared between all children of this menu item.");
-				if (DateTime.UtcNow.Millisecond < 500) {
-					return MenuResult.Proceed;
+			m = new CMenu () {
+				PromptCharacter = "combined>",
+				MenuItem = {
+					new CMenuItem ("1", s => Console.WriteLine ("1")),
+					new CMenuItem ("2", s => Console.WriteLine ("2")),
 				}
-				else {
-					return MenuResult.Return;
-				}
-			});
-			msr.Add ("1", s => Console.WriteLine ("First child"));
-			msr.Add ("2", s => Console.WriteLine ("Second child"));
-
-			/*
-			 * Which option you chose is up to you. MenuResults have the advantage of compactness and do not
-			 * require a deriving from CMenuItem. For larger commands, it may be preferable to use a separate
-			 * class. Note that you are still free to use MenuResult values within an overridden Execute.
-			 */
-
-			Console.WriteLine ("New commands <shared-override> and <shared-result> available.");
-			menu.Run ();
+			};
+			m.Run ();
 		}
 
 		static void Examples ()

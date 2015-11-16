@@ -33,7 +33,7 @@ namespace ExampleMenu.Recording
 				+ "Nested recording is not supported.";
 			PromptCharacter = "record>";
 
-			Add (EndRecordCommand, s => MenuResult.Quit, "Finishes recording.");
+			Add (EndRecordCommand, s => Quit (), "Finishes recording.");
 			Add (null, s => _Lines.Add (s));
 		}
 
@@ -50,11 +50,11 @@ namespace ExampleMenu.Recording
 			}
 		}
 
-		public override MenuResult Execute (string arg)
+		public override void Execute (string arg)
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
 				Console.WriteLine ("You must enter a name to identify this command group.");
-				return MenuResult.Default;
+				return;
 			}
 
 			Console.WriteLine ("Recording started. Enter \"" + EndRecordCommand + "\" to finish.");
@@ -62,8 +62,6 @@ namespace ExampleMenu.Recording
 			Run ();
 			_Store.AddRecord (arg, _Lines);
 			_Lines = null;
-
-			return MenuResult.Default;
 		}
 	}
 }
