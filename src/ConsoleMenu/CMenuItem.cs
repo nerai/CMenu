@@ -291,6 +291,9 @@ namespace ConsoleMenu
 				throw new ArgumentNullException ("cmd");
 			}
 
+			/*
+			 * Is there a fitting child menu?
+			 */
 			var original = cmd;
 			args = cmd;
 			cmd = MenuUtil.SplitFirstWord (ref args);
@@ -300,7 +303,6 @@ namespace ConsoleMenu
 			if (its.Length == 1) {
 				return its[0];
 			}
-
 			if (its.Length > 1) {
 				if (complain) {
 					Console.WriteLine (
@@ -310,6 +312,9 @@ namespace ConsoleMenu
 				return null;
 			}
 
+			/*
+			 * Is there a fallback?
+			 */
 			var def = this[null];
 			if (def != null) {
 				cmd = null;
@@ -317,6 +322,9 @@ namespace ConsoleMenu
 				return def;
 			}
 
+			/*
+			 * We found nothing. Display this failure?
+			 */
 			if (complain) {
 				Console.WriteLine ("Unknown command: " + cmd);
 
