@@ -1,6 +1,7 @@
 # CMenu
 A simple console menu manager for C#
 
+
 CMenu is a lightweight, low-ceremony framework for building console menus in .Net. Instead of manually prompting the user for input and parsing it, you define commands in a short, structured and comprehensive way, and let CMenu handle the rest.
 
 CMenu aims for low overhead - simple stuff should be simple to implement. If you don't use a feature, you don't need to know anything about it.
@@ -8,28 +9,6 @@ CMenu aims for low overhead - simple stuff should be simple to implement. If you
 At the same time, complex scenarios are supported. Large menus can easily be split into several classes. Background self-configuration. You do not have to worry about all the annoying details involved in larger menus, it will just work.
 
 Most importantly, it is very simple and fast to use. Commands can be abbreviated, a smart parser enables even partial matching. A help command is integrated.
-
-
-## Advantages
-
-* Simple, short syntax
-  * Simple commands are created in a single line
-  * Complex commands can be created or modified in steps or in their own, short class
-* Powerful and extensible
-  * Inner commands effortlessly parse parameters to commands
-  * Nested menus allow fully or partially independent submenus
-  * Own commands as well as subclassing existing commands are fully supported
-* Low maintenance
-  * Adaptive, automatically configures itself for optimal usage. For instance, command abbreviations are created and updated automatically when new commands (with potentially similar name) are added, or removed.
-  * Very tolerant about its input, allowing partial matches and being (by default) case insensitive.
-* Integrated tutorial and examples
-  * Contains a library of example commands, including a conditional operator, a macro recorder and a procedural call structure
-  * Comprehensive, documented code in case you want to dig into the details
-* Result: An easy to use menu structure
-  * Effortless command detection, including automatic abbreviations and partial matching
-  * Intelligent corrections for mistyped commands
-  * Integrated useful help which also works in command tree branches
-
 
 
 ## Quickstart
@@ -68,7 +47,7 @@ CMenu keeps an index of all available commands and lists them upon user request 
 	Hello world!
 
 
-	
+
 ## Further reading
 
 ### Common usage
@@ -78,11 +57,13 @@ Refer to [common use cases](doc/common-usage.md). This includes command creation
 There is documentation about [more complex use cases](doc/advanced.md), including input queue modification, inner commands, nested menus and default commands and sharing code between items.
 
 ### Example project
-
 The source code contains an [example project](doc/example_project.md). It offers commands, which illustrate several (more or less advanced) use cases. It may be useful to reference them in your own projects.
 
+### Advantages
+An [overview of the benefits of CMenu](doc/advantages.md).
 
-	
+
+
 ## Project history and developer information
 
 Another (much larger) project of mine uses a somewhat complex console menu, and I finally got annoyed enough by repeated, virtually equal code fragments to refactor and extract those pieces of code into a separate project. As I figured it was complete enough to be useful to others, I called it CMenu and put it on github.
