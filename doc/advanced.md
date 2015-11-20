@@ -48,9 +48,13 @@ The integrated help is able to "peek" into commands.
 
 ## Nested menus and default commands
 
-If a command requires several lines of input itself, you can add a CMenu instead of a CMenuItem. A CMenu always offers input prompts in addition to the usual behavior and subitems of a CMenuItem. You may also opt for a custom prompt character, or even disable it.
+Usually, all commands are processed by the same CMenu, which itself consists of several CMenuItems each responsible for a different command type. However, sometimes a command opens up a new submenu, often with commands different from its parent menu.
 
-It may be useful to capture all input which lacks a corresponding command in a "default" command. The default command has the unique selector null.
+To achieve this functionality, just append a new child CMenu to its parent. When the user enters the submenu, all typing will be routed through it instead of the parent menu. The user can at any time return to the parent menu by quitting the child menu, for instace by providing a "quit" command.
+
+Embedding a CMenu instead of a CMenuItem is advantageous if you do not want to keep track of state manually, possible including a menu stack (which parent menu to return to when a submenu is quit). You may opt for a custom prompt character to distinguish the submenu from its parent menu.
+
+Especially in this context, it may be useful to capture all input which lacks a corresponding command in a "default" command. The default command has the unique selector null.
 
 Let's see an example for a command which calculactes the sum of integers entered by the user. The sum is calculated and output once the user enters "=", which will be implemented as a subcommand. Capturing the integers is done with a default command. To clarify to the user that this is a different menu, we also replace the prompt character with a "+".
 
@@ -99,8 +103,8 @@ Let's see an example for a command which calculactes the sum of integers entered
 	+ =
 	Sum = 5
 
-### Sharing code between nested items
 
+### Sharing code between nested items
 
 If your inner menu items should share code, you need to overwrite the menu's Execute method, then call ExecuteChild to resume processing in child nodes.
 
