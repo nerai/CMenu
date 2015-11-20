@@ -1,8 +1,13 @@
 # CMenu
 A simple console menu manager for C#
 
-CMenu aims to simplify writing console menus. Instead of manually prompting the user for input and parsing it, you define commands in a short, structured and comprehensive way. You do not have to worry about all the annoying details and can do much more with less code.
+CMenu is a lightweight, low-ceremony framework for building console menus in .Net. Instead of manually prompting the user for input and parsing it, you define commands in a short, structured and comprehensive way, and let CMenu handle the rest.
 
+CMenu aims for low overhead - simple stuff should be simple to implement. If you don't use a feature, you don't need to know anything about it.
+
+At the same time, complex scenarios are supported. Large menus can easily be split into several classes. Background self-configuration. You do not have to worry about all the annoying details involved in larger menus, it will just work.
+
+Most importantly, it is very simple and fast to use. Commands can be abbreviated, a smart parser enables even partial matching. A help command is integrated.
 
 
 ## Advantages
