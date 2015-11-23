@@ -303,8 +303,11 @@ namespace ConsoleMenu
 
 			if (its.Length > 1) {
 				if (complain) {
+					var s = cmd == ""
+						? "Command incomplete."
+						: "Command <" + cmd + "> not unique.";
 					Console.WriteLine (
-						"Command <" + cmd + "> not unique. Candidates: " +
+						s + " Candidates: " +
 						string.Join (", ", its.Select (it => it.Selector)));
 				}
 				return null;
