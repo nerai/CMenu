@@ -202,8 +202,9 @@ namespace ExampleMenu
 		private class DisabledItem : CMenuItem
 		{
 			public DisabledItem ()
-				: base ("command")
+				: base ("subclassed")
 			{
+				HelpText = "This command, which is defined in its own class, is disabled by default.";
 			}
 
 			public override bool IsVisible ()
@@ -213,7 +214,7 @@ namespace ExampleMenu
 
 			public override void Execute (string arg)
 			{
-				Console.WriteLine ("Command was enabled!");
+				Console.WriteLine ("Disabled subclassed command was enabled!");
 			}
 		}
 
