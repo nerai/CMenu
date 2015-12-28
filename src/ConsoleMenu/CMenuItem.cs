@@ -230,7 +230,7 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Gets or sets the CMenuItem associated with the specified keyword.
 		///
-		/// Use the null key to access the default item.
+		/// Disabled items are returned. Use the null key to access the default item.
 		/// </summary>
 		/// <param name="key">
 		/// Keyword of the CMenuItem. The selector must match perfectly (i.e. is not an abbreviation of the keyword).
@@ -268,7 +268,7 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Returns the commands equal, or starting with, the specified cmd.
 		///
-		/// Does not return the default menu item.
+		/// Does neither return the default menu item nor any disabled items.
 		/// </summary>
 		private CMenuItem[] GetCommands (string cmd, StringComparison comparison)
 		{
@@ -278,12 +278,16 @@ namespace ConsoleMenu
 
 			CMenuItem mi;
 			_Menu.TryGetValue (cmd, out mi);
+			if (mi != null && !mi.IsVisible ()) {
+				mi = null;
+			}
 			if (mi != null) {
 				return new[] { mi };
 			}
 
 			var its = _Menu.Values
 				.Where (it => it.Selector.StartsWith (cmd, comparison))
+				.Where (it => it.IsVisible ())
 				.OrderBy (it => it.Selector)
 				.ToArray ();
 			return its;
@@ -397,7 +401,10 @@ namespace ConsoleMenu
 		/// </summary>
 		public IEnumerator<CMenuItem> GetEnumerator ()
 		{
-			return _Menu.Values.GetEnumerator ();
+			return _Menu
+				.Values
+				.Where (mi => mi.IsVisible ())
+				.GetEnumerator ();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()
@@ -416,7 +423,7 @@ namespace ConsoleMenu
 		{
 			var dict = new Dictionary<string, string> ();
 
-			foreach (var it in _Menu.Values) {
+			foreach (var it in this) {
 				var sel = it.Selector;
 				var ab = GetAbbreviation (sel);
 				if (ab.Length >= sel.Length - 1) {
