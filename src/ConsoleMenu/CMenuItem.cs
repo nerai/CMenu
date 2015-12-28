@@ -90,6 +90,19 @@ namespace ConsoleMenu
 			set;
 		}
 
+		private Action<string> _Execute;
+
+		/// <summary>
+		/// Sets the behavior upon selection
+		/// </summary>
+		/// <param name="action">
+		/// Behavior when selected.
+		/// </param>
+		public void SetAction (Action<string> action)
+		{
+			_Execute = action;
+		}
+
 		/// <summary>
 		/// Behavior upon selection.
 		///
@@ -111,7 +124,6 @@ namespace ConsoleMenu
 			}
 		}
 
-		private Action<string> _Execute;
 
 		/// <summary>
 		/// Creates a new CMenuItem from keyword, behavior and help text.
@@ -415,17 +427,6 @@ namespace ConsoleMenu
 				}
 			}
 			return cmd;
-		}
-
-		/// <summary>
-		/// Sets the behavior upon selection
-		/// </summary>
-		/// <param name="action">
-		/// Behavior when selected.
-		/// </param>
-		public void SetAction (Action<string> action)
-		{
-			_Execute = action;
 		}
 
 		public override string ToString ()
