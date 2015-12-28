@@ -24,9 +24,13 @@ namespace ConsoleMenu
 
 		/// <summary>
 		/// Returns the next available line of input.
+		///
+		/// If buffered input is available, its next line will be returned. Else, the user will be prompted for input.
+		///
+		/// Empty input (whitespace only) will be ignored.
 		/// </summary>
 		/// <param name="prompt">
-		/// String to prompt, or null.
+		/// Prompt string, or null if no prompt string should be displayed.
 		/// </param>
 		public static string QueryInput (string prompt)
 		{
