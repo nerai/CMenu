@@ -147,44 +147,6 @@ namespace ConsoleMenu
 		{ }
 
 		/// <summary>
-		/// Gets or sets the CMenuItem associated with the specified keyword.
-		///
-		/// Use the null key to access the default item.
-		/// </summary>
-		/// <param name="key">
-		/// Keyword of the CMenuItem. The selector must match perfectly (i.e. is not an abbreviation of the keyword).
-		///
-		/// If the key is null, the value refers to the default item.
-		/// </param>
-		/// <value>
-		/// The CMenuItem associated with the specified keyword, or null.
-		/// </value>
-		/// <returns>
-		/// The menu item associated with the specified keyword.
-		/// </returns>
-		public CMenuItem this[string key]
-		{
-			get
-			{
-				if (key == null) {
-					return _Default;
-				}
-				CMenuItem it;
-				_Menu.TryGetValue (key, out it);
-				return it;
-			}
-			set
-			{
-				if (key == null) {
-					_Default = value;
-				}
-				else {
-					_Menu[key] = value;
-				}
-			}
-		}
-
-		/// <summary>
 		/// Add new command.
 		///
 		/// The menu's internal structure and abbreviations are updated automatically.
@@ -248,6 +210,44 @@ namespace ConsoleMenu
 			var it = new CMenuItem (selector, execute, help);
 			Add (it);
 			return it;
+		}
+
+		/// <summary>
+		/// Gets or sets the CMenuItem associated with the specified keyword.
+		///
+		/// Use the null key to access the default item.
+		/// </summary>
+		/// <param name="key">
+		/// Keyword of the CMenuItem. The selector must match perfectly (i.e. is not an abbreviation of the keyword).
+		///
+		/// If the key is null, the value refers to the default item.
+		/// </param>
+		/// <value>
+		/// The CMenuItem associated with the specified keyword, or null.
+		/// </value>
+		/// <returns>
+		/// The menu item associated with the specified keyword.
+		/// </returns>
+		public CMenuItem this[string key]
+		{
+			get
+			{
+				if (key == null) {
+					return _Default;
+				}
+				CMenuItem it;
+				_Menu.TryGetValue (key, out it);
+				return it;
+			}
+			set
+			{
+				if (key == null) {
+					_Default = value;
+				}
+				else {
+					_Menu[key] = value;
+				}
+			}
 		}
 
 		/// <summary>
