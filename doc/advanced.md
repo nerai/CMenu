@@ -153,3 +153,66 @@ You can also combine object and collection initializers
 
 
 
+## Disabled commands
+
+Command which cannot be used currently, but should still be available in the menu tree, can disable themselves. Disabled commands cannot be used and are not listed by `help`.
+
+In this example, a global flag (`bool DisabledCommandsEnabled`) is used to determine the visibility of disabled commands. It is initially cleared, the 'enable' command sets it.
+
+	m.Add ("enable", s => DisabledCommandsEnabled = true);
+
+Create a new inline command, then set its visilibity function so it returns the above flag.
+
+	var mi = m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"));
+	mi.SetVisibilityCondition (() => DisabledCommandsEnabled);
+
+	$ inline
+	Unknown command: inline
+	$ enable
+	$ inline
+	Disabled inline command was enabled!
+
+It is also possible to override the visibility by subclassing.
+
+	private class DisabledItem : CMenuItem
+	{
+		public DisabledItem ()
+			: base ("subclassed")
+		{
+			HelpText = "This command, which is defined in its own class, is disabled by default.";
+		}
+
+		public override bool IsVisible ()
+		{
+			return DisabledCommandsEnabled;
+		}
+
+		public override void Execute (string arg)
+		{
+			Console.WriteLine ("Disabled subclassed command was enabled!");
+		}
+	}
+
+	$ subclassed
+	Unknown command: subclassed
+	$ enable
+	$ subclassed
+	Disabled subclassed command was enabled!
+
+Invisible commands are not displayed by `help`:
+
+	$ help
+	Available commands:
+	e   | enable
+	h   | help
+	q   | quit
+	$ enable
+	$ help
+	Available commands:
+	e   | enable
+	h   | help
+	i   | inline
+	q   | quit
+	s   | subclassed
+
+

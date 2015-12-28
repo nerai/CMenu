@@ -189,13 +189,25 @@ namespace ExampleMenu
 
 		static void DisabledCommands ()
 		{
-			DisabledCommandsEnabled = false;
-
 			var m = new CMenu ();
-			m.Add (new DisabledItem ());
+
+			/*
+			 * In this example, a global flag is used to determine the visibility of disabled commands.
+			 * It is initially cleared, the 'enable' command sets it.
+			 */
+			DisabledCommandsEnabled = false;
 			m.Add ("enable", s => DisabledCommandsEnabled = true);
-			m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"))
-				.SetVisibilityCondition (() => DisabledCommandsEnabled);
+
+			/*
+			 * Create a new inline command, then set its visilibity function so it returns the above flag.
+			 */
+			var mi = m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"));
+			mi.SetVisibilityCondition (() => DisabledCommandsEnabled);
+
+			/*
+			 * It is also possible to override the visibility by subclassing.
+			 */
+			m.Add (new DisabledItem ());
 			m.Run ();
 		}
 
