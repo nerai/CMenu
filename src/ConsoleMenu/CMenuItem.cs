@@ -90,6 +90,19 @@ namespace ConsoleMenu
 			set;
 		}
 
+		private Action<string> _Execute;
+
+		/// <summary>
+		/// Sets the behavior upon selection
+		/// </summary>
+		/// <param name="action">
+		/// Behavior when selected.
+		/// </param>
+		public void SetAction (Action<string> action)
+		{
+			_Execute = action;
+		}
+
 		/// <summary>
 		/// Behavior upon selection.
 		///
@@ -111,7 +124,21 @@ namespace ConsoleMenu
 			}
 		}
 
-		private Action<string> _Execute;
+		private Func<bool> _Visible;
+
+		public void SetVisibilityCondition (Func<bool> condition)
+		{
+			_Visible = condition;
+		}
+
+		public virtual bool IsVisible ()
+		{
+			if (_Visible != null) {
+				return _Visible ();
+			}
+
+			return true;
+		}
 
 		/// <summary>
 		/// Creates a new CMenuItem from keyword, behavior and help text.
@@ -133,44 +160,6 @@ namespace ConsoleMenu
 		public CMenuItem (string selector)
 			: this (selector, (Action<string>) null)
 		{ }
-
-		/// <summary>
-		/// Gets or sets the CMenuItem associated with the specified keyword.
-		///
-		/// Use the null key to access the default item.
-		/// </summary>
-		/// <param name="key">
-		/// Keyword of the CMenuItem. The selector must match perfectly (i.e. is not an abbreviation of the keyword).
-		///
-		/// If the key is null, the value refers to the default item.
-		/// </param>
-		/// <value>
-		/// The CMenuItem associated with the specified keyword, or null.
-		/// </value>
-		/// <returns>
-		/// The menu item associated with the specified keyword.
-		/// </returns>
-		public CMenuItem this[string key]
-		{
-			get
-			{
-				if (key == null) {
-					return _Default;
-				}
-				CMenuItem it;
-				_Menu.TryGetValue (key, out it);
-				return it;
-			}
-			set
-			{
-				if (key == null) {
-					_Default = value;
-				}
-				else {
-					_Menu[key] = value;
-				}
-			}
-		}
 
 		/// <summary>
 		/// Add new command.
@@ -239,9 +228,47 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
+		/// Gets or sets the CMenuItem associated with the specified keyword.
+		///
+		/// Disabled items are returned. Use the null key to access the default item.
+		/// </summary>
+		/// <param name="key">
+		/// Keyword of the CMenuItem. The selector must match perfectly (i.e. is not an abbreviation of the keyword).
+		///
+		/// If the key is null, the value refers to the default item.
+		/// </param>
+		/// <value>
+		/// The CMenuItem associated with the specified keyword, or null.
+		/// </value>
+		/// <returns>
+		/// The menu item associated with the specified keyword.
+		/// </returns>
+		public CMenuItem this[string key]
+		{
+			get
+			{
+				if (key == null) {
+					return _Default;
+				}
+				CMenuItem it;
+				_Menu.TryGetValue (key, out it);
+				return it;
+			}
+			set
+			{
+				if (key == null) {
+					_Default = value;
+				}
+				else {
+					_Menu[key] = value;
+				}
+			}
+		}
+
+		/// <summary>
 		/// Returns the commands equal, or starting with, the specified cmd.
 		///
-		/// Does not return the default menu item.
+		/// Does neither return the default menu item nor any disabled items.
 		/// </summary>
 		private CMenuItem[] GetCommands (string cmd, StringComparison comparison)
 		{
@@ -251,12 +278,16 @@ namespace ConsoleMenu
 
 			CMenuItem mi;
 			_Menu.TryGetValue (cmd, out mi);
+			if (mi != null && !mi.IsVisible ()) {
+				mi = null;
+			}
 			if (mi != null) {
 				return new[] { mi };
 			}
 
 			var its = _Menu.Values
 				.Where (it => it.Selector.StartsWith (cmd, comparison))
+				.Where (it => it.IsVisible ())
 				.OrderBy (it => it.Selector)
 				.ToArray ();
 			return its;
@@ -370,7 +401,10 @@ namespace ConsoleMenu
 		/// </summary>
 		public IEnumerator<CMenuItem> GetEnumerator ()
 		{
-			return _Menu.Values.GetEnumerator ();
+			return _Menu
+				.Values
+				.Where (mi => mi.IsVisible ())
+				.GetEnumerator ();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()
@@ -389,7 +423,7 @@ namespace ConsoleMenu
 		{
 			var dict = new Dictionary<string, string> ();
 
-			foreach (var it in _Menu.Values) {
+			foreach (var it in this) {
 				var sel = it.Selector;
 				var ab = GetAbbreviation (sel);
 				if (ab.Length >= sel.Length - 1) {
@@ -415,17 +449,6 @@ namespace ConsoleMenu
 				}
 			}
 			return cmd;
-		}
-
-		/// <summary>
-		/// Sets the behavior upon selection
-		/// </summary>
-		/// <param name="action">
-		/// Behavior when selected.
-		/// </param>
-		public void SetAction (Action<string> action)
-		{
-			_Execute = action;
 		}
 
 		public override string ToString ()

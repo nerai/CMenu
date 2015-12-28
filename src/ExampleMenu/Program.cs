@@ -23,6 +23,7 @@ namespace ExampleMenu
 			mainmenu.PromptCharacter = "main>";
 			mainmenu.Add ("tutorial", s => Tutorial ());
 			mainmenu.Add ("tree-init", s => TreeInitialization ());
+			mainmenu.Add ("disabled", s => DisabledCommands ());
 			mainmenu.Add ("examples", s => Examples ());
 
 			IO.ImmediateInput ("help");
@@ -182,6 +183,39 @@ namespace ExampleMenu
 				}
 			};
 			m.Run ();
+		}
+
+		static bool DisabledCommandsEnabled = false;
+
+		static void DisabledCommands ()
+		{
+			DisabledCommandsEnabled = false;
+
+			var m = new CMenu ();
+			m.Add (new DisabledItem ());
+			m.Add ("enable", s => DisabledCommandsEnabled = true);
+			m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"))
+				.SetVisibilityCondition (() => DisabledCommandsEnabled);
+			m.Run ();
+		}
+
+		private class DisabledItem : CMenuItem
+		{
+			public DisabledItem ()
+				: base ("subclassed")
+			{
+				HelpText = "This command, which is defined in its own class, is disabled by default.";
+			}
+
+			public override bool IsVisible ()
+			{
+				return DisabledCommandsEnabled;
+			}
+
+			public override void Execute (string arg)
+			{
+				Console.WriteLine ("Disabled subclassed command was enabled!");
+			}
 		}
 
 		static void Examples ()
