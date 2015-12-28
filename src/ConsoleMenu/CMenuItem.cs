@@ -124,6 +124,21 @@ namespace ConsoleMenu
 			}
 		}
 
+		private Func<bool> _Visible;
+
+		public void SetVisibilityCondition (Func<bool> condition)
+		{
+			_Visible = condition;
+		}
+
+		public virtual bool IsVisible ()
+		{
+			if (_Visible != null) {
+				return _Visible ();
+			}
+
+			return true;
+		}
 
 		/// <summary>
 		/// Creates a new CMenuItem from keyword, behavior and help text.
