@@ -363,16 +363,17 @@ namespace ConsoleMenu
 				Console.WriteLine ("Unknown command: " + cmd);
 
 				if (StringComparison.IsCaseSensitive ()) {
-					var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase);
+					var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase, includeDisabled);
 					if (suggestions.Length > 0) {
 						if (suggestions.Length == 1) {
 							Console.WriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
 						}
 						else if (suggestions.Length <= 5) {
-							Console.Write ("Did you mean ");
-							Console.Write (string.Join (", ", suggestions.Take (suggestions.Length - 1).Select (sug => "\"" + sug.Selector + "\"")));
-							Console.Write (" or \"" + suggestions.Last ().Selector + "\"?");
-							Console.WriteLine ();
+							var sugs = string.Join (", ", suggestions
+								.Take (suggestions.Length - 1)
+								.Select (sug => "\"" + sug.Selector + "\""));
+							var s = "Did you mean " + sugs + " or \"" + suggestions.Last ().Selector + "\"?";
+							Console.WriteLine (s);
 						}
 					}
 				}
