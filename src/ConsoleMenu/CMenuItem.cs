@@ -268,26 +268,35 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Returns the commands equal, or starting with, the specified cmd.
 		///
-		/// Does neither return the default menu item nor any disabled items.
+		/// Does not return the default menu item.
 		/// </summary>
-		private CMenuItem[] GetCommands (string cmd, StringComparison comparison)
+		/// <param name="includeDisabled">
+		/// Disabled menu items are included iff this is set.
+		/// </param>
+		private CMenuItem[] GetCommands (string cmd, StringComparison comparison, bool includeDisabled)
 		{
 			if (cmd == null) {
 				throw new ArgumentNullException ("cmd");
 			}
 
+			/*
+			 * Is there a perfect hit?
+			 */
 			CMenuItem mi;
 			_Menu.TryGetValue (cmd, out mi);
-			if (mi != null && !mi.IsVisible ()) {
+			if (!includeDisabled && mi != null && !mi.IsVisible ()) {
 				mi = null;
 			}
 			if (mi != null) {
 				return new[] { mi };
 			}
 
+			/*
+			 * Just return anything with a fitting prefix
+			 */
 			var its = _Menu.Values
 				.Where (it => it.Selector.StartsWith (cmd, comparison))
-				.Where (it => it.IsVisible ())
+				.Where (it => includeDisabled || it.IsVisible ())
 				.OrderBy (it => it.Selector)
 				.ToArray ();
 			return its;
@@ -315,8 +324,10 @@ namespace ConsoleMenu
 		/// <param name="useDefault">
 		/// The single closest matching menu item, or the default item if no better fit was found, or null in case of 0 or multiple matches.
 		/// </param>
-		/// <returns></returns>
-		public CMenuItem GetMenuItem (ref string cmd, out string args, bool complain, bool useDefault)
+		/// <param name="includeDisabled">
+		/// Disabled menu items are included iff this is set.
+		/// </param>
+		public CMenuItem GetMenuItem (ref string cmd, out string args, bool complain, bool useDefault, bool includeDisabled)
 		{
 			if (cmd == null) {
 				throw new ArgumentNullException ("cmd");
@@ -329,7 +340,7 @@ namespace ConsoleMenu
 			args = cmd;
 			cmd = MenuUtil.SplitFirstWord (ref args);
 
-			var its = GetCommands (cmd, StringComparison);
+			var its = GetCommands (cmd, StringComparison, includeDisabled);
 
 			if (its.Length == 1) {
 				return its[0];
@@ -389,7 +400,7 @@ namespace ConsoleMenu
 		public void ExecuteChild (string args)
 		{
 			var cmd = args;
-			var it = GetMenuItem (ref cmd, out args, true, true);
+			var it = GetMenuItem (ref cmd, out args, true, true, false);
 			if (it != null) {
 				it.Execute (args);
 			}
@@ -419,6 +430,8 @@ namespace ConsoleMenu
 		/// The abbreviations will be updated if commands are added, changed or removed.
 		///
 		/// The default menu item will not be returned.
+		///
+		/// Hidden menu items will not be returned, though they are considered when generating abbreviations.
 		/// </summary>
 		public IDictionary<string, string> CommandAbbreviations ()
 		{
@@ -445,7 +458,7 @@ namespace ConsoleMenu
 			for (int i = 1; i <= cmd.Length; i++) {
 				var sub = cmd.Substring (0, i);
 				string dummy;
-				if (GetMenuItem (ref sub, out dummy, false, false) != null) {
+				if (GetMenuItem (ref sub, out dummy, false, false, true) != null) {
 					return sub;
 				}
 			}

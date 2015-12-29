@@ -46,7 +46,7 @@ namespace ConsoleMenu.DefaultItems
 			}
 
 			var cmd = arg;
-			var inner = context.GetMenuItem (ref cmd, out arg, false, false);
+			var inner = context.GetMenuItem (ref cmd, out arg, false, false, false);
 			if (inner != null) {
 				DisplayHelp (arg, inner, true);
 				return;
