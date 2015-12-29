@@ -23,6 +23,7 @@ namespace ExampleMenu
 			mainmenu.PromptCharacter = "main>";
 			mainmenu.Add ("tutorial", s => Tutorial ());
 			mainmenu.Add ("tree-init", s => TreeInitialization ());
+			mainmenu.Add ("disabled", s => DisabledCommands ());
 			mainmenu.Add ("examples", s => Examples ());
 
 			IO.ImmediateInput ("help");
@@ -182,6 +183,57 @@ namespace ExampleMenu
 				}
 			};
 			m.Run ();
+		}
+
+		static bool DisabledCommandsEnabled = false;
+
+		static void DisabledCommands ()
+		{
+			var m = new CMenu ();
+
+			/*
+			 * In this example, a global flag is used to determine the visibility of disabled commands.
+			 * It is initially cleared, the 'enable' command sets it.
+			 */
+			DisabledCommandsEnabled = false;
+			m.Add ("enable", s => DisabledCommandsEnabled = true);
+
+			/*
+			 * Create a new inline command, then set its visilibity function so it returns the above flag.
+			 */
+			var mi = m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"));
+			mi.SetVisibilityCondition (() => DisabledCommandsEnabled);
+
+			/*
+			 * Command abbreviations do not change when hidden items become visible, i.e. it is made sure they are already long
+			 * enough. This avoids confusion about abbreviations suddenly changing.
+			 */
+			m.Add ("incollision", s => Console.WriteLine ("The abbreviation of 'incollision' is longer to account for the hidden 'inline' command."));
+
+			/*
+			 * It is also possible to override the visibility by subclassing.
+			 */
+			m.Add (new DisabledItem ());
+			m.Run ();
+		}
+
+		private class DisabledItem : CMenuItem
+		{
+			public DisabledItem ()
+				: base ("subclassed")
+			{
+				HelpText = "This command, which is defined in its own class, is disabled by default.";
+			}
+
+			public override bool IsVisible ()
+			{
+				return DisabledCommandsEnabled;
+			}
+
+			public override void Execute (string arg)
+			{
+				Console.WriteLine ("Disabled subclassed command was enabled!");
+			}
 		}
 
 		static void Examples ()
