@@ -205,6 +205,12 @@ namespace ExampleMenu
 			mi.SetVisibilityCondition (() => DisabledCommandsEnabled);
 
 			/*
+			 * Command abbreviations do not change when hidden items become visible, i.e. it is made sure they are already long
+			 * enough. This avoids confusion about abbreviations suddenly changing.
+			 */
+			m.Add ("incollision", s => Console.WriteLine ("The abbreviation of 'incollision' is longer to account for the hidden 'inline' command."));
+
+			/*
 			 * It is also possible to override the visibility by subclassing.
 			 */
 			m.Add (new DisabledItem ());
