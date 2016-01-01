@@ -67,7 +67,7 @@ namespace ConsoleMenu
 		/// Immediately after processing has ended, the event OnQuit called.
 		/// </para>
 		/// </summary>
-		public virtual void Run ()
+		public void Run ()
 		{
 			_Quit = false;
 
@@ -85,7 +85,7 @@ namespace ConsoleMenu
 			}
 		}
 
-		public virtual void Quit ()
+		public void Quit ()
 		{
 			_Quit = true;
 		}
