@@ -10,7 +10,7 @@ namespace ConsoleMenu
 	/// A console menu structure, comprised of various menu items.
 	///
 	/// <example>
-	/// Create a menu which can display the time:
+	/// To create a menu which displays the current time:
 	/// <code>
 	/// var menu = new CMenu ();
 	/// menu.Add ("time", s => Console.WriteLine (DateTime.UtcNow));
@@ -38,8 +38,8 @@ namespace ConsoleMenu
 		/// <para>
 		/// Iff no selector was specified, the menu will initially contain the following commands:
 		/// <list type="bullet">
-		/// <item>help</item>
-		/// <item>quit</item>
+		/// <item><c>help</c></item>
+		/// <item><c>quit</c></item>
 		/// </list>
 		/// </para>
 		/// </summary>
@@ -55,7 +55,9 @@ namespace ConsoleMenu
 		/// <summary>
 		/// The string which is displayed in front of every prompt (i.e. query for user input).
 		///
+		/// <para>
 		/// Set to null to disable explicit prompting.
+		/// </para>
 		/// </summary>
 		public string PromptCharacter = "$";
 
@@ -63,8 +65,8 @@ namespace ConsoleMenu
 		/// Start console prompting and processing.
 		///
 		/// <para>
-		/// Immediately before processing begins, the event OnRun is called.
-		/// Immediately after processing has ended, the event OnQuit called.
+		/// Immediately before processing begins, the event <c>OnRun</c> is called.
+		/// Immediately after processing has ended, the event <c>OnQuit</c> called.
 		/// </para>
 		/// </summary>
 		public void Run ()
@@ -87,6 +89,10 @@ namespace ConsoleMenu
 
 		/// <summary>
 		/// Stops menu processing. Control will return to the parent menu.
+		///
+		/// <para>
+		/// Processing can be restarted by calling <c>Run</c> again.
+		/// </para>
 		/// </summary>
 		public void Quit ()
 		{
@@ -95,8 +101,10 @@ namespace ConsoleMenu
 
 		/// <summary>
 		/// If this menu gets selected in its parent menu, run it.
-		/// If an additional argument is given, it will be executed in the local context once the menu is running.
 		/// </summary>
+		/// <param name="arg">
+		/// If an additional nonempty argument is given, it will be executed in the local context once the menu is running.
+		/// </param>
 		public override void Execute (string arg)
 		{
 			if (!string.IsNullOrWhiteSpace (arg)) {
