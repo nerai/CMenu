@@ -11,8 +11,8 @@ namespace ExampleMenu.Examples
 	class ExamplesMenu : CMenu
 	{
 		public ExamplesMenu ()
-			: base ("examples")
 		{
+			Selector = "examples";
 			PromptCharacter = "examples>";
 
 			Add (new MI_Add ());
@@ -36,6 +36,7 @@ namespace ExampleMenu.Examples
 		{
 			Console.Write ("Example menu - ");
 			IO.ImmediateInput ("help");
+			base.Execute (arg);
 		}
 	}
 }
