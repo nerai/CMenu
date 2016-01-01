@@ -30,13 +30,11 @@ namespace ExampleMenu.Examples
 			Add (new MI_Call (this, procmgr));
 			Add (new MI_Return (this, procmgr));
 			Add (new MI_Goto (procmgr));
-		}
 
-		public override void Execute (string arg)
-		{
-			Console.Write ("Example menu - ");
-			IO.ImmediateInput ("help");
-			base.Execute (arg);
+			OnRun += m => {
+				Console.Write ("Example menu - ");
+				IO.ImmediateInput ("help");
+			};
 		}
 	}
 }

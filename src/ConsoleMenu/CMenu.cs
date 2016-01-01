@@ -92,14 +92,14 @@ namespace ConsoleMenu
 
 		/// <summary>
 		/// If this menu gets selected in its parent menu, run it.
-		/// If a parameter is given, execute it in the local context.
+		/// If an additional argument is given, it will be executed in the local context once the menu is running.
 		/// </summary>
 		public override void Execute (string arg)
 		{
-			Run ();
 			if (!string.IsNullOrWhiteSpace (arg)) {
-				Execute (arg);
+				IO.ImmediateInput (arg);
 			}
+			Run ();
 		}
 	}
 }
