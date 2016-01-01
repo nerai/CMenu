@@ -5,25 +5,30 @@ using System.Linq;
 using System.Text;
 using ConsoleMenu;
 
-namespace ExampleMenu.Procedures
+namespace ExampleMenu.Examples.Procedures
 {
-	public class MI_Goto : CMenuItem
+	public class MI_Call : CMenuItem
 	{
+		private readonly CMenu _Menu;
 		private readonly ProcManager _Mgr;
 
-		public MI_Goto (ProcManager mgr)
-			: base ("goto")
+		public MI_Call (CMenu menu, ProcManager mgr)
+			: base ("call")
 		{
+			if (menu == null) {
+				throw new ArgumentNullException ("menu");
+			}
 			if (mgr == null) {
 				throw new ArgumentNullException ("mgr");
 			}
 
+			_Menu = menu;
 			_Mgr = mgr;
 		}
 
 		public override void Execute (string arg)
 		{
-			_Mgr.Jump (arg);
+			IO.AddInput (_Mgr.GenerateInputForProc (arg));
 		}
 	}
 }
