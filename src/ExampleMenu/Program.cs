@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ConsoleMenu;
-using ExampleMenu.Procedures;
-using ExampleMenu.Recording;
+using ExampleMenu.Examples;
 
 namespace ExampleMenu
 {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using ConsoleMenu;
 
-namespace ExampleMenu.Recording
+namespace ExampleMenu.Examples.Recording
 {
 	public class MI_Replay : CMenuItem
 	{
