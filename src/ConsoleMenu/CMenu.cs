@@ -65,5 +65,17 @@ namespace ConsoleMenu
 		{
 			_Quit = true;
 		}
+
+		/// <summary>
+		/// If this menu gets selected in its parent menu, run it.
+		/// If a parameter is given, execute it in the local context.
+		/// </summary>
+		public override void Execute (string arg)
+		{
+			Run ();
+			if (!string.IsNullOrWhiteSpace (arg)) {
+				Execute (arg);
+			}
+		}
 	}
 }
