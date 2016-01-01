@@ -91,6 +91,7 @@
     <Compile Include="Examples\Procedures\MI_Proc.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tutorial.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
