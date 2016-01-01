@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ConsoleMenu;
-using ExampleMenu.Procedures;
-using ExampleMenu.Recording;
+using ExampleMenu.Examples;
 
 namespace ExampleMenu
 {
@@ -24,7 +23,7 @@ namespace ExampleMenu
 			mainmenu.Add ("tutorial", s => Tutorial ());
 			mainmenu.Add ("tree-init", s => TreeInitialization ());
 			mainmenu.Add ("disabled", s => DisabledCommands ());
-			mainmenu.Add ("examples", s => Examples ());
+			mainmenu.Add (new ExamplesMenu ());
 
 			IO.ImmediateInput ("help");
 			mainmenu.Run ();
@@ -234,30 +233,6 @@ namespace ExampleMenu
 			{
 				Console.WriteLine ("Disabled subclassed command was enabled!");
 			}
-		}
-
-		static void Examples ()
-		{
-			var m = new CMenu ();
-
-			m.Add (new MI_Add ());
-
-			m.Add (new MI_Echo ());
-			m.Add (new MI_If ());
-			m.Add (new MI_Pause ());
-
-			var frs = new FileRecordStore ();
-			m.Add (new MI_Record (frs));
-			m.Add (new MI_Replay (m, frs));
-
-			var procmgr = new ProcManager ();
-			m.Add (new MI_Proc (procmgr));
-			m.Add (new MI_Call (m, procmgr));
-			m.Add (new MI_Return (m, procmgr));
-			m.Add (new MI_Goto (procmgr));
-
-			IO.ImmediateInput ("help");
-			m.Run ();
 		}
 	}
 }
