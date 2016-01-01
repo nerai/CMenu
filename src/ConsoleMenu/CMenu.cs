@@ -23,6 +23,16 @@ namespace ConsoleMenu
 		private bool _Quit;
 
 		/// <summary>
+		/// Is executed before this menu begins processing
+		/// </summary>
+		public event Action<CMenu> OnRun = null;
+
+		/// <summary>
+		/// Is executed after this menu stopped processing
+		/// </summary>
+		public event Action<CMenu> OnQuit = null;
+
+		/// <summary>
 		/// Create a new CMenu.
 		///
 		/// <para>
@@ -51,13 +61,27 @@ namespace ConsoleMenu
 
 		/// <summary>
 		/// Start console promting and processing.
+		///
+		/// <para>
+		/// Immediately before processing begins, the event OnRun is called.
+		/// Immediately after processing has ended, the event OnQuit called.
+		/// </para>
 		/// </summary>
 		public void Run ()
 		{
 			_Quit = false;
+
+			if (OnRun != null) {
+				OnRun (this);
+			}
+
 			while (!_Quit) {
 				var input = IO.QueryInput (PromptCharacter);
 				ExecuteChild (input);
+			}
+
+			if (OnQuit != null) {
+				OnQuit (this);
 			}
 		}
 
