@@ -89,5 +89,17 @@ namespace ConsoleMenu
 		{
 			_Quit = true;
 		}
+
+		/// <summary>
+		/// If this menu gets selected in its parent menu, run it.
+		/// If an additional argument is given, it will be executed in the local context once the menu is running.
+		/// </summary>
+		public override void Execute (string arg)
+		{
+			if (!string.IsNullOrWhiteSpace (arg)) {
+				IO.ImmediateInput (arg);
+			}
+			Run ();
+		}
 	}
 }

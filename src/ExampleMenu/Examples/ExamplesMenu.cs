@@ -11,8 +11,8 @@ namespace ExampleMenu.Examples
 	class ExamplesMenu : CMenu
 	{
 		public ExamplesMenu ()
-			: base ("examples")
 		{
+			Selector = "examples";
 			PromptCharacter = "examples>";
 
 			Add (new MI_Add ());
@@ -30,12 +30,11 @@ namespace ExampleMenu.Examples
 			Add (new MI_Call (this, procmgr));
 			Add (new MI_Return (this, procmgr));
 			Add (new MI_Goto (procmgr));
-		}
 
-		public override void Execute (string arg)
-		{
-			Console.Write ("Example menu - ");
-			IO.ImmediateInput ("help");
+			OnRun += m => {
+				Console.Write ("Example menu - ");
+				IO.ImmediateInput ("help");
+			};
 		}
 	}
 }
