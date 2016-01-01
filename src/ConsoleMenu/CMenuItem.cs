@@ -8,11 +8,10 @@ namespace ConsoleMenu
 {
 	/// <summary>
 	/// A single console menu item. It consists of a selector (keyword), a help text and the individual behavior.
-	///
 	/// Also offers various ways to add, retrieve and use subitems.
 	///
 	/// <example>
-	/// Create a hellow world command:
+	/// To create a hello world command:
 	/// <code>
 	/// var menuitem = new CMenuItem ("hello", s => Console.WriteLine ("Hello world!"));
 	/// </code>
@@ -22,8 +21,9 @@ namespace ConsoleMenu
 	{
 		private Dictionary<string, CMenuItem> _Menu = new Dictionary<string, CMenuItem> (StringComparer.InvariantCultureIgnoreCase);
 		private CMenuItem _Default = null;
-
 		private StringComparison? _StringComparison;
+		private Action<string> _Execute;
+		private Func<bool> _Visible;
 
 		/// <summary>
 		/// Parent of this item, if any.
@@ -36,6 +36,7 @@ namespace ConsoleMenu
 		/// <remarks>
 		/// This property can be used to combine object and collection initializers.
 		/// <example>
+		/// <code>
 		/// var m = new CMenuItem ("parent") {
 		///	HelpText = "help", // object initializer
 		///	MenuItem = { // collection initializer
@@ -43,6 +44,7 @@ namespace ConsoleMenu
 		///		new CMenuItem ("child 2"),
 		///	}
 		/// };
+		/// </code>
 		/// </example>
 		/// </remarks>
 		/// </summary>
@@ -51,7 +53,9 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Gets or sets how entered commands are compared.
 		///
+		/// <para>
 		/// By default, the comparison is case insensitive and culture invariant.
+		/// </para>
 		/// </summary>
 		public virtual StringComparison StringComparison
 		{
@@ -73,7 +77,7 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Keyword to select this item.
+		/// The Keyword used to select this item.
 		/// </summary>
 		public string Selector
 		{
@@ -82,7 +86,7 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Descriptive help text.
+		/// A descriptive help text.
 		/// </summary>
 		public string HelpText
 		{
@@ -90,10 +94,8 @@ namespace ConsoleMenu
 			set;
 		}
 
-		private Action<string> _Execute;
-
 		/// <summary>
-		/// Sets the behavior upon selection
+		/// Sets the behavior upon selection. This overrides the default behavior of <c>Execute</c>.
 		/// </summary>
 		/// <param name="action">
 		/// Behavior when selected.
@@ -106,8 +108,15 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Behavior upon selection.
 		///
-		/// By default, if present, this node's behavior will be executed.
+		/// <para>
+		/// If present, this node's behavior property will be executed.
 		/// Else, execution will be delegated to the appropriate child.
+		/// </para>
+		///
+		/// <remarks>
+		/// When overriding <c>Execute</c> in a derived class, it is usually recommended to include a call to
+		/// either <c>Execute</c> or <c>ExecuteChild</c>.
+		/// </remarks>
 		/// </summary>
 		public virtual void Execute (string arg)
 		{
@@ -124,13 +133,29 @@ namespace ConsoleMenu
 			}
 		}
 
-		private Func<bool> _Visible;
-
+		/// <summary>
+		/// Sets a condition function which determines if this menu item is visible.
+		///
+		/// <para>
+		/// Invisible menu items cannot be run and are excluded from command listings by <c>help</c>.
+		/// </para>
+		///
+		/// <remarks>
+		/// The condition is examined anew every time its result is needed, so it should be cheap to call.
+		/// </remarks>
+		/// </summary>
 		public void SetVisibilityCondition (Func<bool> condition)
 		{
 			_Visible = condition;
 		}
 
+		/// <summary>
+		/// Returns true iff this item is visible.
+		///
+		/// <para>
+		/// Invisible menu items cannot be run and are excluded from command listings by <c>help</c>.
+		/// </para>
+		/// </summary>
 		public virtual bool IsVisible ()
 		{
 			if (_Visible != null) {
@@ -141,7 +166,7 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Creates a new CMenuItem from keyword, behavior and help text.
+		/// Creates a new CMenuItem using the specified keyword, behavior and help text.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
 		/// <param name="execute">Behavior when selected.</param>
@@ -154,7 +179,7 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Creates a new CMenuItem from keyword.
+		/// Creates a new CMenuItem using the specified keyword.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
 		public CMenuItem (string selector)
@@ -162,9 +187,11 @@ namespace ConsoleMenu
 		{ }
 
 		/// <summary>
-		/// Add new command.
+		/// Adds a command.
 		///
+		/// <remarks>
 		/// The menu's internal structure and abbreviations are updated automatically.
+		/// </remarks>
 		/// </summary>
 		/// <param name="it">Command to add.</param>
 		/// <returns>The added CMenuItem</returns>
@@ -193,7 +220,7 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Adds a new command from keyword and help.
+		/// Creates a new command using the specified keyword and help text.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
 		/// <param name="help">Descriptive help text</param>
@@ -204,7 +231,7 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Adds a new command from keyword.
+		/// Creates a new command using the specified keyword.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
 		/// <returns>The added CMenuItem</returns>
@@ -214,7 +241,7 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Creates a new CMenuItem from keyword, behavior and help text.
+		/// Creates a new CMenuItem using the specified keyword, behavior and help text.
 		/// </summary>
 		/// <param name="selector">Keyword</param>
 		/// <param name="execute">Behavior when selected.</param>
@@ -230,16 +257,21 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Gets or sets the CMenuItem associated with the specified keyword.
 		///
+		/// <para>
 		/// Disabled items are returned. Use the null key to access the default item.
+		/// </para>
 		/// </summary>
+		///
 		/// <param name="key">
 		/// Keyword of the CMenuItem. The selector must match perfectly (i.e. is not an abbreviation of the keyword).
 		///
 		/// If the key is null, the value refers to the default item.
 		/// </param>
+		///
 		/// <value>
 		/// The CMenuItem associated with the specified keyword, or null.
 		/// </value>
+		///
 		/// <returns>
 		/// The menu item associated with the specified keyword.
 		/// </returns>
@@ -266,10 +298,17 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Returns the commands equal, or starting with, the specified cmd.
+		/// Returns all commands equal to, or starting with, the specified argument.
 		///
+		/// <para>
+		/// If a perfect match was found, it will be returned solely.
+		/// Else, all prefix matches will be returned.
+		/// </para>
+		/// <para>
 		/// Does not return the default menu item.
+		/// </para>
 		/// </summary>
+		///
 		/// <param name="includeDisabled">
 		/// Disabled menu items are included iff this is set.
 		/// </param>
@@ -303,16 +342,20 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Retrieves the IMenuItem associated with the specified keyword.
+		/// Retrieves the <c>IMenuItem</c> associated with the specified keyword.
 		///
 		/// If no single item matches perfectly, the search will broaden to all items starting with the keyword.
 		///
-		/// In case sensitive mode, missing match which could be solved by different casing will re reported if complain is specified.
+		/// In case sensitive mode, missing match which could be solved by different casing will re reported if
+		/// <c>complain</c> is specified.
 		///
-		/// If <c>useDefault</c> is set and a default item is present, it will be returned and no complaint will be generated.
+		/// If <c>useDefault</c> is set and a default item is present, it will be returned and no complaint
+		/// will be generated.
 		/// </summary>
+		///
 		/// <param name="cmd">
-		/// In: The command, possibly with arguments, from which the keyword is extracted which uniquely identifies the searched menu item.
+		/// In: The command, possibly with arguments, from which the keyword is extracted which uniquely
+		/// identifies the searched menu item.
 		/// Out: The keyword uniquely identifying a menu item, or null if no such menu item was found.
 		/// </param>
 		/// <param name="args">
@@ -322,7 +365,8 @@ namespace ConsoleMenu
 		/// If true, clarifications about missing or superfluous matches will be written to stdout.
 		/// </param>
 		/// <param name="useDefault">
-		/// The single closest matching menu item, or the default item if no better fit was found, or null in case of 0 or multiple matches.
+		/// The single closest matching menu item, or the default item if no better fit was found, or null in
+		/// case of 0 or multiple matches.
 		/// </param>
 		/// <param name="includeDisabled">
 		/// Disabled menu items are included iff this is set.
@@ -408,8 +452,9 @@ namespace ConsoleMenu
 
 		/// <summary>
 		/// Returns an enumerator over all menu items contained in this item.
-		///
+		/// <para>
 		/// The default item will not be enumerated.
+		/// </para>
 		/// </summary>
 		public IEnumerator<CMenuItem> GetEnumerator ()
 		{
@@ -427,11 +472,15 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Returns a dictionary containing all contained menu items and their corresponding abbreviation.
 		///
+		/// <para>
 		/// The abbreviations will be updated if commands are added, changed or removed.
-		///
+		/// </para>
+		/// <para>
 		/// The default menu item will not be returned.
-		///
+		/// </para>
+		/// <para>
 		/// Hidden menu items will not be returned, though they are considered when generating abbreviations.
+		/// </para>
 		/// </summary>
 		public IDictionary<string, string> CommandAbbreviations ()
 		{
