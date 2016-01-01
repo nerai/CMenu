@@ -26,7 +26,7 @@ namespace ConsoleMenu
 		/// Create a new CMenu.
 		///
 		/// <para>
-		/// The menu will initially contain the following commands:
+		/// Iff no selector was specified, the menu will initially contain the following commands:
 		/// <list type="bullet">
 		/// <item>help</item>
 		/// <item>quit</item>
