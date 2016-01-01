@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ExampleMenu.Recording
+namespace ExampleMenu.Examples.Recording
 {
 	/// <summary>
 	/// A record store

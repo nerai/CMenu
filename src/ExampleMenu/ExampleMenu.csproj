@@ -75,21 +75,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Procedures\MI_Goto.cs" />
-    <Compile Include="Recording\FileRecordStore.cs" />
-    <Compile Include="Recording\IRecordStore.cs" />
-    <Compile Include="MI_Add.cs" />
-    <Compile Include="MI_Pause.cs" />
-    <Compile Include="Recording\MI_Replay.cs" />
-    <Compile Include="Recording\MI_Record.cs" />
-    <Compile Include="MI_If.cs" />
-    <Compile Include="MI_Echo.cs" />
-    <Compile Include="Procedures\MI_Return.cs" />
-    <Compile Include="Procedures\MI_Call.cs" />
-    <Compile Include="Procedures\ProcManager.cs" />
-    <Compile Include="Procedures\MI_Proc.cs" />
+    <Compile Include="Examples\Procedures\MI_Goto.cs" />
+    <Compile Include="Examples\ExamplesMenu.cs" />
+    <Compile Include="Examples\Recording\FileRecordStore.cs" />
+    <Compile Include="Examples\Recording\IRecordStore.cs" />
+    <Compile Include="Examples\MI_Add.cs" />
+    <Compile Include="Examples\MI_Pause.cs" />
+    <Compile Include="Examples\Recording\MI_Replay.cs" />
+    <Compile Include="Examples\Recording\MI_Record.cs" />
+    <Compile Include="Examples\MI_If.cs" />
+    <Compile Include="Examples\MI_Echo.cs" />
+    <Compile Include="Examples\Procedures\MI_Return.cs" />
+    <Compile Include="Examples\Procedures\MI_Call.cs" />
+    <Compile Include="Examples\Procedures\ProcManager.cs" />
+    <Compile Include="Examples\Procedures\MI_Proc.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tutorial.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>

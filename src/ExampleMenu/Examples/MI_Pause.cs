@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ConsoleMenu;
 
-namespace ExampleMenu
+namespace ExampleMenu.Examples
 {
 	public class MI_Pause : CMenuItem
 	{
