@@ -50,7 +50,7 @@ namespace ConsoleMenu
 		public string PromptCharacter = "$";
 
 		/// <summary>
-		/// Start console promting and processing.
+		/// Start console prompting and processing.
 		/// </summary>
 		public void Run ()
 		{
@@ -61,6 +61,9 @@ namespace ConsoleMenu
 			}
 		}
 
+		/// <summary>
+		/// Stops menu processing. Control will return to the parent menu.
+		/// </summary>
 		public void Quit ()
 		{
 			_Quit = true;
