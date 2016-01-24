@@ -17,12 +17,12 @@ namespace ExampleMenu.Examples
 			PromptCharacter = "+";
 
 			Add ("=", s => Quit (), "Prints the sum and quits the add submenu");
-			Add (null, s => Add (s));
+			Add (null, s => AddNumber (s));
 		}
 
 		private int _Sum = 0;
 
-		private void Add (string s)
+		private void AddNumber (string s)
 		{
 			int i;
 			if (int.TryParse (s, out i)) {
