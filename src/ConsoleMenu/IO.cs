@@ -68,17 +68,18 @@ namespace ConsoleMenu
 					}
 
 					if (input == null) {
+						_InputAvailable.Reset ();
 						if (!PassiveMode) {
 							if (prompt != null) {
 								Console.Write (prompt + " ");
 							}
 							input = Console.ReadLine ();
 						}
-						else {
-							_InputAvailable.Reset ();
-							_InputAvailable.WaitOne ();
-						}
 					}
+				}
+
+				if (input == null && PassiveMode) {
+					_InputAvailable.WaitOne ();
 				}
 
 				if (!string.IsNullOrWhiteSpace (input)) {
