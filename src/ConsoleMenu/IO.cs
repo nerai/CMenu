@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace ConsoleMenu
 {
@@ -22,45 +23,68 @@ namespace ConsoleMenu
 
 		private static readonly Stack<Frame> _Frames = new Stack<Frame> ();
 
+		private static readonly ManualResetEvent _InputAvailable = new ManualResetEvent (false);
+
+		/// <summary>
+		/// If no input is queued already and passive mode is enabled, QueryInput will block until input is available.
+		/// If no input is queued already and passive mode is disabled, QueryInput will prompt the user for input.
+		///
+		/// PassiveMode is disabled by default.
+		/// </summary>
+		public static bool PassiveMode
+		{
+			get;
+			set;
+		}
+
 		/// <summary>
 		/// Returns the next available line of input.
 		///
-		/// If buffered input is available, its next line will be returned. Else, the user will be prompted for input.
+		/// Empty input (whitespace only) will always be ignored.
 		///
-		/// Empty input (whitespace only) will be ignored.
+		/// If buffered input is available, its next line will be returned.
+		///
+		/// If no bufferd input is available, the call will block. Depending on PassiveMode either the user
+		/// will be prompted for input, or the method will wait until input was added to the queue.
 		/// </summary>
 		/// <param name="prompt">
 		/// Prompt string, or null if no prompt string should be displayed.
+		///
+		/// In passive mode, the prompt will never be displayed.
 		/// </param>
 		public static string QueryInput (string prompt)
 		{
 			for (; ; ) {
-				var input = GetNextFrameInput ();
+				string input = null;
 
-				if (input == null) {
-					if (prompt != null) {
-						Console.Write (prompt + " ");
+				lock (_Frames) {
+					while (_Frames.Any ()) {
+						var f = _Frames.Peek ();
+						if (!f.E.MoveNext ()) {
+							_Frames.Pop ();
+							continue;
+						}
+						input = f.E.Current;
 					}
-					input = Console.ReadLine ();
+
+					if (input == null) {
+						if (!PassiveMode) {
+							if (prompt != null) {
+								Console.Write (prompt + " ");
+							}
+							input = Console.ReadLine ();
+						}
+						else {
+							_InputAvailable.Reset ();
+							_InputAvailable.WaitOne ();
+						}
+					}
 				}
 
 				if (!string.IsNullOrWhiteSpace (input)) {
 					return input;
 				}
 			}
-		}
-
-		private static string GetNextFrameInput ()
-		{
-			while (_Frames.Any ()) {
-				var f = _Frames.Peek ();
-				if (!f.E.MoveNext ()) {
-					_Frames.Pop ();
-					continue;
-				}
-				return f.E.Current;
-			}
-			return null;
 		}
 
 		/// <summary>
@@ -74,7 +98,10 @@ namespace ConsoleMenu
 				throw new ArgumentNullException ("source");
 			}
 
-			_Frames.Push (new Frame (source));
+			lock (_Frames) {
+				_Frames.Push (new Frame (source));
+				_InputAvailable.Set ();
+			}
 		}
 
 		/// <summary>
