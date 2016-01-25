@@ -234,3 +234,36 @@ Command abbreviations do not change when hidden items become visible, i.e. it is
 	inl | inline
 	q   | quit
 	s   | subclassed
+
+
+
+## Passive mode
+
+By default, input is handled in active mode, i.e. CMenu will actively prompt the user for required input and read their console input.
+
+This behavior may be undesirable if you want closer control, for instance:
+
+* In a GUI environment, creating input in the GUI instead of the console as usual
+* In a batch or shell environment, feeding stored input instead of prompting the user for it
+
+To suppress active prompting, enable passive mode by setting the `PassiveMode` flag. The menu will then wait for programmatic input, e.g. via `IO.AddInput`.
+
+	IO is currently in active mode - you will be prompted for input.
+	The 'passive' command will turn passive mode on, which disables interactive input.
+	The 'active' command will turn active mode back on.
+	Please enter 'passive'.
+	$ p
+	Passive mode selected. Input will be ignored.
+	A timer will be set which will input 'active' in 5 seconds.
+	5...
+	4...
+	3...
+	2...
+	1...
+	0...
+	Sending input 'active' to the IO queue.
+	Active mode selected.
+	$ 
+
+Side note: Switching from active to passive mode during an (active) input query (i.e. while the user is being prompted for input) is supported but may lead to undesired behavior. In particular, the prompt will still wait for input after switching. This is due to limitations in the underlying system.
+

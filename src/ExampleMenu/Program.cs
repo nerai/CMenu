@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using ConsoleMenu;
 using ExampleMenu.Examples;
 
@@ -21,6 +22,7 @@ namespace ExampleMenu
 			mainmenu.Add ("tutorial", s => new Tutorial ().Run ());
 			mainmenu.Add ("tree-init", s => TreeInitialization ());
 			mainmenu.Add ("disabled", s => DisabledCommands ());
+			mainmenu.Add ("passive", s => PassiveMode ());
 			mainmenu.Add (new ExamplesMenu ());
 
 			IO.ImmediateInput ("help");
@@ -107,6 +109,35 @@ namespace ExampleMenu
 			{
 				Console.WriteLine ("Disabled subclassed command was enabled!");
 			}
+		}
+
+		static void PassiveMode ()
+		{
+			var m = new CMenu ();
+			m.Add ("passive", s => {
+				IO.PassiveMode = true;
+				Console.WriteLine ("Passive mode selected. Input will be ignored.");
+				Console.WriteLine ("A timer will be set which will input 'active' in 5 seconds.");
+				new Thread (() => {
+					for (int i = 5; i >= 0; i--) {
+						Console.WriteLine (i + "...");
+						Thread.Sleep (1000);
+					}
+					Console.WriteLine ("Sending input 'active' to the IO queue.");
+					IO.ImmediateInput ("active");
+				}).Start ();
+			});
+			m.Add ("active", s => {
+				IO.PassiveMode = false;
+				Console.WriteLine ("Active mode selected.");
+			});
+
+			Console.WriteLine ("IO is currently in active mode - you will be prompted for input.");
+			Console.WriteLine ("The 'passive' command will turn passive mode on, which disables interactive input.");
+			Console.WriteLine ("The 'active' command will turn active mode back on.");
+			Console.WriteLine ("Please enter 'passive'.");
+
+			m.Run ();
 		}
 	}
 }
