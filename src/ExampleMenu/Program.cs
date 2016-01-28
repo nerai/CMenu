@@ -23,6 +23,7 @@ namespace ExampleMenu
 			mainmenu.Add ("tree-init", s => TreeInitialization ());
 			mainmenu.Add ("disabled", s => DisabledCommands ());
 			mainmenu.Add ("passive", s => PassiveMode ());
+			mainmenu.Add ("immediate", s => ImmediateMode ());
 			mainmenu.Add (new ExamplesMenu ());
 
 			mainmenu.CQ.ImmediateInput ("help");
@@ -137,6 +138,15 @@ namespace ExampleMenu
 			Console.WriteLine ("The 'active' command will turn active mode back on.");
 			Console.WriteLine ("Please enter 'passive'.");
 
+			m.Run ();
+		}
+
+		static void ImmediateMode ()
+		{
+			var m = new CMenu ();
+			m.ImmediateMenuMode = true;
+			m.Add ("foo", s => Console.WriteLine ("foo"));
+			m.Add ("bar", s => Console.WriteLine ("bar"));
 			m.Run ();
 		}
 	}
