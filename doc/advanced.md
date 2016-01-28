@@ -283,3 +283,11 @@ To suppress active prompting, enable passive mode by setting the `PassiveMode` f
 
 Side note: Switching from active to passive mode during an (active) input query (i.e. while the user is being prompted for input) is supported but may lead to undesired behavior. In particular, the prompt will still wait for input after switching. This is due to limitations in the underlying system.
 
+
+
+## Immediate mode
+
+By default, the user has to type in commands (and possibly their arguments). Sometimes though, only selection of options is required, similar to a classic 'menu'.
+
+For this purpose, set the `ImmediateMode` flag in your menu. When run, it will display all available options by default (no need to type `help`). Each option will be preceded by a selection number, and simply entering that number will activate the corresponding menu item - no need to even press the Enter key.
+
