@@ -74,10 +74,10 @@ namespace ExampleMenu
 			m.Add ("enable", s => Enabled = true);
 
 			/*
-			 * Create a new inline command, then set its visilibity function so it returns the above flag.
+			 * Create a new inline command, then set its enabledness function so it returns the above flag.
 			 */
 			var mi = m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"));
-			mi.SetVisibilityCondition (() => Enabled);
+			mi.SetEndablednessCondition (() => Enabled);
 
 			/*
 			 * Command abbreviations do not change when hidden items become visible, i.e. it is made sure they are already long
@@ -100,7 +100,7 @@ namespace ExampleMenu
 				HelpText = "This command, which is defined in its own class, is disabled by default.";
 			}
 
-			public override bool IsVisible ()
+			public override bool IsEnabled ()
 			{
 				return Enabled;
 			}
