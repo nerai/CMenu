@@ -60,7 +60,7 @@ namespace ExampleMenu
 			m.Run ();
 		}
 
-		static bool DisabledCommandsEnabled = false;
+		static bool Enabled = false;
 
 		static void DisabledCommands ()
 		{
@@ -70,14 +70,14 @@ namespace ExampleMenu
 			 * In this example, a global flag is used to determine the visibility of disabled commands.
 			 * It is initially cleared, the 'enable' command sets it.
 			 */
-			DisabledCommandsEnabled = false;
-			m.Add ("enable", s => DisabledCommandsEnabled = true);
+			Enabled = false;
+			m.Add ("enable", s => Enabled = true);
 
 			/*
-			 * Create a new inline command, then set its visilibity function so it returns the above flag.
+			 * Create a new inline command, then set its enabledness function so it returns the above flag.
 			 */
 			var mi = m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"));
-			mi.SetVisibilityCondition (() => DisabledCommandsEnabled);
+			mi.SetEndablednessCondition (() => Enabled);
 
 			/*
 			 * Command abbreviations do not change when hidden items become visible, i.e. it is made sure they are already long
@@ -100,9 +100,9 @@ namespace ExampleMenu
 				HelpText = "This command, which is defined in its own class, is disabled by default.";
 			}
 
-			public override bool IsVisible ()
+			public override bool IsEnabled ()
 			{
-				return DisabledCommandsEnabled;
+				return Enabled;
 			}
 
 			public override void Execute (string arg)

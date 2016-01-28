@@ -23,7 +23,7 @@ namespace ConsoleMenu
 		private CMenuItem _Default = null;
 		private StringComparison? _StringComparison;
 		private Action<string> _Execute;
-		private Func<bool> _Visible;
+		private Func<bool> _Enabled;
 
 		/// <summary>
 		/// Parent of this item, if any.
@@ -134,32 +134,32 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Sets a condition function which determines if this menu item is visible.
+		/// Sets a condition function which determines if this menu item is enabled.
 		///
 		/// <para>
-		/// Invisible menu items cannot be run and are excluded from command listings by <c>help</c>.
+		/// Disabled menu items cannot be run and are excluded from command listings by <c>help</c>.
 		/// </para>
 		///
 		/// <remarks>
 		/// The condition is examined anew every time its result is needed, so it should be cheap to call.
 		/// </remarks>
 		/// </summary>
-		public void SetVisibilityCondition (Func<bool> condition)
+		public void SetEndablednessCondition (Func<bool> condition)
 		{
-			_Visible = condition;
+			_Enabled = condition;
 		}
 
 		/// <summary>
-		/// Returns true iff this item is visible.
+		/// Returns true iff this item is enabled.
 		///
 		/// <para>
-		/// Invisible menu items cannot be run and are excluded from command listings by <c>help</c>.
+		/// Disabled menu items cannot be run and are excluded from command listings by <c>help</c>.
 		/// </para>
 		/// </summary>
-		public virtual bool IsVisible ()
+		public virtual bool IsEnabled ()
 		{
-			if (_Visible != null) {
-				return _Visible ();
+			if (_Enabled != null) {
+				return _Enabled ();
 			}
 
 			return true;
@@ -323,7 +323,7 @@ namespace ConsoleMenu
 			 */
 			CMenuItem mi;
 			_Menu.TryGetValue (cmd, out mi);
-			if (!includeDisabled && mi != null && !mi.IsVisible ()) {
+			if (!includeDisabled && mi != null && !mi.IsEnabled ()) {
 				mi = null;
 			}
 			if (mi != null) {
@@ -335,7 +335,7 @@ namespace ConsoleMenu
 			 */
 			var its = _Menu.Values
 				.Where (it => it.Selector.StartsWith (cmd, comparison))
-				.Where (it => includeDisabled || it.IsVisible ())
+				.Where (it => includeDisabled || it.IsEnabled ())
 				.OrderBy (it => it.Selector)
 				.ToArray ();
 			return its;
@@ -460,7 +460,7 @@ namespace ConsoleMenu
 		{
 			return _Menu
 				.Values
-				.Where (mi => mi.IsVisible ())
+				.Where (mi => mi.IsEnabled ())
 				.GetEnumerator ();
 		}
 

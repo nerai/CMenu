@@ -155,16 +155,16 @@ You can also combine object and collection initializers
 
 ## Disabled commands
 
-Command which cannot be used currently, but should still be available in the menu tree, can disable themselves. Disabled commands cannot be used and are not listed by `help`.
+Commands which cannot currently be used, but should still be available in the menu tree at other times, can disable themselves. Disabled commands cannot be used and are not listed by `help`.
 
-In this example, a global flag (`bool DisabledCommandsEnabled`) is used to determine the visibility of disabled commands. It is initially cleared, the 'enable' command sets it.
+In this example, a global flag (`bool Enabled`) is used to determine if a command is enabled. It is initially cleared, the `enable` command sets it.
 
-	m.Add ("enable", s => DisabledCommandsEnabled = true);
+	m.Add ("enable", s => Enabled = true);
 
-Create a new inline command, then set its visilibity function so it returns the above flag.
+Create a new inline command, then set its enabledness function so it returns the above flag.
 
 	var mi = m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"));
-	mi.SetVisibilityCondition (() => DisabledCommandsEnabled);
+	mi.SetEnablednessCondition (() => Enabled);
 
 	$ inline
 	Unknown command: inline
@@ -172,7 +172,7 @@ Create a new inline command, then set its visilibity function so it returns the 
 	$ inline
 	Disabled inline command was enabled!
 
-It is also possible to override the visibility by subclassing.
+It is also possible to override the enabledness by subclassing.
 
 	private class DisabledItem : CMenuItem
 	{
@@ -182,9 +182,9 @@ It is also possible to override the visibility by subclassing.
 			HelpText = "This command, which is defined in its own class, is disabled by default.";
 		}
 
-		public override bool IsVisible ()
+		public override bool IsEnabled ()
 		{
-			return DisabledCommandsEnabled;
+			return Enabled;
 		}
 
 		public override void Execute (string arg)
@@ -199,7 +199,7 @@ It is also possible to override the visibility by subclassing.
 	$ subclassed
 	Disabled subclassed command was enabled!
 
-Invisible commands are not displayed by `help`:
+Disabled commands are not displayed by `help`:
 
 	$ help
 	Available commands:
@@ -215,7 +215,7 @@ Invisible commands are not displayed by `help`:
 	q   | quit
 	s   | subclassed
 
-Command abbreviations do not change when hidden items become visible, i.e. it is made sure they are already long enough. This avoids confusion about abbreviations suddenly changing.
+Command abbreviations do not change when disabled items become enabled, i.e. it is made sure they are already long enough to be unique. This avoids confusion about abbreviations suddenly changing.
 
 	m.Add ("incollision", s => Console.WriteLine ("The abbreviation of 'incollision' is longer to account for the hidden 'inline' command."));
 
