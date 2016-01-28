@@ -81,8 +81,41 @@ namespace ConsoleMenu
 		/// </summary>
 		public string Selector
 		{
-			get;
-			set;
+			get {
+				return _Selector;
+			}
+			set {
+				if (_Selector != value) {
+					if (Parent != null) {
+						Parent.Remove (this);
+					}
+					_Selector = value;
+					if (Parent != null) {
+						Parent.Add (this);
+					}
+				}
+			}
+		}
+
+		private string _Selector;
+
+		/// <summary>
+		/// Remove a child menu item.
+		/// </summary>
+		/// <param name="it">
+		/// Item to be removed.
+		/// </param>
+		/// <returns>
+		/// True iff the item was found and successfully removed.
+		/// </returns>
+		public bool Remove (CMenuItem it)
+		{
+			if (it == _Default) {
+				_Default = null;
+				return true;
+			}
+
+			return _Menu.Remove (it.Selector);
 		}
 
 		/// <summary>
