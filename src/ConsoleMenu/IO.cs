@@ -65,6 +65,7 @@ namespace ConsoleMenu
 							continue;
 						}
 						input = f.E.Current;
+						break;
 					}
 
 					if (input == null) {
