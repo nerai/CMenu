@@ -291,3 +291,22 @@ By default, the user has to type in commands (and possibly their arguments). Som
 
 For this purpose, set the `ImmediateMode` flag in your menu. When run, it will display all available options by default (no need to type `help`). Each option will be preceded by a selection number, and simply entering that number will activate the corresponding menu item - no need to even press the Enter key.
 
+	var m = new CMenu ();
+	m.ImmediateMenuMode = true;
+	m.Add ("foo", s => Console.WriteLine ("foo"));
+	m.Add ("bar", s => Console.WriteLine ("bar"));
+	m.Run ();
+
+	 1 quit
+	 2 help
+	 3 foo
+	 4 bar
+	[presses 3 key]
+	foo
+	 1 quit
+	 2 help
+	 3 foo
+	 4 bar
+
+
+
