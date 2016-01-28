@@ -439,8 +439,12 @@ namespace ConsoleMenu
 
 		/// <summary>
 		/// Executes the specified command using only children (instead of this node's own behavior).
+		///
+		/// If no fitting child could be found, an error message will be displayed.
 		/// </summary>
-		/// <param name="args">Command to execute using contained commands.</param>
+		/// <param name="args">
+		/// Command to execute using contained commands.
+		/// </param>
 		public void ExecuteChild (string args)
 		{
 			var cmd = args;

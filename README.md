@@ -8,7 +8,7 @@ CMenu aims for low overhead - simple stuff should be simple to implement. If you
 
 At the same time, complex scenarios are supported. Large menus can easily be split into several classes. Background self-configuration. You do not have to worry about all the annoying details involved in larger menus, it will just work.
 
-Most importantly, it is very simple and fast to use. Commands can be abbreviated, a smart parser enables even partial matching. A help command is integrated.
+Most importantly, your menus will be very simple and fast to use. Commands can be abbreviated, a smart parser enables even partial matching. Help for users is integrated.
 
 
 ## Quickstart
