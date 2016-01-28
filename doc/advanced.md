@@ -155,16 +155,16 @@ You can also combine object and collection initializers
 
 ## Disabled commands
 
-Command which cannot be used currently, but should still be available in the menu tree, can disable themselves. Disabled commands cannot be used and are not listed by `help`.
+Commands which cannot currently be used, but should still be available in the menu tree at other times, can disable themselves. Disabled commands cannot be used and are not listed by `help`.
 
-In this example, a global flag (`bool DisabledCommandsEnabled`) is used to determine the visibility of disabled commands. It is initially cleared, the 'enable' command sets it.
+In this example, a global flag (`bool Enabled`) is used to determine the visibility of disabled commands. It is initially cleared, the 'enable' command sets it.
 
-	m.Add ("enable", s => DisabledCommandsEnabled = true);
+	m.Add ("enable", s => Enabled = true);
 
 Create a new inline command, then set its visilibity function so it returns the above flag.
 
 	var mi = m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"));
-	mi.SetVisibilityCondition (() => DisabledCommandsEnabled);
+	mi.SetVisibilityCondition (() => Enabled);
 
 	$ inline
 	Unknown command: inline
@@ -184,7 +184,7 @@ It is also possible to override the visibility by subclassing.
 
 		public override bool IsVisible ()
 		{
-			return DisabledCommandsEnabled;
+			return Enabled;
 		}
 
 		public override void Execute (string arg)
