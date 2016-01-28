@@ -54,7 +54,7 @@ namespace ConsoleMenu
 		/// </param>
 		public static string QueryInput (string prompt)
 		{
-			for (; ; ) {
+			for (;;) {
 				string input = null;
 
 				lock (_Frames) {

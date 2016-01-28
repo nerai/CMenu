@@ -39,12 +39,10 @@ namespace ExampleMenu.Examples.Recording
 
 		public string EndRecordCommand
 		{
-			get
-			{
+			get {
 				return _EndRecordCommand;
 			}
-			set
-			{
+			set {
 				this[_EndRecordCommand].Selector = value;
 				_EndRecordCommand = value;
 			}

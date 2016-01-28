@@ -59,8 +59,7 @@ namespace ConsoleMenu
 		/// </summary>
 		public virtual StringComparison StringComparison
 		{
-			get
-			{
+			get {
 				if (_StringComparison.HasValue) {
 					return _StringComparison.Value;
 				}
@@ -69,8 +68,7 @@ namespace ConsoleMenu
 				}
 				return StringComparison.InvariantCultureIgnoreCase;
 			}
-			set
-			{
+			set {
 				_StringComparison = value;
 				_Menu = new Dictionary<string, CMenuItem> (_Menu, value.GetCorrespondingComparer ());
 			}
@@ -277,8 +275,7 @@ namespace ConsoleMenu
 		/// </returns>
 		public CMenuItem this[string key]
 		{
-			get
-			{
+			get {
 				if (key == null) {
 					return _Default;
 				}
@@ -286,8 +283,7 @@ namespace ConsoleMenu
 				_Menu.TryGetValue (key, out it);
 				return it;
 			}
-			set
-			{
+			set {
 				if (key == null) {
 					_Default = value;
 				}
