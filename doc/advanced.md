@@ -44,6 +44,22 @@ The integrated help is able to "peek" into commands.
 	$ help c u
 	Converts to upper case
 
+If only a single inner item exists, users do not have to type it. Automatic fall-through forwards to the inner item directly.
+
+	var mi = menu.Add ("fall");
+	mi.Add ("through", s => Console.WriteLine ("Fell through to the innermost item."));
+
+	$ fall through
+	Fell through to the innermost item.
+	$ fall t
+	Fell through to the innermost item.
+	$ fall 
+	Fell through to the innermost item.
+	$ fall
+	Fell through to the innermost item.
+	$ fall xy
+	Unknown command: xy
+
 
 
 ## Nested menus and default commands
