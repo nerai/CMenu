@@ -15,7 +15,7 @@ namespace ExampleMenu.Examples.Procedures
 		private readonly ProcManager _Mgr;
 
 		public MI_Proc (ProcManager mgr)
-			: base ("proc")
+			: base ("proc", false)
 		{
 			if (mgr == null) {
 				throw new ArgumentNullException ("mgr");

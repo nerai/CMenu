@@ -16,7 +16,7 @@ namespace ExampleMenu.Examples.Recording
 		private readonly IRecordStore _Store;
 
 		public MI_Record (IRecordStore store)
-			: base ("record")
+			: base ("record", false)
 		{
 			if (store == null) {
 				throw new ArgumentNullException ("store");

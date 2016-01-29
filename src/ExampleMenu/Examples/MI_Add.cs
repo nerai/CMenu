@@ -9,7 +9,7 @@ namespace ExampleMenu.Examples
 	public class MI_Add : CMenu
 	{
 		public MI_Add ()
-			: base ("add")
+			: base ("add", false)
 		{
 			HelpText = ""
 				+ "add\n"
