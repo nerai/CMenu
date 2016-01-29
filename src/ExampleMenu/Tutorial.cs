@@ -17,6 +17,7 @@ namespace ExampleMenu
 			CaseSensitivity ();
 			InputModification ();
 			InnerCommands ();
+			InnerCommandFallThrough ();
 			NestedCommands ();
 			SharingInInners ();
 			IO.ImmediateInput ("help");
@@ -102,6 +103,17 @@ namespace ExampleMenu
 			mi.Add ("lower", s => Console.WriteLine (s.ToLowerInvariant ()), "Converts to lower case");
 
 			Console.WriteLine ("New command <convert> available. It features the inner commands \"upper\" and \"lower\".");
+			menu.Run ();
+		}
+
+		private void InnerCommandFallThrough ()
+		{
+			var mi = menu.Add ("fall");
+			mi.Add ("through", s => Console.WriteLine ("Fell through to the innermost item."));
+
+			Console.WriteLine ("The new inner command 'fall' contains only a single inner item 'through'.");
+			Console.WriteLine ("Any of the following will directly invoke 'through':");
+			Console.WriteLine ("'fall through', 'fall t', 'fall ', 'fall'");
 			menu.Run ();
 		}
 
