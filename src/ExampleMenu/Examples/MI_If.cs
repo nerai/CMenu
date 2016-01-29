@@ -37,12 +37,10 @@ namespace ExampleMenu.Examples
 
 		public override StringComparison StringComparison
 		{
-			get
-			{
+			get {
 				return base.StringComparison;
 			}
-			set
-			{
+			set {
 				base.StringComparison = value;
 			}
 		}
