@@ -43,10 +43,10 @@ namespace ConsoleMenu
 		/// </list>
 		/// </para>
 		/// </summary>
-		public CMenu (string selector = null)
+		public CMenu (string selector = null, bool addDefaultItems = true)
 			: base (selector)
 		{
-			if (selector == null) {
+			if (addDefaultItems) {
 				Add (new MI_Quit (this));
 				Add (new MI_Help (this));
 			}
