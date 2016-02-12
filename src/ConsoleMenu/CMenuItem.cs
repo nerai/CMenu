@@ -89,7 +89,9 @@ namespace ConsoleMenu
 					}
 					_Selector = value;
 					if (Parent != null) {
-						Parent.Add (this);
+						var p = Parent;
+						Parent = null;
+						p.Add (this);
 					}
 				}
 			}
