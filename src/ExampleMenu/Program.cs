@@ -25,7 +25,7 @@ namespace ExampleMenu
 			mainmenu.Add ("passive", s => PassiveMode ());
 			mainmenu.Add (new ExamplesMenu ());
 
-			IO.ImmediateInput ("help");
+			mainmenu.CQ.ImmediateInput ("help");
 			mainmenu.Run ();
 		}
 
@@ -115,7 +115,7 @@ namespace ExampleMenu
 		{
 			var m = new CMenu ();
 			m.Add ("passive", s => {
-				IO.PassiveMode = true;
+				m.CQ.PassiveMode = true;
 				Console.WriteLine ("Passive mode selected. Input will be ignored.");
 				Console.WriteLine ("A timer will be set which will input 'active' in 5 seconds.");
 				new Thread (() => {
@@ -124,11 +124,11 @@ namespace ExampleMenu
 						Thread.Sleep (1000);
 					}
 					Console.WriteLine ("Sending input 'active' to the IO queue.");
-					IO.ImmediateInput ("active");
+					m.CQ.ImmediateInput ("active");
 				}).Start ();
 			});
 			m.Add ("active", s => {
-				IO.PassiveMode = false;
+				m.CQ.PassiveMode = false;
 				Console.WriteLine ("Active mode selected.");
 			});
 

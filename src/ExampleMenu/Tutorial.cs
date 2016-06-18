@@ -20,7 +20,7 @@ namespace ExampleMenu
 			InnerCommandFallThrough ();
 			NestedCommands ();
 			SharingInInners ();
-			IO.ImmediateInput ("help");
+			menu.CQ.ImmediateInput ("help");
 		}
 
 		private void Basics ()
@@ -87,8 +87,8 @@ namespace ExampleMenu
 			 */
 			menu.Add ("repeat",
 				s => {
-					IO.ImmediateInput (s);
-					IO.ImmediateInput (s);
+					menu.CQ.ImmediateInput (s);
+					menu.CQ.ImmediateInput (s);
 				},
 				"Repeats a command two times.");
 
@@ -122,7 +122,7 @@ namespace ExampleMenu
 			menu.Add (new MI_Add ());
 
 			Console.WriteLine ("New command <add> available.");
-			IO.ImmediateInput ("help add");
+			menu.CQ.ImmediateInput ("help add");
 			menu.Run ();
 		}
 

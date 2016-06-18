@@ -28,7 +28,7 @@ namespace ExampleMenu.Examples.Procedures
 
 		public override void Execute (string arg)
 		{
-			IO.AddInput (_Mgr.GenerateInputForProc (arg));
+			CQ.AddInput (_Mgr.GenerateInputForProc (arg));
 		}
 	}
 }
