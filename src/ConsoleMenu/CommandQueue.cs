@@ -9,7 +9,7 @@ namespace ConsoleMenu
 	/// <summary>
 	/// Provides global I/O functions in the context of CMenu.
 	/// </summary>
-	public static class IO
+	public class CommandQueue
 	{
 		private class Frame
 		{
@@ -21,9 +21,9 @@ namespace ConsoleMenu
 			}
 		}
 
-		private static readonly Stack<Frame> _Frames = new Stack<Frame> ();
+		private readonly Stack<Frame> _Frames = new Stack<Frame> ();
 
-		private static readonly ManualResetEvent _InputAvailable = new ManualResetEvent (false);
+		private readonly ManualResetEvent _InputAvailable = new ManualResetEvent (false);
 
 		/// <summary>
 		/// If no input is queued already and passive mode is enabled, QueryInput will block until input is available.
@@ -31,7 +31,7 @@ namespace ConsoleMenu
 		///
 		/// PassiveMode is disabled by default.
 		/// </summary>
-		public static bool PassiveMode
+		public bool PassiveMode
 		{
 			get;
 			set;
@@ -52,7 +52,7 @@ namespace ConsoleMenu
 		///
 		/// In passive mode, the prompt will never be displayed.
 		/// </param>
-		public static string QueryInput (string prompt)
+		public string QueryInput (string prompt)
 		{
 			for (;;) {
 				string input = null;
@@ -94,7 +94,7 @@ namespace ConsoleMenu
 		///
 		/// This source will be used until it is exhausted, then the previous source will be used in the same manner.
 		/// </summary>
-		public static void AddInput (IEnumerable<string> source)
+		public void AddInput (IEnumerable<string> source)
 		{
 			if (source == null) {
 				throw new ArgumentNullException ("source");
@@ -109,7 +109,7 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Puts a single line of input on top of the stack.
 		/// </summary>
-		public static void ImmediateInput (string source)
+		public void ImmediateInput (string source)
 		{
 			if (source == null) {
 				throw new ArgumentNullException ("source");

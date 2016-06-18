@@ -76,7 +76,7 @@ namespace ConsoleMenu
 			OnRun (this);
 
 			while (!_Quit) {
-				var input = IO.QueryInput (PromptCharacter);
+				var input = CQ.QueryInput (PromptCharacter);
 				ExecuteChild (input);
 			}
 

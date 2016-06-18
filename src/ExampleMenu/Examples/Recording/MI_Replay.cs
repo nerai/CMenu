@@ -51,7 +51,7 @@ namespace ExampleMenu.Examples.Recording
 			var rec = _Store.GetRecord (arg);
 			if (rec != null) {
 				var lines = rec.TakeWhile (line => !line.Equals (EndReplayCommand));
-				IO.AddInput (lines);
+				CQ.AddInput (lines);
 			}
 		}
 	}

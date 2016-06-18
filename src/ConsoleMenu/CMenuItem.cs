@@ -24,6 +24,26 @@ namespace ConsoleMenu
 		private StringComparison? _StringComparison;
 		private Action<string> _Execute;
 		private Func<bool> _Enabled;
+		private CommandQueue _CQ;
+
+		protected CommandQueue CQ
+		{
+			get {
+				if (_CQ == null) {
+					var mi = Parent;
+					while (mi != null) {
+						if (mi._CQ != null) {
+							_CQ = mi._CQ;
+							return _CQ;
+						}
+						mi = mi.Parent;
+					}
+
+					_CQ = new CommandQueue ();
+				}
+				return _CQ;
+			}
+		}
 
 		/// <summary>
 		/// Parent of this item, if any.
