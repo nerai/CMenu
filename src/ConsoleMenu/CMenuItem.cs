@@ -158,11 +158,27 @@ namespace ConsoleMenu
 				return;
 			}
 
-			if (this.Any ()) {
-				ExecuteChild (arg);
-			}
-			else {
+			if (!this.Any ()) {
 				throw new NotImplementedException ("This menu item does not have an associated behavior yet.");
+			}
+
+			ExecuteChild (arg);
+		}
+
+		/// <summary>
+		/// Executes the specified command using only children (instead of this node's own behavior).
+		///
+		/// If no fitting child could be found, an error message will be displayed.
+		/// </summary>
+		/// <param name="arg">
+		/// Command to execute using contained commands.
+		/// </param>
+		public void ExecuteChild (string arg)
+		{
+			var cmd = arg;
+			var it = GetMenuItem (ref cmd, out arg, true, true, false);
+			if (it != null) {
+				it.Execute (arg);
 			}
 		}
 
@@ -466,23 +482,6 @@ namespace ConsoleMenu
 			}
 
 			return null;
-		}
-
-		/// <summary>
-		/// Executes the specified command using only children (instead of this node's own behavior).
-		///
-		/// If no fitting child could be found, an error message will be displayed.
-		/// </summary>
-		/// <param name="args">
-		/// Command to execute using contained commands.
-		/// </param>
-		public void ExecuteChild (string args)
-		{
-			var cmd = args;
-			var it = GetMenuItem (ref cmd, out args, true, true, false);
-			if (it != null) {
-				it.Execute (args);
-			}
 		}
 
 		/// <summary>

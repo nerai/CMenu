@@ -96,10 +96,11 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// If this menu gets selected in its parent menu, run it.
+		/// If this item gets selected in its parent menu, run it as a menu itself.
 		/// </summary>
 		/// <param name="arg">
-		/// If an additional nonempty argument is given, it will be executed in the local menu context immediately.
+		/// If an additional nonnull, nonwhitespace argument is given, it will be executed
+		/// in the local menu context immediately.
 		/// </param>
 		public override void Execute (string arg)
 		{
