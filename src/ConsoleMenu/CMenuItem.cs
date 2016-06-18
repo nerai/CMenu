@@ -148,7 +148,7 @@ namespace ConsoleMenu
 		///
 		/// <remarks>
 		/// When overriding <c>Execute</c> in a derived class, it is usually recommended to include a call to
-		/// either <c>Execute</c> or <c>ExecuteChild</c>.
+		/// either <c>base.Execute</c> or <c>ExecuteChild</c>.
 		/// </remarks>
 		/// </summary>
 		public virtual void Execute (string arg)
