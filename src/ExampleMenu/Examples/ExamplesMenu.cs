@@ -33,7 +33,7 @@ namespace ExampleMenu.Examples
 
 			OnRun += m => {
 				Console.Write ("Example menu - ");
-				IO.ImmediateInput ("help");
+				m.CQ.ImmediateInput ("help");
 			};
 		}
 	}

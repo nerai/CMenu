@@ -66,7 +66,7 @@ namespace ExampleMenu.Examples
 			ok ^= invert;
 
 			if (ok) {
-				IO.ImmediateInput (arg);
+				CQ.ImmediateInput (arg);
 			}
 		}
 	}

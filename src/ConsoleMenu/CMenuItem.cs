@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -24,6 +25,26 @@ namespace ConsoleMenu
 		private StringComparison? _StringComparison;
 		private Action<string> _Execute;
 		private Func<bool> _Enabled;
+		private CommandQueue _CQ;
+
+		/// <summary>
+		/// The command queue (CQ) associated with this menu item. Nested menus will
+		/// use the same CQ as their parents.
+		///
+		/// The CQ keeps a stack of all commands to be executed by the menu item that
+		/// has the focus at the time. It allows manually adding immediate or delayed
+		/// input, which will be used instead of prompting the user for input on the
+		/// console.
+		/// </summary>
+		public CommandQueue CQ
+		{
+			get {
+				if (_CQ == null) {
+					_CQ = new CommandQueue ();
+				}
+				return _CQ;
+			}
+		}
 
 		/// <summary>
 		/// Parent of this item, if any.
@@ -260,6 +281,17 @@ namespace ConsoleMenu
 			}
 			else {
 				it.Parent = this;
+			}
+
+			if (it._CQ != null && !it._CQ.IsEmpty ()) {
+				throw new ArgumentException ("Menuitem already has items in its CQ.", "it");
+			}
+			else {
+				var orig = it._CQ;
+				foreach (var mi in it.EnumerateTree ()) {
+					Debug.Assert (mi._CQ == orig);
+					mi._CQ = CQ;
+				}
 			}
 
 			if (it.Selector != null) {
@@ -511,6 +543,23 @@ namespace ConsoleMenu
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator ();
+		}
+
+		/// <summary>
+		/// Enumerate, depth first, the tree of all child items, regardless of their status.
+		/// </summary>
+		protected IEnumerable<CMenuItem> EnumerateTree ()
+		{
+			var stack = new Stack<CMenuItem> ();
+			stack.Push (this);
+
+			while (stack.Any ()) {
+				var mi = stack.Pop ();
+				yield return mi;
+				foreach (var child in mi._Menu.Values) {
+					stack.Push (child);
+				}
+			}
 		}
 
 		/// <summary>

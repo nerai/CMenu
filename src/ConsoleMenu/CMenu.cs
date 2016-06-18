@@ -76,7 +76,7 @@ namespace ConsoleMenu
 			OnRun (this);
 
 			while (!_Quit) {
-				var input = IO.QueryInput (PromptCharacter);
+				var input = CQ.QueryInput (PromptCharacter);
 				ExecuteChild (input);
 			}
 
@@ -105,7 +105,7 @@ namespace ConsoleMenu
 		public override void Execute (string arg)
 		{
 			if (!string.IsNullOrWhiteSpace (arg)) {
-				IO.ImmediateInput (arg);
+				CQ.ImmediateInput (arg);
 			}
 			Run ();
 		}
