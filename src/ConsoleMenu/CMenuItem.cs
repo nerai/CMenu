@@ -26,19 +26,19 @@ namespace ConsoleMenu
 		private Func<bool> _Enabled;
 		private CommandQueue _CQ;
 
-		protected CommandQueue CQ
+		/// <summary>
+		/// The command queue (CQ) associated with this menu item. Nested menus will
+		/// use the same CQ as their parents.
+		///
+		/// The CQ keeps a stack of all commands to be executed by the menu item that
+		/// has the focus at the time. It allows manually adding immediate or delayed
+		/// input, which will be used instead of prompting the user for input on the
+		/// console.
+		/// </summary>
+		public CommandQueue CQ
 		{
 			get {
 				if (_CQ == null) {
-					var mi = Parent;
-					while (mi != null) {
-						if (mi._CQ != null) {
-							_CQ = mi._CQ;
-							return _CQ;
-						}
-						mi = mi.Parent;
-					}
-
 					_CQ = new CommandQueue ();
 				}
 				return _CQ;
@@ -271,6 +271,10 @@ namespace ConsoleMenu
 			}
 			if (it.Parent != null) {
 				throw new ArgumentException ("Menuitem already has a parent.", "it");
+			}
+
+			if (it.CQ != null) {
+				throw new ArgumentException ("Menuitem already has a CQ.", "it");
 			}
 
 			if (it.Selector != null) {

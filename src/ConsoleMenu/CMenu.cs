@@ -105,7 +105,7 @@ namespace ConsoleMenu
 		public override void Execute (string arg)
 		{
 			if (!string.IsNullOrWhiteSpace (arg)) {
-				IO.ImmediateInput (arg);
+				CQ.ImmediateInput (arg);
 			}
 			Run ();
 		}
