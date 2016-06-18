@@ -104,13 +104,12 @@ namespace ConsoleMenu
 			}
 			set {
 				if (_Selector != value) {
-					if (Parent != null) {
+					var p = Parent;
+					if (p != null) {
 						Parent.Remove (this);
 					}
 					_Selector = value;
-					if (Parent != null) {
-						var p = Parent;
-						Parent = null;
+					if (p != null) {
 						p.Add (this);
 					}
 				}
@@ -130,6 +129,12 @@ namespace ConsoleMenu
 		/// </returns>
 		public bool Remove (CMenuItem it)
 		{
+			if (it.Parent != this) {
+				throw new ArgumentException ("Item to be removed from parent is not a child", "it");
+			}
+
+			it.Parent = null;
+
 			if (it == _Default) {
 				_Default = null;
 				return true;
@@ -269,8 +274,12 @@ namespace ConsoleMenu
 			if (it == null) {
 				throw new ArgumentNullException ("it");
 			}
+
 			if (it.Parent != null) {
 				throw new ArgumentException ("Menuitem already has a parent.", "it");
+			}
+			else {
+				it.Parent = this;
 			}
 
 			if (it.CQ != null) {
@@ -278,6 +287,9 @@ namespace ConsoleMenu
 			}
 
 			if (it.Selector != null) {
+				if (_Menu.ContainsKey (it.Selector)) {
+					throw new ArgumentException ("Selector of entry to be added is already in use.", "it");
+				}
 				_Menu.Add (it.Selector, it);
 			}
 			else {
@@ -286,8 +298,6 @@ namespace ConsoleMenu
 				}
 				_Default = it;
 			}
-
-			it.Parent = this;
 
 			return it;
 		}
