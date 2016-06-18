@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -282,8 +283,15 @@ namespace ConsoleMenu
 				it.Parent = this;
 			}
 
-			if (it.CQ != null) {
-				throw new ArgumentException ("Menuitem already has a CQ.", "it");
+			if (it._CQ != null && !it._CQ.IsEmpty ()) {
+				throw new ArgumentException ("Menuitem already has items in its CQ.", "it");
+			}
+			else {
+				var orig = it._CQ;
+				foreach (var mi in it.EnumerateTree ()) {
+					Debug.Assert (mi._CQ == orig);
+					mi._CQ = CQ;
+				}
 			}
 
 			if (it.Selector != null) {
@@ -535,6 +543,23 @@ namespace ConsoleMenu
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator ();
+		}
+
+		/// <summary>
+		/// Enumerate, depth first, the tree of all child items, regardless of their status.
+		/// </summary>
+		protected IEnumerable<CMenuItem> EnumerateTree ()
+		{
+			var stack = new Stack<CMenuItem> ();
+			stack.Push (this);
+
+			while (stack.Any ()) {
+				var mi = stack.Pop ();
+				yield return mi;
+				foreach (var child in mi._Menu.Values) {
+					stack.Push (child);
+				}
+			}
 		}
 
 		/// <summary>

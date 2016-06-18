@@ -26,8 +26,9 @@ namespace ConsoleMenu
 		private readonly ManualResetEvent _InputAvailable = new ManualResetEvent (false);
 
 		/// <summary>
-		/// If no input is queued already and passive mode is enabled, QueryInput will block until input is available.
-		/// If no input is queued already and passive mode is disabled, QueryInput will prompt the user for input.
+		/// If no input is queued already and passive mode is enabled, QueryInput will
+		/// block until input is available. If no input is queued already and passive mode
+		/// is disabled, QueryInput will prompt the user for input.
 		///
 		/// PassiveMode is disabled by default.
 		/// </summary>
@@ -44,8 +45,9 @@ namespace ConsoleMenu
 		///
 		/// If buffered input is available, its next line will be returned.
 		///
-		/// If no bufferd input is available, the call will block. Depending on PassiveMode either the user
-		/// will be prompted for input, or the method will wait until input was added to the queue.
+		/// If no bufferd input is available, the call will block. Depending on PassiveMode
+		/// either the user will be prompted for input, or the method will wait until input
+		/// was added to the queue.
 		/// </summary>
 		/// <param name="prompt">
 		/// Prompt string, or null if no prompt string should be displayed.
@@ -92,7 +94,8 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Adds a new input source on top of the input stack.
 		///
-		/// This source will be used until it is exhausted, then the previous source will be used in the same manner.
+		/// This source will be used until it is exhausted, then the previous source will
+		/// be used in the same manner.
 		/// </summary>
 		public void AddInput (IEnumerable<string> source)
 		{
@@ -116,6 +119,17 @@ namespace ConsoleMenu
 			}
 
 			AddInput (new string[] { source });
+		}
+
+		/// <summary>
+		/// Return true iff this queue contains no frames of input.
+		/// </summary>
+		/// <returns></returns>
+		public bool IsEmpty ()
+		{
+			lock (_Frames) {
+				return _Frames.Count == 0;
+			}
 		}
 	}
 }
