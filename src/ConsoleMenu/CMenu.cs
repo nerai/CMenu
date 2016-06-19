@@ -25,12 +25,12 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Is executed before this menu begins processing
 		/// </summary>
-		public event Action<CMenu> OnRun = null;
+		public event Action<CMenu> OnRun = delegate { };
 
 		/// <summary>
 		/// Is executed after this menu stopped processing
 		/// </summary>
-		public event Action<CMenu> OnQuit = null;
+		public event Action<CMenu> OnQuit = delegate { };
 
 		/// <summary>
 		/// Create a new CMenu.
@@ -56,7 +56,7 @@ namespace ConsoleMenu
 		/// The string which is displayed in front of every prompt (i.e. query for user input).
 		///
 		/// <para>
-		/// Set to null to disable explicit prompting.
+		/// Set to null if no prompt should be displayed.
 		/// </para>
 		/// </summary>
 		public string PromptCharacter = "$";
@@ -73,18 +73,14 @@ namespace ConsoleMenu
 		{
 			_Quit = false;
 
-			if (OnRun != null) {
-				OnRun (this);
-			}
+			OnRun (this);
 
 			while (!_Quit) {
-				var input = IO.QueryInput (PromptCharacter);
+				var input = CQ.QueryInput (PromptCharacter);
 				ExecuteChild (input);
 			}
 
-			if (OnQuit != null) {
-				OnQuit (this);
-			}
+			OnQuit (this);
 		}
 
 		/// <summary>
@@ -100,15 +96,16 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// If this menu gets selected in its parent menu, run it.
+		/// If this item gets selected in its parent menu, run it as a menu itself.
 		/// </summary>
 		/// <param name="arg">
-		/// If an additional nonempty argument is given, it will be executed in the local context once the menu is running.
+		/// If an additional nonnull, nonwhitespace argument is given, it will be executed
+		/// in the local menu context immediately.
 		/// </param>
 		public override void Execute (string arg)
 		{
 			if (!string.IsNullOrWhiteSpace (arg)) {
-				IO.ImmediateInput (arg);
+				CQ.ImmediateInput (arg);
 			}
 			Run ();
 		}

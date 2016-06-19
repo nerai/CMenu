@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -24,6 +25,26 @@ namespace ConsoleMenu
 		private StringComparison? _StringComparison;
 		private Action<string> _Execute;
 		private Func<bool> _Enabled;
+		private CommandQueue _CQ;
+
+		/// <summary>
+		/// The command queue (CQ) associated with this menu item. Nested menus will
+		/// use the same CQ as their parents.
+		///
+		/// The CQ keeps a stack of all commands to be executed by the menu item that
+		/// has the focus at the time. It allows manually adding immediate or delayed
+		/// input, which will be used instead of prompting the user for input on the
+		/// console.
+		/// </summary>
+		public CommandQueue CQ
+		{
+			get {
+				if (_CQ == null) {
+					_CQ = new CommandQueue ();
+				}
+				return _CQ;
+			}
+		}
 
 		/// <summary>
 		/// Parent of this item, if any.
@@ -84,13 +105,12 @@ namespace ConsoleMenu
 			}
 			set {
 				if (_Selector != value) {
-					if (Parent != null) {
+					var p = Parent;
+					if (p != null) {
 						Parent.Remove (this);
 					}
 					_Selector = value;
-					if (Parent != null) {
-						var p = Parent;
-						Parent = null;
+					if (p != null) {
 						p.Add (this);
 					}
 				}
@@ -110,6 +130,12 @@ namespace ConsoleMenu
 		/// </returns>
 		public bool Remove (CMenuItem it)
 		{
+			if (it.Parent != this) {
+				throw new ArgumentException ("Item to be removed from parent is not a child", "it");
+			}
+
+			it.Parent = null;
+
 			if (it == _Default) {
 				_Default = null;
 				return true;
@@ -148,7 +174,7 @@ namespace ConsoleMenu
 		///
 		/// <remarks>
 		/// When overriding <c>Execute</c> in a derived class, it is usually recommended to include a call to
-		/// either <c>Execute</c> or <c>ExecuteChild</c>.
+		/// either <c>base.Execute</c> or <c>ExecuteChild</c>.
 		/// </remarks>
 		/// </summary>
 		public virtual void Execute (string arg)
@@ -158,11 +184,27 @@ namespace ConsoleMenu
 				return;
 			}
 
-			if (this.Any ()) {
-				ExecuteChild (arg);
-			}
-			else {
+			if (!this.Any ()) {
 				throw new NotImplementedException ("This menu item does not have an associated behavior yet.");
+			}
+
+			ExecuteChild (arg);
+		}
+
+		/// <summary>
+		/// Executes the specified command using only children (instead of this node's own behavior).
+		///
+		/// If no fitting child could be found, an error message will be displayed.
+		/// </summary>
+		/// <param name="arg">
+		/// Command to execute using contained commands.
+		/// </param>
+		public void ExecuteChild (string arg)
+		{
+			var cmd = arg;
+			var it = GetMenuItem (ref cmd, out arg, true, true, false);
+			if (it != null) {
+				it.Execute (arg);
 			}
 		}
 
@@ -233,11 +275,29 @@ namespace ConsoleMenu
 			if (it == null) {
 				throw new ArgumentNullException ("it");
 			}
+
 			if (it.Parent != null) {
 				throw new ArgumentException ("Menuitem already has a parent.", "it");
 			}
+			else {
+				it.Parent = this;
+			}
+
+			if (it._CQ != null && !it._CQ.IsEmpty ()) {
+				throw new ArgumentException ("Menuitem already has items in its CQ.", "it");
+			}
+			else {
+				var orig = it._CQ;
+				foreach (var mi in it.EnumerateTree ()) {
+					Debug.Assert (mi._CQ == orig);
+					mi._CQ = CQ;
+				}
+			}
 
 			if (it.Selector != null) {
+				if (_Menu.ContainsKey (it.Selector)) {
+					throw new ArgumentException ("Selector of entry to be added is already in use.", "it");
+				}
 				_Menu.Add (it.Selector, it);
 			}
 			else {
@@ -246,8 +306,6 @@ namespace ConsoleMenu
 				}
 				_Default = it;
 			}
-
-			it.Parent = this;
 
 			return it;
 		}
@@ -469,23 +527,6 @@ namespace ConsoleMenu
 		}
 
 		/// <summary>
-		/// Executes the specified command using only children (instead of this node's own behavior).
-		///
-		/// If no fitting child could be found, an error message will be displayed.
-		/// </summary>
-		/// <param name="args">
-		/// Command to execute using contained commands.
-		/// </param>
-		public void ExecuteChild (string args)
-		{
-			var cmd = args;
-			var it = GetMenuItem (ref cmd, out args, true, true, false);
-			if (it != null) {
-				it.Execute (args);
-			}
-		}
-
-		/// <summary>
 		/// Returns an enumerator over all menu items contained in this item.
 		/// <para>
 		/// The default item will not be enumerated.
@@ -502,6 +543,23 @@ namespace ConsoleMenu
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator ();
+		}
+
+		/// <summary>
+		/// Enumerate, depth first, the tree of all child items, regardless of their status.
+		/// </summary>
+		protected IEnumerable<CMenuItem> EnumerateTree ()
+		{
+			var stack = new Stack<CMenuItem> ();
+			stack.Push (this);
+
+			while (stack.Any ()) {
+				var mi = stack.Pop ();
+				yield return mi;
+				foreach (var child in mi._Menu.Values) {
+					stack.Push (child);
+				}
+			}
 		}
 
 		/// <summary>

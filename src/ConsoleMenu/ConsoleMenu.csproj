@@ -80,8 +80,8 @@
   <ItemGroup>
     <Compile Include="CMenu.cs" />
     <Compile Include="CMenuItem.cs" />
+    <Compile Include="CommandQueue.cs" />
     <Compile Include="DefaultItems\MI_Help.cs" />
-    <Compile Include="IO.cs" />
     <Compile Include="MenuUtil.cs" />
     <Compile Include="DefaultItems\MI_Quit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

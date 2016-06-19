@@ -9,7 +9,7 @@ namespace ConsoleMenu
 	/// <summary>
 	/// Provides global I/O functions in the context of CMenu.
 	/// </summary>
-	public static class IO
+	public class CommandQueue
 	{
 		private class Frame
 		{
@@ -21,17 +21,18 @@ namespace ConsoleMenu
 			}
 		}
 
-		private static readonly Stack<Frame> _Frames = new Stack<Frame> ();
+		private readonly Stack<Frame> _Frames = new Stack<Frame> ();
 
-		private static readonly ManualResetEvent _InputAvailable = new ManualResetEvent (false);
+		private readonly ManualResetEvent _InputAvailable = new ManualResetEvent (false);
 
 		/// <summary>
-		/// If no input is queued already and passive mode is enabled, QueryInput will block until input is available.
-		/// If no input is queued already and passive mode is disabled, QueryInput will prompt the user for input.
+		/// If no input is queued already and passive mode is enabled, QueryInput will
+		/// block until input is available. If no input is queued already and passive mode
+		/// is disabled, QueryInput will prompt the user for input.
 		///
 		/// PassiveMode is disabled by default.
 		/// </summary>
-		public static bool PassiveMode
+		public bool PassiveMode
 		{
 			get;
 			set;
@@ -44,15 +45,16 @@ namespace ConsoleMenu
 		///
 		/// If buffered input is available, its next line will be returned.
 		///
-		/// If no bufferd input is available, the call will block. Depending on PassiveMode either the user
-		/// will be prompted for input, or the method will wait until input was added to the queue.
+		/// If no bufferd input is available, the call will block. Depending on PassiveMode
+		/// either the user will be prompted for input, or the method will wait until input
+		/// was added to the queue.
 		/// </summary>
 		/// <param name="prompt">
 		/// Prompt string, or null if no prompt string should be displayed.
 		///
 		/// In passive mode, the prompt will never be displayed.
 		/// </param>
-		public static string QueryInput (string prompt)
+		public string QueryInput (string prompt)
 		{
 			for (;;) {
 				string input = null;
@@ -92,9 +94,10 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Adds a new input source on top of the input stack.
 		///
-		/// This source will be used until it is exhausted, then the previous source will be used in the same manner.
+		/// This source will be used until it is exhausted, then the previous source will
+		/// be used in the same manner.
 		/// </summary>
-		public static void AddInput (IEnumerable<string> source)
+		public void AddInput (IEnumerable<string> source)
 		{
 			if (source == null) {
 				throw new ArgumentNullException ("source");
@@ -109,13 +112,24 @@ namespace ConsoleMenu
 		/// <summary>
 		/// Puts a single line of input on top of the stack.
 		/// </summary>
-		public static void ImmediateInput (string source)
+		public void ImmediateInput (string source)
 		{
 			if (source == null) {
 				throw new ArgumentNullException ("source");
 			}
 
 			AddInput (new string[] { source });
+		}
+
+		/// <summary>
+		/// Return true iff this queue contains no frames of input.
+		/// </summary>
+		/// <returns></returns>
+		public bool IsEmpty ()
+		{
+			lock (_Frames) {
+				return _Frames.Count == 0;
+			}
 		}
 	}
 }
