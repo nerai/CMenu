@@ -61,6 +61,8 @@ namespace ConsoleMenu
 		/// </summary>
 		public string PromptCharacter = "$";
 
+		public bool ImmediateMenuMode = false;
+
 		/// <summary>
 		/// Start console prompting and processing.
 		///
@@ -76,7 +78,29 @@ namespace ConsoleMenu
 			OnRun (this);
 
 			while (!_Quit) {
-				var input = CQ.QueryInput (PromptCharacter);
+				string input;
+				if (!ImmediateMenuMode) {
+					input = CQ.QueryInput (PromptCharacter);
+				}
+				else {
+					var map = new Dictionary<int, string> ();
+					foreach (var it in this) {
+						var i = map.Count + 1;
+						map.Add (i, it.Selector);
+						Console.WriteLine ($"{i,2} {it.Selector}");
+					}
+					for (;;) {
+						var key = Console.ReadKey (true);
+						var c = key.KeyChar;
+						if ('0' <= c && c <= '9') {
+							var i = c - '0';
+							if (map.ContainsKey (i)) {
+								input = map[i];
+								break;
+							}
+						}
+					}
+				}
 				ExecuteChild (input);
 			}
 
