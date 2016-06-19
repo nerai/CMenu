@@ -52,7 +52,7 @@ CMenu keeps an index of all available commands and lists them upon user request 
 
 ### Common use cases
 
-Refer to [common use cases](doc/common-usage.md) for information on:
+Refer to [common use cases](doc/basics-and-help.md) for information on:
 
 * Creation and use of basic commands
 * Offering help to users (it's automated!)
@@ -61,7 +61,7 @@ Refer to [common use cases](doc/common-usage.md) for information on:
 
 ### Building big menus
 
-[Read up on building complex menus](doc/nested.md).
+[Read up on building complex menus](doc/nesting.md).
 
 * Inner commands
 * Nested menus and default commands
