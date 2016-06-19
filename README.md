@@ -50,11 +50,32 @@ CMenu keeps an index of all available commands and lists them upon user request 
 
 ## Further reading
 
-### Common usage
-Refer to [common use cases](doc/common-usage.md). This includes command creation, integrated help, automatic command abbreviations and case sensitivity.
+### Common use cases
 
-### Advanced usage
-There is documentation about [more complex use cases](doc/advanced.md), including input queue modification, inner commands, nested menus and default commands and sharing code between items.
+Refer to [common use cases](doc/common-usage.md) for information on:
+
+* Creation and use of basic commands
+* Offering help to users (it's automated!)
+* Less typing thanks to automated abbreviations
+* About case sensitivity
+
+### Building big menus
+
+[Read up on building complex menus](doc/nested.md).
+
+* Inner commands
+* Nested menus and default commands
+* Sharing code between items
+* Short and concise initialization of menu trees
+
+### Input
+
+[About the input queue, immediate & passive mode](doc/input.md)
+
+* Immediate mode: Accessing all commands in a single keystroke
+* Accessing and modifying the input queue
+* Passive mode: Only allow scripted input
+* For conditional commands, see [here](doc/conditional-commands.md)
 
 ### Example project
 The source code contains an [example project](doc/example_project.md). It offers commands, which illustrate several (more or less advanced) use cases. It may be useful to reference them in your own projects.
