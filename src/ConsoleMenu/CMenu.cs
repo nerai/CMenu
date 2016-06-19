@@ -61,6 +61,11 @@ namespace ConsoleMenu
 		/// </summary>
 		public string PromptCharacter = "$";
 
+		/// <summary>
+		/// In immediate mode, instead of typing the name of a command, only a number
+		/// associated with each command is entered. All available commands and their
+		/// numbers will be displayed at any opportunity.
+		/// </summary>
 		public bool ImmediateMenuMode = false;
 
 		/// <summary>
