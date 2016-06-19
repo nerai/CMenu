@@ -88,20 +88,23 @@ namespace ConsoleMenu
 					input = CQ.QueryInput (PromptCharacter);
 				}
 				else {
-					var map = new Dictionary<int, string> ();
-					foreach (var it in this) {
-						var i = map.Count + 1;
-						map.Add (i, it.Selector);
-						Console.WriteLine ($"{i,2} {it.Selector}");
-					}
-					for (;;) {
-						var key = Console.ReadKey (true);
-						var c = key.KeyChar;
-						if ('0' <= c && c <= '9') {
-							var i = c - '0';
-							if (map.ContainsKey (i)) {
-								input = map[i];
-								break;
+					input = CQ.TryGetQueuedInput ();
+					if (input == null) {
+						var map = new Dictionary<int, string> ();
+						foreach (var it in this) {
+							var i = map.Count + 1;
+							map.Add (i, it.Selector);
+							Console.WriteLine ($"{i,2} {it.Selector}");
+						}
+						for (;;) {
+							var key = Console.ReadKey (true);
+							var c = key.KeyChar;
+							if ('0' <= c && c <= '9') {
+								var i = c - '0';
+								if (map.ContainsKey (i)) {
+									input = map[i];
+									break;
+								}
 							}
 						}
 					}
