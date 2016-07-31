@@ -43,9 +43,9 @@ namespace ConsoleMenu
 		///
 		/// Empty input (whitespace only) will always be ignored.
 		///
-		/// If buffered input is available, its next line will be returned.
+		/// If queued input is available, its next line will be returned.
 		///
-		/// If no bufferd input is available, the call will block. Depending on PassiveMode
+		/// If no queued input is available, the call will block. Depending on PassiveMode
 		/// either the user will be prompted for input, or the method will wait until input
 		/// was added to the queue.
 		/// </summary>
@@ -57,27 +57,15 @@ namespace ConsoleMenu
 		public string QueryInput (string prompt)
 		{
 			for (;;) {
-				string input = null;
+				var input = TryGetQueuedInput ();
 
-				lock (_Frames) {
-					while (_Frames.Any ()) {
-						var f = _Frames.Peek ();
-						if (!f.E.MoveNext ()) {
-							_Frames.Pop ();
-							continue;
+				if (input == null) {
+					_InputAvailable.Reset ();
+					if (!PassiveMode) {
+						if (prompt != null) {
+							Console.Write (prompt + " ");
 						}
-						input = f.E.Current;
-						break;
-					}
-
-					if (input == null) {
-						_InputAvailable.Reset ();
-						if (!PassiveMode) {
-							if (prompt != null) {
-								Console.Write (prompt + " ");
-							}
-							input = Console.ReadLine ();
-						}
+						input = Console.ReadLine ();
 					}
 				}
 
@@ -89,6 +77,27 @@ namespace ConsoleMenu
 					return input;
 				}
 			}
+		}
+
+		/// <summary>
+		/// Returns the next queued line of input. The line is then removed from the input queue.
+		///
+		/// If no queued input is available, the call will not block, but return null.
+		/// </summary>
+		public string TryGetQueuedInput ()
+		{
+			lock (_Frames) {
+				while (_Frames.Any ()) {
+					var f = _Frames.Peek ();
+					if (!f.E.MoveNext ()) {
+						_Frames.Pop ();
+						continue;
+					}
+					var input = f.E.Current;
+					return input;
+				}
+			}
+			return null;
 		}
 
 		/// <summary>
