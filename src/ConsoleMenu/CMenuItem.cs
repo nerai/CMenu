@@ -284,7 +284,7 @@ namespace ConsoleMenu
 			}
 
 			if (it._CQ != null && !it._CQ.IsEmpty ()) {
-				throw new ArgumentException ("Menuitem already has items in its CQ.", "it");
+				throw new ArgumentException ("Menuitem already has a nonempty command queue.", "it");
 			}
 			else {
 				var orig = it._CQ;
@@ -302,7 +302,7 @@ namespace ConsoleMenu
 			}
 			else {
 				if (_Default != null) {
-					throw new ArgumentException ("The default item was already set.", "it");
+					throw new ArgumentException ("Tried to add a default item but the default item has already been set.", "it");
 				}
 				_Default = it;
 			}
