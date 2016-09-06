@@ -2,7 +2,7 @@
 A simple console menu manager for C#
 
 
-CMenu is a lightweight, low-ceremony framework for building console menus in .Net. Instead of manually prompting the user for input and parsing it, you define commands in a short, structured and comprehensive way, and let CMenu handle the rest.
+CMenu is a lightweight, low-ceremony framework for building console menus in .NET. Instead of manually prompting the user for input and parsing it, you define commands in a short, structured and comprehensive way, and let CMenu handle the rest. CMenu uses the permissive MIT license.
 
 CMenu aims for low overhead - simple stuff should be simple to implement. If you don't use a feature, you don't need to know anything about it.
 
