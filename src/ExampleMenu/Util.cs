@@ -67,14 +67,18 @@ namespace ExampleMenu
 			return null;
 		}
 
-		private static bool StringContainsSequence (string str, string sequence)
+		private static bool StringContainsSequence (
+			string str,
+			string sequence,
+			StringComparison sc)
 		{
 			int i = 0;
 			foreach (var c in sequence) {
-				i = str.IndexOf (c, i) + 1;
-				if (i == 0) {
+				i = str.IndexOf (c.ToString (), i, sc);
+				if (i == -1) {
 					return false;
 				}
+				i++;
 			}
 			return true;
 		}
