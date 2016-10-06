@@ -22,26 +22,29 @@ namespace ExampleMenu
 		/// <item>Matching ordered sequence of characters (bd in abcd)</item>
 		/// </list>
 		/// </summary>
-		public static string LooseSelect (IEnumerable<string> source, string select, StringComparison sc)
+		public static string LooseSelect (
+			IEnumerable<string> options,
+			string find,
+			StringComparison sc)
 		{
-			select = select.Replace (" ", "");
+			find = find.Replace (" ", "");
 			var ec = sc.GetCorrespondingComparer ();
 			var matches = new List<string> ();
 			int bestQuality = 0;
 
-			foreach (var s in source) {
+			foreach (var s in options) {
 				int quality = -1;
 
-				if (s.Equals (select, sc)) {
+				if (s.Equals (find, sc)) {
 					quality = 10;
 				}
-				else if (s.StartsWith (select, sc)) {
+				else if (s.StartsWith (find, sc)) {
 					quality = 8;
 				}
-				else if (s.Contains (select, sc)) {
+				else if (s.Contains (find, sc)) {
 					quality = 6;
 				}
-				else if (StringContainsSequence (s, select)) {
+				else if (StringContainsSequence (s, find, sc)) {
 					quality = 3;
 				}
 
@@ -59,22 +62,26 @@ namespace ExampleMenu
 			}
 
 			if (matches.Count > 1) {
-				Console.WriteLine ("Identifier not unique: " + select);
+				Console.WriteLine ("Identifier not unique: " + find);
 			}
 			else {
-				Console.WriteLine ("Could not find identifier: " + select);
+				Console.WriteLine ("Could not find identifier: " + find);
 			}
 			return null;
 		}
 
-		private static bool StringContainsSequence (string str, string sequence)
+		private static bool StringContainsSequence (
+			string str,
+			string sequence,
+			StringComparison sc)
 		{
 			int i = 0;
 			foreach (var c in sequence) {
-				i = str.IndexOf (c, i) + 1;
-				if (i == 0) {
+				i = str.IndexOf (c.ToString (), i, sc);
+				if (i == -1) {
 					return false;
 				}
+				i++;
 			}
 			return true;
 		}
