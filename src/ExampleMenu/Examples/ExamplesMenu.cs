@@ -20,6 +20,7 @@ namespace ExampleMenu.Examples
 			Add (new MI_Echo ());
 			Add (new MI_If ());
 			Add (new MI_Pause ());
+			Add (new MI_Stopwatch ());
 
 			var frs = new FileRecordStore ();
 			Add (new MI_Record (frs));
