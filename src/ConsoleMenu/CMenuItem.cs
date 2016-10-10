@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace ConsoleMenu
 {
@@ -26,6 +25,102 @@ namespace ConsoleMenu
 		private Action<string> _Execute;
 		private Func<bool> _Enabled;
 		private CommandQueue _CQ;
+
+		public event Action<string> Write = null;
+
+		public event Action<string> WriteLine = null;
+
+		public event Action<ConsoleColor> SetForegroundColor = null;
+
+		public event Action<ConsoleColor> SetBackgroundColor = null;
+
+		public event Action ResetColor = null;
+
+		protected void OnWrite (string s)
+		{
+			var e = Write;
+			if (e != null) {
+				e (s);
+				return;
+			}
+
+			if (Parent != null) {
+				Parent.OnWrite (s);
+				return;
+			}
+
+			Console.Write (s);
+		}
+
+		protected void OnWriteLine (string s = null)
+		{
+			var e = WriteLine;
+			if (e != null) {
+				e (s);
+				return;
+			}
+
+			if (Parent != null) {
+				Parent.OnWriteLine (s);
+				return;
+			}
+
+			var e2 = Write;
+			if (e2 != null) {
+				e2 (s + Environment.NewLine);
+				return;
+			}
+
+			Console.WriteLine (s);
+		}
+
+		protected void InternalSetForegroundColor (ConsoleColor c)
+		{
+			var e = SetForegroundColor;
+			if (e != null) {
+				e (c);
+				return;
+			}
+
+			if (Parent != null) {
+				Parent.InternalSetForegroundColor (c);
+				return;
+			}
+
+			Console.ForegroundColor = c;
+		}
+
+		protected void InternalSetBackgroundColor (ConsoleColor c)
+		{
+			var e = SetBackgroundColor;
+			if (e != null) {
+				e (c);
+				return;
+			}
+
+			if (Parent != null) {
+				Parent.InternalSetBackgroundColor (c);
+				return;
+			}
+
+			Console.BackgroundColor = c;
+		}
+
+		protected void InternalResetColor ()
+		{
+			var e = ResetColor;
+			if (e != null) {
+				e ();
+				return;
+			}
+
+			if (Parent != null) {
+				Parent.InternalResetColor ();
+				return;
+			}
+
+			Console.ResetColor ();
+		}
 
 		/// <summary>
 		/// The command queue (CQ) associated with this menu item. Nested menus will
@@ -483,7 +578,7 @@ namespace ConsoleMenu
 					var s = cmd == ""
 						? "Command incomplete."
 						: "Command <" + cmd + "> not unique.";
-					Console.WriteLine (
+					OnWriteLine (
 						s + " Candidates: " +
 						string.Join (", ", its.Select (it => it.Selector)));
 				}
@@ -504,20 +599,20 @@ namespace ConsoleMenu
 			 * We found nothing. Display this failure?
 			 */
 			if (complain) {
-				Console.WriteLine ("Unknown command: " + cmd);
+				OnWriteLine ("Unknown command: " + cmd);
 
 				if (StringComparison.IsCaseSensitive ()) {
 					var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase, includeDisabled);
 					if (suggestions.Length > 0) {
 						if (suggestions.Length == 1) {
-							Console.WriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
+							OnWriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
 						}
 						else if (suggestions.Length <= 5) {
 							var sugs = string.Join (", ", suggestions
 								.Take (suggestions.Length - 1)
 								.Select (sug => "\"" + sug.Selector + "\""));
 							var s = "Did you mean " + sugs + " or \"" + suggestions.Last ().Selector + "\"?";
-							Console.WriteLine (s);
+							OnWriteLine (s);
 						}
 					}
 				}

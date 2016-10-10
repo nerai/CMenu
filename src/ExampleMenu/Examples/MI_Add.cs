@@ -29,17 +29,17 @@ namespace ExampleMenu.Examples
 				_Sum += i;
 			}
 			else {
-				Console.WriteLine (s + " is not a valid number.");
+				OnWriteLine (s + " is not a valid number.");
 			}
 		}
 
 		public override void Execute (string arg)
 		{
-			Console.WriteLine ("You're now in submenu <Add>.");
-			Console.WriteLine ("Enter numbers. To print their sum and exit the submenu, enter \"=\".");
+			OnWriteLine ("You're now in submenu <Add>.");
+			OnWriteLine ("Enter numbers. To print their sum and exit the submenu, enter \"=\".");
 			_Sum = 0;
 			Run ();
-			Console.WriteLine ("Sum = " + _Sum);
+			OnWriteLine ("Sum = " + _Sum);
 		}
 	}
 }

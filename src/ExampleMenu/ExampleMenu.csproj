@@ -93,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Examples\MI_Stopwatch.cs" />
     <Compile Include="Examples\Procedures\MI_Goto.cs" />
     <Compile Include="Examples\ExamplesMenu.cs" />
     <Compile Include="Examples\Recording\FileRecordStore.cs" />
@@ -110,7 +111,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tutorial.cs" />
-    <Compile Include="Util.cs" />
+    <Compile Include="Examples\Recording\LooseSelectUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ConsoleMenu\ConsoleMenu.csproj">

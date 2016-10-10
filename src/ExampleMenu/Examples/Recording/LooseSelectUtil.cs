@@ -4,9 +4,16 @@ using System.Linq;
 using System.Text;
 using ConsoleMenu;
 
-namespace ExampleMenu
+namespace ExampleMenu.Examples.Recording
 {
-	public class Util
+	public class LooseSelectException : Exception
+	{
+		public LooseSelectException (string message) : base (message)
+		{
+		}
+	}
+
+	public class LooseSelectUtil
 	{
 		/// <summary>
 		/// Loose string comparison. Returns the best match using increasingly inaccurate comparisons.
@@ -21,6 +28,8 @@ namespace ExampleMenu
 		/// <item>Containing match (bc in abcd)</item>
 		/// <item>Matching ordered sequence of characters (bd in abcd)</item>
 		/// </list>
+		///
+		/// If no sufficiently unique match was found, a LooseSelectException is thrown.
 		/// </summary>
 		public static string LooseSelect (
 			IEnumerable<string> options,
@@ -62,12 +71,11 @@ namespace ExampleMenu
 			}
 
 			if (matches.Count > 1) {
-				Console.WriteLine ("Identifier not unique: " + find);
+				throw new LooseSelectException ("Identifier not unique: " + find);
 			}
 			else {
-				Console.WriteLine ("Could not find identifier: " + find);
+				throw new LooseSelectException ("Could not find identifier: " + find);
 			}
-			return null;
 		}
 
 		private static bool StringContainsSequence (
