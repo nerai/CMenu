@@ -152,23 +152,27 @@ namespace ExampleMenu
 		}
 
 		/// <summary>
+		/// <para>
 		/// This class demonstrates using output hooks. It intercepts Console.Write
-		/// commands and prints all lower-case letters with a red background.
+		/// commands and prints all lower-case letters with a red background. It would just
+		/// as well be possible to copy the printed text to a log file.
 		///
 		/// Any output a menu item writes is, by default, printed to the console. Output
-		/// hooks allow intercepting this output. This can be useful to change it before
-		/// printing, or to redirect or clone it to other locations (e.g. a logfile).
+		/// hooks allow intercepting this output. This can be useful to change or redirect
+		/// it before printing, or to redirect or clone it to other locations (e.g. a
+		/// logfile).
 		///
 		/// There are five kinds of output events that can be intercepted. They all refer
 		/// to the equivalently named method or property of the Console class.
-		/// <list>
+		/// <list type="bullet">
 		/// <item>Write</item>
 		/// <item>WriteLine</item>
 		/// <item>SetForegroundColor</item>
 		/// <item>SetBackgroundColor</item>
 		/// <item>ResetColor</item>
 		/// </list>
-		///
+		/// </para>
+		/// <para>
 		/// It is recommended to let all custom menu items opt in to this pattern. For this
 		/// purpose, simply call OnWrite instead of Console.Write, etc.
 		///
@@ -178,6 +182,7 @@ namespace ExampleMenu
 		/// parent's hooks are not invoked.
 		///
 		/// Hooks can be added or removed at any time and for any menu item individually.
+		/// </para>
 		/// </summary>
 		private class OutputHook : CMenuItem
 		{
