@@ -44,7 +44,7 @@ namespace ExampleMenu.Examples.Recording
 		public override void Execute (string arg)
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
-				Console.WriteLine ("Known records: " + string.Join (", ", _Store.GetRecordNames ()));
+				OnWriteLine ("Known records: " + string.Join (", ", _Store.GetRecordNames ()));
 				return;
 			}
 

@@ -111,7 +111,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tutorial.cs" />
-    <Compile Include="Util.cs" />
+    <Compile Include="Examples\Recording\LooseSelectUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ConsoleMenu\ConsoleMenu.csproj">

@@ -94,7 +94,7 @@ namespace ConsoleMenu
 						foreach (var it in this) {
 							var i = map.Count + 1;
 							map.Add (i, it.Selector);
-							Console.WriteLine ($"{i,2} {it.Selector}");
+							OnWriteLine ($"{i,2} {it.Selector}");
 						}
 						for (;;) {
 							var key = Console.ReadKey (true);

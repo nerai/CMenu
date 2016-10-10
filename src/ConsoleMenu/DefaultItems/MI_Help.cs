@@ -29,7 +29,7 @@ namespace ConsoleMenu.DefaultItems
 			DisplayHelp (arg, _Menu, false);
 		}
 
-		private static void DisplayHelp (string arg, CMenuItem context, bool isInner)
+		private void DisplayHelp (string arg, CMenuItem context, bool isInner)
 		{
 			if (arg == null) {
 				throw new ArgumentNullException ("arg");
@@ -52,14 +52,14 @@ namespace ConsoleMenu.DefaultItems
 				return;
 			}
 
-			Console.WriteLine ("Could not find inner command \"" + cmd + "\".");
+			OnWriteLine ("Could not find inner command \"" + cmd + "\".");
 			if (context.Selector != null) {
-				Console.WriteLine ("Help for " + context.Selector + ":");
+				OnWriteLine ("Help for " + context.Selector + ":");
 			}
 			DisplayItemHelp (context, true);
 		}
 
-		private static bool DisplayItemHelp (CMenuItem item, bool force)
+		private bool DisplayItemHelp (CMenuItem item, bool force)
 		{
 			if (item == null) {
 				throw new ArgumentNullException ("item");
@@ -67,37 +67,37 @@ namespace ConsoleMenu.DefaultItems
 
 			if (item.HelpText == null) {
 				if (force) {
-					Console.WriteLine ("No help available for " + item.Selector);
+					OnWriteLine ("No help available for " + item.Selector);
 				}
 				return false;
 			}
 			else {
-				Console.WriteLine (item.HelpText);
+				OnWriteLine (item.HelpText);
 				return true;
 			}
 		}
 
-		private static void DisplayAvailableCommands (CMenuItem menu, bool inner)
+		private void DisplayAvailableCommands (CMenuItem menu, bool inner)
 		{
 			if (menu == null) {
 				throw new ArgumentNullException ("menu");
 			}
 
 			if (!inner) {
-				Console.WriteLine ("Available commands:");
+				OnWriteLine ("Available commands:");
 			}
 			var abbreviations = menu.CommandAbbreviations ().OrderBy (it => it.Key);
 			foreach (var ab in abbreviations) {
 				if (ab.Value == null) {
-					Console.Write ("      ");
+					OnWrite ("      ");
 				}
 				else {
-					Console.Write (ab.Value.PadRight (3) + " | ");
+					OnWrite (ab.Value.PadRight (3) + " | ");
 				}
-				Console.WriteLine (ab.Key);
+				OnWriteLine (ab.Key);
 			}
 			if (!inner) {
-				Console.WriteLine ("Type \"help <command>\" for individual command help.");
+				OnWriteLine ("Type \"help <command>\" for individual command help.");
 			}
 		}
 	}

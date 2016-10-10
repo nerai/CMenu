@@ -42,11 +42,11 @@ namespace ExampleMenu.Examples.Procedures
 		public override void Execute (string arg)
 		{
 			if (string.IsNullOrWhiteSpace (arg)) {
-				Console.WriteLine ("You must enter a name to identify this proc.");
+				OnWriteLine ("You must enter a name to identify this proc.");
 				return;
 			}
 
-			Console.WriteLine ("Recording started. Enter \"" + EndRecordCommand + "\" to finish.");
+			OnWriteLine ("Recording started. Enter \"" + EndRecordCommand + "\" to finish.");
 			_Lines = new List<string> ();
 			Run ();
 			_Mgr.AddProc (arg, _Lines);

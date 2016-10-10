@@ -22,7 +22,7 @@ namespace ExampleMenu.Examples
 			});
 			Add ("stop", s => {
 				_SW.Stop ();
-				Console.WriteLine ("Elapsed: " + _SW.ElapsedMilliseconds + "ms");
+				OnWriteLine ("Elapsed: " + _SW.ElapsedMilliseconds + "ms");
 			});
 		}
 	}
