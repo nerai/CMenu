@@ -77,6 +77,12 @@ Refer to [common use cases](doc/basics-and-help.md) for information on:
 * Passive mode: Only allow scripted input
 * For conditional commands, see [here](doc/conditional-commands.md)
 
+### Output
+
+[Changing, formatting, redirecting or cloning console output](doc/output.md)
+
+* Connecting CMenu output with your logging framework of choice.
+
 ### Example project
 The source code contains an [example project](doc/example_project.md). It offers commands, which illustrate several (more or less advanced) use cases. It may be useful to reference them in your own projects.
 
