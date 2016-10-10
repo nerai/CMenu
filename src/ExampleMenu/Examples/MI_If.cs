@@ -58,7 +58,7 @@ namespace ExampleMenu.Examples
 
 			ConditionCheck cc;
 			if (!Conditions.TryGetValue (cond, out cc)) {
-				Console.WriteLine ("Unknown condition: " + cond);
+				OnWriteLine ("Unknown condition: " + cond);
 				return;
 			}
 

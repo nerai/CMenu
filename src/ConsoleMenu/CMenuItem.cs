@@ -578,7 +578,7 @@ namespace ConsoleMenu
 					var s = cmd == ""
 						? "Command incomplete."
 						: "Command <" + cmd + "> not unique.";
-					Console.WriteLine (
+					OnWriteLine (
 						s + " Candidates: " +
 						string.Join (", ", its.Select (it => it.Selector)));
 				}
@@ -599,20 +599,20 @@ namespace ConsoleMenu
 			 * We found nothing. Display this failure?
 			 */
 			if (complain) {
-				Console.WriteLine ("Unknown command: " + cmd);
+				OnWriteLine ("Unknown command: " + cmd);
 
 				if (StringComparison.IsCaseSensitive ()) {
 					var suggestions = GetCommands (cmd, StringComparison.InvariantCultureIgnoreCase, includeDisabled);
 					if (suggestions.Length > 0) {
 						if (suggestions.Length == 1) {
-							Console.WriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
+							OnWriteLine ("Did you mean \"" + suggestions[0].Selector + "\"?");
 						}
 						else if (suggestions.Length <= 5) {
 							var sugs = string.Join (", ", suggestions
 								.Take (suggestions.Length - 1)
 								.Select (sug => "\"" + sug.Selector + "\""));
 							var s = "Did you mean " + sugs + " or \"" + suggestions.Last ().Selector + "\"?";
-							Console.WriteLine (s);
+							OnWriteLine (s);
 						}
 					}
 				}

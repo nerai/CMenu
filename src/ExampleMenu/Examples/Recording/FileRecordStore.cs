@@ -53,7 +53,7 @@ namespace ExampleMenu.Examples.Recording
 
 			var path = RecordDirectory + name;
 			if (!File.Exists (path)) {
-				var rec = Util.LooseSelect (GetRecordNames (), name, StringComparison.CurrentCultureIgnoreCase);
+				var rec = LooseSelectUtil.LooseSelect (GetRecordNames (), name, StringComparison.CurrentCultureIgnoreCase);
 				if (rec == null) {
 					return null;
 				}

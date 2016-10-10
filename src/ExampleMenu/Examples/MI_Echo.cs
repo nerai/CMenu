@@ -18,7 +18,7 @@ namespace ExampleMenu.Examples
 
 		public override void Execute (string arg)
 		{
-			Console.WriteLine (arg);
+			OnWriteLine (arg);
 		}
 	}
 }
