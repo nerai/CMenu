@@ -25,6 +25,7 @@ namespace ExampleMenu
 			mainmenu.Add ("passive", s => PassiveMode ());
 			mainmenu.Add ("immediate", s => ImmediateMode ());
 			mainmenu.Add (new ExamplesMenu ());
+			mainmenu.Add (new OutputHook ());
 
 			mainmenu.CQ.ImmediateInput ("help");
 			mainmenu.Run ();
@@ -148,6 +149,64 @@ namespace ExampleMenu
 			m.Add ("foo", s => Console.WriteLine ("foo"));
 			m.Add ("bar", s => Console.WriteLine ("bar"));
 			m.Run ();
+		}
+
+		/// <summary>
+		/// This class demonstrates using output hooks. It intercepts Console.Write
+		/// commands and prints all lower-case letters with a red background.
+		///
+		/// Any output a menu item writes is, by default, printed to the console. Output
+		/// hooks allow intercepting this output. This can be useful to change it before
+		/// printing, or to redirect or clone it to other locations (e.g. a logfile).
+		///
+		/// There are five kinds of output events that can be intercepted. They all refer
+		/// to the equivalently named method or property of the Console class.
+		/// <list>
+		/// <item>Write</item>
+		/// <item>WriteLine</item>
+		/// <item>SetForegroundColor</item>
+		/// <item>SetBackgroundColor</item>
+		/// <item>ResetColor</item>
+		/// </list>
+		///
+		/// It is recommended to let all custom menu items opt in to this pattern. For this
+		/// purpose, simply call OnWrite instead of Console.Write, etc.
+		///
+		/// If no hook is present in a particular menu item, the call is redirected to its
+		/// parent item. If no hook is found while moving up the chain, the regular method
+		/// of the Console class is invoked. If a hook is found in a child item, the
+		/// parent's hooks are not invoked.
+		///
+		/// Hooks can be added or removed at any time and for any menu item individually.
+		/// </summary>
+		private class OutputHook : CMenuItem
+		{
+			public OutputHook () : base ("outputhook")
+			{
+				HelpText = "Demonstrates using output hooks.";
+
+				Add ("add", s => Parent.Write += HookedWrite);
+				Add ("remove", s => Parent.Write -= HookedWrite);
+			}
+
+			private static void HookedWrite (string s)
+			{
+				var fc = Console.ForegroundColor;
+				var bc = Console.BackgroundColor;
+
+				foreach (var c in s) {
+					if (!char.IsLower (c)) {
+						Console.Write (c);
+					}
+					else {
+						Console.ForegroundColor = ConsoleColor.Black;
+						Console.BackgroundColor = ConsoleColor.Red;
+						Console.Write (c);
+						Console.ForegroundColor = fc;
+						Console.BackgroundColor = bc;
+					}
+				}
+			}
 		}
 	}
 }
