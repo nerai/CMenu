@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace ConsoleMenu
 {
@@ -26,6 +25,102 @@ namespace ConsoleMenu
 		private Action<string> _Execute;
 		private Func<bool> _Enabled;
 		private CommandQueue _CQ;
+
+		public event Action<string> Write = null;
+
+		public event Action<string> WriteLine = null;
+
+		public event Action<ConsoleColor> SetForegroundColor = null;
+
+		public event Action<ConsoleColor> SetBackgroundColor = null;
+
+		public event Action ResetColor = null;
+
+		protected void OnWrite (string s)
+		{
+			var e = Write;
+			if (e != null) {
+				e (s);
+				return;
+			}
+
+			if (Parent != null) {
+				Parent.OnWrite (s);
+				return;
+			}
+
+			Console.Write (s);
+		}
+
+		protected void OnWriteLine (string s = null)
+		{
+			var e = WriteLine;
+			if (e != null) {
+				e (s);
+				return;
+			}
+
+			if (Parent != null) {
+				Parent.OnWriteLine (s);
+				return;
+			}
+
+			var e2 = Write;
+			if (e2 != null) {
+				e2 (s + Environment.NewLine);
+				return;
+			}
+
+			Console.WriteLine (s);
+		}
+
+		protected void InternalSetForegroundColor (ConsoleColor c)
+		{
+			var e = SetForegroundColor;
+			if (e != null) {
+				e (c);
+				return;
+			}
+
+			if (Parent != null) {
+				Parent.InternalSetForegroundColor (c);
+				return;
+			}
+
+			Console.ForegroundColor = c;
+		}
+
+		protected void InternalSetBackgroundColor (ConsoleColor c)
+		{
+			var e = SetBackgroundColor;
+			if (e != null) {
+				e (c);
+				return;
+			}
+
+			if (Parent != null) {
+				Parent.InternalSetBackgroundColor (c);
+				return;
+			}
+
+			Console.BackgroundColor = c;
+		}
+
+		protected void InternalResetColor ()
+		{
+			var e = ResetColor;
+			if (e != null) {
+				e ();
+				return;
+			}
+
+			if (Parent != null) {
+				Parent.InternalResetColor ();
+				return;
+			}
+
+			Console.ResetColor ();
+		}
 
 		/// <summary>
 		/// The command queue (CQ) associated with this menu item. Nested menus will
