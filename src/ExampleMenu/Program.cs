@@ -125,7 +125,7 @@ namespace ExampleMenu
 						Console.WriteLine (i + "...");
 						Thread.Sleep (1000);
 					}
-					Console.WriteLine ("Sending input 'active' to the IO queue.");
+					Console.WriteLine ("Sending input 'active' to the command queue.");
 					m.CQ.ImmediateInput ("active");
 				}).Start ();
 			});
@@ -137,7 +137,7 @@ namespace ExampleMenu
 			Console.WriteLine ("IO is currently in active mode - you will be prompted for input.");
 			Console.WriteLine ("The 'promptless' command will turn on promptless mode, which disables interactive input.");
 			Console.WriteLine ("The 'active' command will turn active mode back on.");
-			Console.WriteLine ("Please enter 'passive'.");
+			Console.WriteLine ("Please enter 'promptless' (or 'p').");
 
 			m.Run ();
 		}
