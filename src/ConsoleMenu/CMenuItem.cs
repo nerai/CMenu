@@ -74,7 +74,7 @@ namespace ConsoleMenu
 			Console.WriteLine (s);
 		}
 
-		protected void InternalSetForegroundColor (ConsoleColor c)
+		protected void OnSetForegroundColor (ConsoleColor c)
 		{
 			var e = SetForegroundColor;
 			if (e != null) {
@@ -83,14 +83,14 @@ namespace ConsoleMenu
 			}
 
 			if (Parent != null) {
-				Parent.InternalSetForegroundColor (c);
+				Parent.OnSetForegroundColor (c);
 				return;
 			}
 
 			Console.ForegroundColor = c;
 		}
 
-		protected void InternalSetBackgroundColor (ConsoleColor c)
+		protected void OnSetBackgroundColor (ConsoleColor c)
 		{
 			var e = SetBackgroundColor;
 			if (e != null) {
@@ -99,14 +99,14 @@ namespace ConsoleMenu
 			}
 
 			if (Parent != null) {
-				Parent.InternalSetBackgroundColor (c);
+				Parent.OnSetBackgroundColor (c);
 				return;
 			}
 
 			Console.BackgroundColor = c;
 		}
 
-		protected void InternalResetColor ()
+		protected void OnResetColor ()
 		{
 			var e = ResetColor;
 			if (e != null) {
@@ -115,7 +115,7 @@ namespace ConsoleMenu
 			}
 
 			if (Parent != null) {
-				Parent.InternalResetColor ();
+				Parent.OnResetColor ();
 				return;
 			}
 
@@ -311,10 +311,10 @@ namespace ConsoleMenu
 		/// </para>
 		///
 		/// <remarks>
-		/// The condition is examined anew every time its result is needed, so it should be cheap to call.
+		/// The condition is examined anew every time its result is needed, so it ought to be cheap to call.
 		/// </remarks>
 		/// </summary>
-		public void SetEndablednessCondition (Func<bool> condition)
+		public void SetEnablednessCondition (Func<bool> condition)
 		{
 			_Enabled = condition;
 		}

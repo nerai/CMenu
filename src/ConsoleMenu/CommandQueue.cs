@@ -26,17 +26,17 @@ namespace ConsoleMenu
 		private readonly ManualResetEvent _InputAvailable = new ManualResetEvent (false);
 
 		/// <summary>
-		/// If no input is queued already and passive mode is enabled, QueryInput will
-		/// block until input is available. If no input is queued already and passive mode
-		/// is disabled, QueryInput will prompt the user for input.
+		/// Determines if the user is prompted for input when the input queue is empty.
 		///
-		/// PassiveMode is disabled by default.
+		/// If no input is queued and PromptUserForInput is disabled, the QueryInput method
+		/// will block until input is available.
+		///
+		/// PromptUserForInput is enabled by default.
 		/// </summary>
-		public bool PassiveMode
-		{
+		public bool PromptUserForInput {
 			get;
 			set;
-		}
+		} = true;
 
 		/// <summary>
 		/// Returns the next available line of input.
@@ -45,14 +45,14 @@ namespace ConsoleMenu
 		///
 		/// If queued input is available, its next line will be returned.
 		///
-		/// If no queued input is available, the call will block. Depending on PassiveMode
-		/// either the user will be prompted for input, or the method will wait until input
-		/// was added to the queue.
+		/// If no queued input is available, the call will block. Depending on
+		/// PromptUserForInput either the user will be prompted for input, or the method
+		/// will block until input was added to the queue.
 		/// </summary>
 		/// <param name="prompt">
 		/// Prompt string, or null if no prompt string should be displayed.
 		///
-		/// In passive mode, the prompt will never be displayed.
+		/// If PromptUserForInput is disabled, the prompt will never be displayed.
 		/// </param>
 		public string QueryInput (string prompt)
 		{
@@ -61,7 +61,7 @@ namespace ConsoleMenu
 
 				if (input == null) {
 					_InputAvailable.Reset ();
-					if (!PassiveMode) {
+					if (PromptUserForInput) {
 						if (prompt != null) {
 							Console.Write (prompt + " ");
 						}
@@ -69,7 +69,7 @@ namespace ConsoleMenu
 					}
 				}
 
-				if (input == null && PassiveMode) {
+				if (input == null && !PromptUserForInput) {
 					_InputAvailable.WaitOne ();
 				}
 

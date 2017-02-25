@@ -22,7 +22,7 @@ namespace ExampleMenu
 			mainmenu.Add ("tutorial", s => new Tutorial ().Run ());
 			mainmenu.Add ("tree-init", s => TreeInitialization ());
 			mainmenu.Add ("disabled", s => DisabledCommands ());
-			mainmenu.Add ("passive", s => PassiveMode ());
+			mainmenu.Add ("promptless", s => PromptlessMode ());
 			mainmenu.Add ("immediate", s => ImmediateMode ());
 			mainmenu.Add (new ExamplesMenu ());
 			mainmenu.Add (new OutputHook ());
@@ -79,7 +79,7 @@ namespace ExampleMenu
 			 * Create a new inline command, then set its enabledness function so it returns the above flag.
 			 */
 			var mi = m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"));
-			mi.SetEndablednessCondition (() => Enabled);
+			mi.SetEnablednessCondition (() => Enabled);
 
 			/*
 			 * Command abbreviations do not change when hidden items become visible, i.e. it is made sure they are already long
@@ -113,31 +113,31 @@ namespace ExampleMenu
 			}
 		}
 
-		static void PassiveMode ()
+		static void PromptlessMode ()
 		{
 			var m = new CMenu ();
-			m.Add ("passive", s => {
-				m.CQ.PassiveMode = true;
-				Console.WriteLine ("Passive mode selected. Input will be ignored.");
+			m.Add ("promptless", s => {
+				m.CQ.PromptUserForInput = false;
+				Console.WriteLine ("Promptless mode selected. Input will be ignored.");
 				Console.WriteLine ("A timer will be set which will input 'active' in 5 seconds.");
 				new Thread (() => {
 					for (int i = 5; i >= 0; i--) {
 						Console.WriteLine (i + "...");
 						Thread.Sleep (1000);
 					}
-					Console.WriteLine ("Sending input 'active' to the IO queue.");
+					Console.WriteLine ("Sending input 'active' to the command queue.");
 					m.CQ.ImmediateInput ("active");
 				}).Start ();
 			});
 			m.Add ("active", s => {
-				m.CQ.PassiveMode = false;
-				Console.WriteLine ("Active mode selected.");
+				m.CQ.PromptUserForInput = true;
+				Console.WriteLine ("Prompting mode selected again.");
 			});
 
 			Console.WriteLine ("IO is currently in active mode - you will be prompted for input.");
-			Console.WriteLine ("The 'passive' command will turn passive mode on, which disables interactive input.");
+			Console.WriteLine ("The 'promptless' command will turn on promptless mode, which disables interactive input.");
 			Console.WriteLine ("The 'active' command will turn active mode back on.");
-			Console.WriteLine ("Please enter 'passive'.");
+			Console.WriteLine ("Please enter 'promptless' (or 'p').");
 
 			m.Run ();
 		}
