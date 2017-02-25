@@ -311,10 +311,10 @@ namespace ConsoleMenu
 		/// </para>
 		///
 		/// <remarks>
-		/// The condition is examined anew every time its result is needed, so it should be cheap to call.
+		/// The condition is examined anew every time its result is needed, so it ought to be cheap to call.
 		/// </remarks>
 		/// </summary>
-		public void SetEndablednessCondition (Func<bool> condition)
+		public void SetEnablednessCondition (Func<bool> condition)
 		{
 			_Enabled = condition;
 		}

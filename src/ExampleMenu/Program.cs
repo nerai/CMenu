@@ -79,7 +79,7 @@ namespace ExampleMenu
 			 * Create a new inline command, then set its enabledness function so it returns the above flag.
 			 */
 			var mi = m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"));
-			mi.SetEndablednessCondition (() => Enabled);
+			mi.SetEnablednessCondition (() => Enabled);
 
 			/*
 			 * Command abbreviations do not change when hidden items become visible, i.e. it is made sure they are already long
