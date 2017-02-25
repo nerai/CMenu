@@ -74,7 +74,7 @@ Refer to [common use cases](doc/basics-and-help.md) for information on:
 
 * Immediate mode: Accessing all commands in a single keystroke
 * Accessing and modifying the input queue
-* Passive mode: Only allow scripted input
+* Promptless mode: Only allow scripted input
 * For conditional commands, see [here](doc/conditional-commands.md)
 
 ### Output
