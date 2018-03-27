@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleMenu", "ConsoleMenu\ConsoleMenu.csproj", "{0CEBF184-C1AE-4095-A407-780269BBB9CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConsoleMenu", "ConsoleMenu\NConsoleMenu.csproj", "{0CEBF184-C1AE-4095-A407-780269BBB9CB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "text", "text", "{3678220D-F0A9-49BB-BE6A-4EB3F9F6E36B}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "text", "text", "{3678220D-F
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleMenu", "ExampleMenu\ExampleMenu.csproj", "{F0D7E12D-16F3-4006-8857-53137D839E9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NConsoleMenu.Examples", "ExampleMenu\NConsoleMenu.Examples.csproj", "{F0D7E12D-16F3-4006-8857-53137D839E9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,5 +50,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {276B6732-8003-4E89-AE80-5B13BD6A657E}
 	EndGlobalSection
 EndGlobal

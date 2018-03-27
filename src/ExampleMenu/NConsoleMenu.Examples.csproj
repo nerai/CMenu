@@ -114,9 +114,9 @@
     <Compile Include="Examples\Recording\LooseSelectUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleMenu\ConsoleMenu.csproj">
+    <ProjectReference Include="..\ConsoleMenu\NConsoleMenu.csproj">
       <Project>{0CEBF184-C1AE-4095-A407-780269BBB9CB}</Project>
-      <Name>ConsoleMenu</Name>
+      <Name>NConsoleMenu</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
