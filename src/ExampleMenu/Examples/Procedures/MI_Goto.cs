@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ConsoleMenu;
+using NConsoleMenu;
 
-namespace ExampleMenu.Examples.Procedures
+namespace NConsoleMenu.Sample.Examples.Procedures
 {
 	public class MI_Goto : CMenuItem
 	{

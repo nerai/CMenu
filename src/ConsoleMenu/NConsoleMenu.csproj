@@ -8,8 +8,8 @@
     <ProjectGuid>{0CEBF184-C1AE-4095-A407-780269BBB9CB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConsoleMenu</RootNamespace>
-    <AssemblyName>ConsoleMenu</AssemblyName>
+    <RootNamespace>NConsoleMenu</RootNamespace>
+    <AssemblyName>NConsoleMenu</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

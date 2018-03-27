@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ConsoleMenu;
-using ExampleMenu.Examples.Procedures;
-using ExampleMenu.Examples.Recording;
+using NConsoleMenu;
+using NConsoleMenu.Sample.Examples.Procedures;
+using NConsoleMenu.Sample.Examples.Recording;
 
-namespace ExampleMenu.Examples
+namespace NConsoleMenu.Sample.Examples
 {
 	class ExamplesMenu : CMenu
 	{

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ConsoleMenu;
-using ExampleMenu.Examples;
+using NConsoleMenu;
+using NConsoleMenu.Sample.Examples;
 
-namespace ExampleMenu
+namespace NConsoleMenu.Sample
 {
 	class Tutorial
 	{

@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace ConsoleMenu
+namespace NConsoleMenu
 {
 	/// <summary>
 	/// Extension methods for StringComparison.

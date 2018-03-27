@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle ("ExampleMenu")]
-[assembly: AssemblyDescription ("Examples for ConsoleMenu")]
+[assembly: AssemblyTitle ("NConsoleMenu.Sample")]
+[assembly: AssemblyDescription ("Examples for NConsoleMenu")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("Sebastian Heuchler")]
-[assembly: AssemblyProduct ("ExampleMenu")]
+[assembly: AssemblyProduct ("NConsoleMenu.Sample")]
 [assembly: AssemblyCopyright ("Copyright © 2015-18 Sebastian Heuchler")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace ConsoleMenu
+namespace NConsoleMenu
 {
 	/// <summary>
 	/// A single console menu item. It consists of a selector (keyword), a help text and the individual behavior.

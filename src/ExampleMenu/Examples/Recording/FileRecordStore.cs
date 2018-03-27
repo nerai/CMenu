@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ExampleMenu.Examples.Recording
+namespace NConsoleMenu.Sample.Examples.Recording
 {
 	/// <summary>
 	/// Stores records to files
