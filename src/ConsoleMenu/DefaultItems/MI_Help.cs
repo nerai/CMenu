@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ConsoleMenu.DefaultItems
+namespace NConsoleMenu.DefaultItems
 {
 	public class MI_Help : CMenuItem
 	{

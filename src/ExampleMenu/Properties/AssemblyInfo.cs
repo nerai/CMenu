@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle ("ExampleMenu")]
-[assembly: AssemblyDescription ("")]
+[assembly: AssemblyTitle ("NConsoleMenu.Sample")]
+[assembly: AssemblyDescription ("Examples for NConsoleMenu")]
 [assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("")]
-[assembly: AssemblyProduct ("ExampleMenu")]
-[assembly: AssemblyCopyright ("Copyright © 2015-16 Sebastian Heuchler")]
+[assembly: AssemblyCompany ("Sebastian Heuchler")]
+[assembly: AssemblyProduct ("NConsoleMenu.Sample")]
+[assembly: AssemblyCopyright ("Copyright © 2015-18 Sebastian Heuchler")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible (false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid ("4e6a5ab8-67dc-4fb4-9f6d-aa060999875a")]
+[assembly: Guid ("4e6a5ab8-67dc-4fb4-9f6d-aa060999875c")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion ("1.0.0.0")]
+[assembly: AssemblyVersion ("1.0")]
 [assembly: AssemblyFileVersion ("1.0.0.0")]

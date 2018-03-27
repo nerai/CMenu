@@ -11,7 +11,7 @@ A single command is comprised of a keyword (selector), an optional help text des
 	// Run menu. The menu will run until quit by the user.
 	menu.Run ();
 
-While running, CMenu will continuously prompt the user for input, then feeds it to the respective command. Let's see how to use the "hello" command defined above:
+While running, NConsoleMenu will continuously prompt the user for input, then feeds it to the respective command. Let's see how to use the "hello" command defined above:
 
 	$ hello
 	Hello world!
@@ -55,7 +55,7 @@ You can also access individual commands to edit them later, though this is rarel
 
 ## Command abbreviations and integrated help 
 
-CMenu keeps an index of all available commands and lists them upon user request via typing "help". Moreover, it also automatically assigns abbreviations to all commands (if useful) and keeps them up-to-date when you later add new commands with similar keywords.
+A menu keeps an index of all available commands and lists them upon user request via typing "help". Moreover, it also automatically assigns abbreviations to all commands (if useful) and keeps them up-to-date when you later add new commands with similar keywords.
 
 	$ help
 	Available commands:
@@ -85,7 +85,7 @@ Commands can by entered abbreviated, as long as it is clear which one was intend
 	Hello world!
 
 Commands are case *in*sensitive by default. This can be changed using the `StringComparison` property.
-When in case sensitive mode, CMenu will helpfully point out similar commands with different caseing.
+When in case sensitive mode, NConsoleMenu will helpfully point out similar commands with different caseing.
 
 	menu.StringComparison = StringComparison.InvariantCulture;
 	menu.Add ("Hello", s => Console.WriteLine ("Hi!"));

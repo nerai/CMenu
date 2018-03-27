@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace ConsoleMenu
+namespace NConsoleMenu
 {
 	/// <summary>
 	/// Provides global I/O functions in the context of CMenu.
