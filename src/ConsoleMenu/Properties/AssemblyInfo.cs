@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle ("NConsoleMenu")]
-[assembly: AssemblyDescription ("Console menus are easy to build, complex menus are supported, and using them is simple and quick")]
+[assembly: AssemblyDescription ("Console menus are easy to build, complex menus are supported, and using them is simple and quick.")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("Sebastian Heuchler")]
 [assembly: AssemblyProduct ("NConsoleMenu")]

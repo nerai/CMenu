@@ -8,6 +8,8 @@ NConsoleMenu aims for low overhead - simple stuff should be simple to implement.
 Similar to a command shell, NConsoleMenu is built for rapid usage. Commands can be entered abbreviated, a smart parser enables even partial matching. Typing fast and blind is supported - the program will try and prevent you from entering a wrong command by accident. And if the user of your menu got lost at any point, a powerful help feature is integrated.
 
 NConsoleMenu uses the permissive MIT license.
+
+
 ## Quickstart
 
 A single command is comprised of a keyword (selector), an optional help text describing it, and, most importantly, its behavior. The behavior can be defined as a simple lambda.
