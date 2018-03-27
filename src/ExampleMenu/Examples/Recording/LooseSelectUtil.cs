@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ConsoleMenu;
+using NConsoleMenu;
 
-namespace ExampleMenu.Examples.Recording
+namespace NConsoleMenu.Sample.Examples.Recording
 {
 	public class LooseSelectException : Exception
 	{

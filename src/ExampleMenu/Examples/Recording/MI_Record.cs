@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ConsoleMenu;
+using NConsoleMenu;
 
-namespace ExampleMenu.Examples.Recording
+namespace NConsoleMenu.Sample.Examples.Recording
 {
 	public class MI_Record : CMenu
 	{

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ConsoleMenu.DefaultItems;
+using NConsoleMenu.DefaultItems;
 
-namespace ConsoleMenu
+namespace NConsoleMenu
 {
 	/// <summary>
 	/// A console menu structure, comprised of various menu items.

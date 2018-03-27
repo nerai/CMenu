@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ConsoleMenu;
+using NConsoleMenu;
 
-namespace ExampleMenu.Examples
+namespace NConsoleMenu.Sample.Examples
 {
 	public class MI_Echo : CMenuItem
 	{

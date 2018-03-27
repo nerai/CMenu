@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using ConsoleMenu;
-using ExampleMenu.Examples;
+using NConsoleMenu;
+using NConsoleMenu.Sample.Examples;
 
-namespace ExampleMenu
+namespace NConsoleMenu.Sample
 {
 	/// <summary>
 	/// Test program for CMenu.

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F0D7E12D-16F3-4006-8857-53137D839E9D}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{0CEBF184-C1AE-4095-A407-780269BBB9CB}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExampleMenu</RootNamespace>
-    <AssemblyName>ExampleMenu</AssemblyName>
+    <RootNamespace>NConsoleMenu</RootNamespace>
+    <AssemblyName>NConsoleMenu</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -39,7 +39,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\ExampleMenu.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>bin\Debug\CMenu.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
@@ -55,7 +55,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\ExampleMenu.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>bin\Release\CMenu.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
@@ -64,6 +64,9 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -93,38 +96,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Examples\MI_Stopwatch.cs" />
-    <Compile Include="Examples\Procedures\MI_Goto.cs" />
-    <Compile Include="Examples\ExamplesMenu.cs" />
-    <Compile Include="Examples\Recording\FileRecordStore.cs" />
-    <Compile Include="Examples\Recording\IRecordStore.cs" />
-    <Compile Include="Examples\MI_Add.cs" />
-    <Compile Include="Examples\MI_Pause.cs" />
-    <Compile Include="Examples\Recording\MI_Replay.cs" />
-    <Compile Include="Examples\Recording\MI_Record.cs" />
-    <Compile Include="Examples\MI_If.cs" />
-    <Compile Include="Examples\MI_Echo.cs" />
-    <Compile Include="Examples\Procedures\MI_Return.cs" />
-    <Compile Include="Examples\Procedures\MI_Call.cs" />
-    <Compile Include="Examples\Procedures\ProcManager.cs" />
-    <Compile Include="Examples\Procedures\MI_Proc.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="CMenu.cs" />
+    <Compile Include="CMenuItem.cs" />
+    <Compile Include="CommandQueue.cs" />
+    <Compile Include="DefaultItems\MI_Help.cs" />
+    <Compile Include="MenuUtil.cs" />
+    <Compile Include="DefaultItems\MI_Quit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tutorial.cs" />
-    <Compile Include="Examples\Recording\LooseSelectUtil.cs" />
+    <Compile Include="Properties\VersionInfo.cs" />
+    <Compile Include="StringComparisonExtensions.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ConsoleMenu\ConsoleMenu.csproj">
-      <Project>{0CEBF184-C1AE-4095-A407-780269BBB9CB}</Project>
-      <Name>ConsoleMenu</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
+  <PropertyGroup>
+    <LinkTimestamp>$([System.DateTime]::UtcNow.ToString("yy.MM.dd.HHmm"))</LinkTimestamp>
+    <GeneratedAssemblyFileVersion>
+// This file was automatically generated. Manual edits will be lost!
+
+using System.Reflection%3B
+
+[assembly:AssemblyFileVersion("$(LinkTimestamp)")]
+    </GeneratedAssemblyFileVersion>
+  </PropertyGroup>
   <Target Name="BeforeBuild">
+    <WriteLinesToFile File="Properties\VersionInfo.cs" Lines="$(GeneratedAssemblyFileVersion)" Overwrite="true">
+    </WriteLinesToFile>
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
