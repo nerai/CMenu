@@ -12,6 +12,6 @@
     <description>$description$</description>
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>console menu</tags>
+    <tags>console menu shell framework consolemenu choice command prompt</tags>
   </metadata>
 </package>
