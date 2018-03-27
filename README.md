@@ -1,11 +1,11 @@
-# CMenu
+# NConsoleMenu
 Console menus are easy to build, complex menus are supported, and using them is simple and quick.
 
-CMenu is a low-ceremony framework for building console menus in .Net. Instead of manually prompting the user for input and parsing it, you define commands in a short, structured and comprehensive way, and let CMenu handle the rest.
+NConsoleMenu is a low-ceremony framework for building console menus in .Net. Instead of manually prompting the user for input and parsing it, you define commands in a short, structured and comprehensive way, and let the library handle the rest.
 
-CMenu aims for low overhead - simple stuff should be simple to implement. If you don't use a feature, you don't need to know anything about it. At the same time, complex scenarios are supported. Large menus can easily be split into several classes. Configuration occurs in the background. You do not have to worry about all the annoying details involved in larger menus, it will just work.
+NConsoleMenu aims for low overhead - simple stuff should be simple to implement. If you don't use a feature, you don't need to know anything about it. At the same time, complex scenarios are supported. Large menus can easily be split into several classes. Configuration occurs in the background. You do not have to worry about all the annoying details involved in larger menus, it will just work.
 
-CMenu is built for rapid usage like a command shell. Commands can be entered abbreviated, a smart parser enables even partial matching. Typing fast and blind is supported - the program will try and prevent you from entering a wrong command by accident. And if you're lost at any point, a powerful help feature is integrated.
+NConsoleMenu is built for rapid usage like a command shell. Commands can be entered abbreviated, a smart parser enables even partial matching. Typing fast and blind is supported - the program will try and prevent you from entering a wrong command by accident. And if you're lost at any point, a powerful help feature is integrated.
 
 
 ## Quickstart
@@ -30,7 +30,7 @@ To create a command with help text, simply add it during definition. Use the int
 	$ help time
 	Writes the current time
 
-CMenu keeps an index of all available commands and lists them upon user request via typing "help". Moreover, it also automatically assigns abbreviations to all commands (if useful) and keeps them up-to-date when you later add new commands with similar keywords.
+NConsoleMenu keeps an index of all available commands and lists them upon user request via typing "help". Moreover, it also automatically assigns abbreviations to all commands (if useful) and keeps them up-to-date when you later add new commands with similar keywords.
 
 	$ help
 	Available commands:
@@ -78,21 +78,21 @@ Read up on [building complex menus](doc/nesting.md).
 
 [Changing, formatting, redirecting or cloning console output](doc/output.md)
 
-* Connecting CMenu output with your logging framework of choice.
+* Connecting NConsoleMenu output with your logging framework of choice.
 
 ### Example project
 The source code contains an [example project](doc/example_project.md). It offers commands, which illustrate several (more or less advanced) use cases. It may be useful to reference them in your own projects.
 
 ### Advantages
-An [overview of the benefits of CMenu](doc/advantages.md).
+An [overview of the benefits of NConsoleMenu](doc/advantages.md).
 
 
 
 ## Project history and developer information
 
-Another (much larger) project of mine uses a somewhat complex console menu, and I finally got annoyed enough by repeated, virtually equal code fragments to refactor and extract those pieces of code into a separate project. As I figured it was complete enough to be useful to others, I called it CMenu and put it on github.
+Another (much larger) project of mine uses a somewhat complex console menu, and I finally got annoyed enough by repeated, virtually equal code fragments to refactor and extract those pieces of code into a separate project. As I figured it was complete enough to be useful to others, I called it NConsoleMenu and put it on github.
 
-In the future, there are certainly a lot of things to improve about CMenu, and I would definitely not call it complete or even particularly well made. The changes and issues found on this project are mostly caused by improvements and requirement changes in said larger project. I update CMenu with the relevant changes in parallel when I find the time and will continue to do so for the foreseeable future.
+In the future, there are certainly a lot of things to improve about this library, and I would definitely not call it complete or even particularly well made. The changes and issues found on this project are mostly caused by improvements and requirement changes in said larger project. I update NConsoleMenu with the relevant changes in parallel when I find the time and will continue to do so for the foreseeable future.
 
 I'm happy to hear if you found this useful, and am open to suggestions to improve it.
 

@@ -52,7 +52,7 @@ Check out how the "repeat" command adds its argument to the input queue two time
 
 ## Passive mode
 
-By default, input is handled in prompting mode, i.e. CMenu will actively prompt the user for required input and read their console input.
+By default, input is handled in prompting mode, i.e. a menu will actively prompt the user for required input and read their console input.
 
 This behavior may be undesirable if you want closer control, for instance:
 
