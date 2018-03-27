@@ -1,13 +1,13 @@
 # NConsoleMenu
 Console menus are easy to build, complex menus are supported, and using them is simple and quick.
 
-NConsoleMenu is a low-ceremony framework for building console menus in .Net. Instead of manually prompting the user for input and parsing it, you define commands in a short, structured and comprehensive way, and let the library handle the rest.
+NConsoleMenu is a low-ceremony framework for building console menus in .NET. Instead of manually prompting the user for input and parsing it, you define commands in a short, structured and comprehensive way, and let the library handle the rest.
 
-NConsoleMenu aims for low overhead - simple stuff should be simple to implement. If you don't use a feature, you don't need to know anything about it. At the same time, complex scenarios are supported. Large menus can easily be split into several classes. Configuration occurs in the background. You do not have to worry about all the annoying details involved in larger menus, it will just work.
+NConsoleMenu aims for low overhead - simple stuff should be simple to implement. If you don't use a feature, you don't need to know anything about it. At the same time, complex scenarios are supported. Large menus can easily be split into several classes. Self-configuration occurs entirely in the background. You do not have to worry about all the annoying details involved in larger menus, it will just work.
 
-NConsoleMenu is built for rapid usage like a command shell. Commands can be entered abbreviated, a smart parser enables even partial matching. Typing fast and blind is supported - the program will try and prevent you from entering a wrong command by accident. And if you're lost at any point, a powerful help feature is integrated.
+Similar to a command shell, NConsoleMenu is built for rapid usage. Commands can be entered abbreviated, a smart parser enables even partial matching. Typing fast and blind is supported - the program will try and prevent you from entering a wrong command by accident. And if the user of your menu got lost at any point, a powerful help feature is integrated.
 
-
+NConsoleMenu uses the permissive MIT license.
 ## Quickstart
 
 A single command is comprised of a keyword (selector), an optional help text describing it, and, most importantly, its behavior. The behavior can be defined as a simple lambda.
