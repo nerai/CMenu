@@ -4,3 +4,5 @@
 src/.vs/
 *.csproj.user
 *.suo
+
+src/ConsoleMenu/Properties/VersionInfo\.cs
