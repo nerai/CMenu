@@ -6,7 +6,7 @@ CMenu is a lightweight, low-ceremony framework for building console menus in .Ne
 
 CMenu aims for low overhead - simple stuff should be simple to implement. If you don't use a feature, you don't need to know anything about it.
 
-At the same time, complex scenarios are supported. Large menus can easily be split into several classes. Background self-configuration. You do not have to worry about all the annoying details involved in larger menus, it will just work.
+At the same time, complex scenarios are supported. Large menus can easily be split into several classes. Self-configuration occurs in the background. You do not have to worry about all the annoying details involved in larger menus, it will just work.
 
 Most importantly, your menus will be quick and simple to use. Commands can be abbreviated, a smart parser enables even partial matching. Help for users is integrated.
 
@@ -59,9 +59,9 @@ Refer to [common use cases](doc/basics-and-help.md) for information on:
 * Less typing thanks to automated abbreviations
 * About case sensitivity
 
-### Building big menus
+### Big menus
 
-[Read up on building complex menus](doc/nesting.md).
+Read up on [building complex menus](doc/nesting.md).
 
 * Inner commands
 * Nested menus and default commands
@@ -95,7 +95,7 @@ An [overview of the benefits of CMenu](doc/advantages.md).
 
 Another (much larger) project of mine uses a somewhat complex console menu, and I finally got annoyed enough by repeated, virtually equal code fragments to refactor and extract those pieces of code into a separate project. As I figured it was complete enough to be useful to others, I called it CMenu and put it on github.
 
-In the future, there are certainly a lot of things to improve about CMenu, and I would definitely not call it complete or particularly well made. The changes and issues found on this project are mostly caused by improvements and requirement changes in said larger project. I update CMenu with the relevant changes in parallel when I find the time and will continue to do so for the foreseeable future.
+In the future, there are certainly a lot of things to improve about CMenu, and I would definitely not call it complete or even particularly well made. The changes and issues found on this project are mostly caused by improvements and requirement changes in said larger project. I update CMenu with the relevant changes in parallel when I find the time and will continue to do so for the foreseeable future.
 
-I'm happy to hear if you found this useful, and open to suggestions to improve it.
+I'm happy to hear if you found this useful, and am open to suggestions to improve it.
 

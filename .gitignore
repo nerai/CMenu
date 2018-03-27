@@ -1,5 +1,6 @@
 [Bb]in/
 [Oo]bj/
 
+src/.vs/
 *.csproj.user
 *.suo

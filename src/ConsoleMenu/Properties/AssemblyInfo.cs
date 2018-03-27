@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle ("ConsoleMenu")]
-[assembly: AssemblyDescription ("")]
+[assembly: AssemblyDescription ("A simple console menu manager")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
 [assembly: AssemblyProduct ("ConsoleMenu")]
-[assembly: AssemblyCopyright ("Copyright © 2015-16 Sebastian Heuchler")]
+[assembly: AssemblyCopyright ("Copyright © 2015-18 Sebastian Heuchler")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible (false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid ("24ec1c30-cf90-41d3-9763-2da3951aa6b0")]
+[assembly: Guid ("24ec1c30-cf90-41d3-9763-2da3951aa6b2")]
 
 // Version information for an assembly consists of the following four values:
 //
