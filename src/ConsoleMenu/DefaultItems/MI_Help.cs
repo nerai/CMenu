@@ -46,17 +46,10 @@ namespace NConsoleMenu.DefaultItems
 			}
 
 			var cmd = arg;
-			var inner = context.GetMenuItem (ref cmd, out arg, false, false, false);
+			var inner = context.GetMenuItem (ref cmd, out arg, true, false, false);
 			if (inner != null) {
 				DisplayHelp (arg, inner, true);
-				return;
 			}
-
-			OnWriteLine ("Could not find inner command \"" + cmd + "\".");
-			if (context.Selector != null) {
-				OnWriteLine ("Help for " + context.Selector + ":");
-			}
-			DisplayItemHelp (context, true);
 		}
 
 		private bool DisplayItemHelp (CMenuItem item, bool force)
