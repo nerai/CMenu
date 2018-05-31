@@ -5,14 +5,14 @@
 
 Commands which cannot currently be used, but should still be available in the menu tree at other times, can disable themselves. Disabled commands cannot be used and are not listed by `help`.
 
-In this example, a global flag (`bool Enabled`) is used to determine if a command is enabled. It is initially cleared, the `enable` command sets it.
+In this example, a global flag (`bool myEnabledProperty`) is used to determine if a command is enabled. It is initially cleared, the `enable` command sets it.
 
-	m.Add ("enable", s => Enabled = true);
+	m.Add ("enable", s => myEnabledProperty = true);
 
 Create a new inline command, then set its enabledness function so it returns the above flag.
 
 	var mi = m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"));
-	mi.SetEnablednessCondition (() => Enabled);
+	mi.SetEnablednessCondition (() => myEnabledProperty);
 
 	$ inline
 	Unknown command: inline
@@ -32,7 +32,7 @@ It is also possible to override the enabledness by subclassing.
 
 		public override bool IsEnabled ()
 		{
-			return Enabled;
+			return myEnabledProperty;
 		}
 
 		public override void Execute (string arg)
@@ -47,7 +47,7 @@ It is also possible to override the enabledness by subclassing.
 	$ subclassed
 	Disabled subclassed command was enabled!
 
-Disabled commands are not displayed by `help`:
+Disabled commands are not displayed by `help`.
 
 	$ help
 	Available commands:

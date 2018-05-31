@@ -62,36 +62,48 @@ namespace NConsoleMenu.Sample
 			m.Run ();
 		}
 
-		static bool Enabled = false;
+		static bool myEnabledProperty = false;
 
+		/*
+		 * Commands which cannot currently be used, but should still be available in the
+		 * menu tree at other times, can disable themselves. Disabled commands cannot be
+		 * used and are not listed by `help`.
+		 */
 		static void DisabledCommands ()
 		{
 			var m = new CMenu ();
 
 			/*
-			 * In this example, a global flag is used to determine the visibility of disabled commands.
-			 * It is initially cleared, the 'enable' command sets it.
+			 * In this example, a global flag (`bool myEnabledProperty`) is used to
+			 * determine the visibility of disabled commands. It is initially cleared,
+			 * the `enable` command sets it.
 			 */
-			Enabled = false;
-			m.Add ("enable", s => Enabled = true);
+			myEnabledProperty = false;
+			m.Add ("enable", s => myEnabledProperty = true);
 
 			/*
-			 * Create a new inline command, then set its enabledness function so it returns the above flag.
+			 * Create a new inline command, then set its enabledness function so it
+			 * returns the above flag.
 			 */
 			var mi = m.Add ("inline", s => Console.WriteLine ("Disabled inline command was enabled!"));
-			mi.SetEnablednessCondition (() => Enabled);
-
-			/*
-			 * Command abbreviations do not change when hidden items become visible, i.e. it is made sure they are already long
-			 * enough. This avoids confusion about abbreviations suddenly changing.
-			 */
-			m.Add ("incollision", s => Console.WriteLine ("The abbreviation of 'incollision' is longer to account for the hidden 'inline' command."));
+			mi.SetEnablednessCondition (() => myEnabledProperty);
 
 			/*
 			 * It is also possible to override the visibility by subclassing.
 			 */
 			m.Add (new DisabledItem ());
 			m.Run ();
+
+			/*
+			 * Disabled commands are not displayed by `help`.
+			 */
+
+			/*
+			 * Command abbreviations do not change when hidden items become visible,
+			 * i.e. it is made sure they are already long enough. This avoids confusion
+			 * about abbreviations suddenly changing.
+			 */
+			m.Add ("incollision", s => Console.WriteLine ("The abbreviation of 'incollision' is longer to account for the hidden 'inline' command."));
 		}
 
 		private class DisabledItem : CMenuItem
@@ -104,7 +116,7 @@ namespace NConsoleMenu.Sample
 
 			public override bool IsEnabled ()
 			{
-				return Enabled;
+				return myEnabledProperty;
 			}
 
 			public override void Execute (string arg)
