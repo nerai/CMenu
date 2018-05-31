@@ -361,6 +361,41 @@ namespace NConsoleMenu
 		{ }
 
 		/// <summary>
+		/// Creates a new command using the specified keyword.
+		/// </summary>
+		/// <param name="selector">Keyword</param>
+		/// <returns>The added CMenuItem</returns>
+		public CMenuItem Add (string selector)
+		{
+			return Add (selector, null);
+		}
+
+		/// <summary>
+		/// Creates a new command using the specified keyword and help text.
+		/// </summary>
+		/// <param name="selector">Keyword</param>
+		/// <param name="help">Descriptive help text</param>
+		/// <returns>The added CMenuItem</returns>
+		public CMenuItem Add (string selector, string help)
+		{
+			return Add (selector, null, help);
+		}
+
+		/// <summary>
+		/// Creates a new CMenuItem using the specified keyword, behavior and help text.
+		/// </summary>
+		/// <param name="selector">Keyword</param>
+		/// <param name="execute">Behavior when selected.</param>
+		/// <param name="help">Descriptive help text</param>
+		/// <returns>The added CMenuItem</returns>
+		public CMenuItem Add (string selector, Action<string> execute, string help = null)
+		{
+			var it = new CMenuItem (selector, execute, help);
+			Add (it);
+			return it;
+		}
+
+		/// <summary>
 		/// Adds a command.
 		///
 		/// <remarks>
@@ -406,41 +441,6 @@ namespace NConsoleMenu
 				_Default = it;
 			}
 
-			return it;
-		}
-
-		/// <summary>
-		/// Creates a new command using the specified keyword and help text.
-		/// </summary>
-		/// <param name="selector">Keyword</param>
-		/// <param name="help">Descriptive help text</param>
-		/// <returns>The added CMenuItem</returns>
-		public CMenuItem Add (string selector, string help)
-		{
-			return Add (selector, null, help);
-		}
-
-		/// <summary>
-		/// Creates a new command using the specified keyword.
-		/// </summary>
-		/// <param name="selector">Keyword</param>
-		/// <returns>The added CMenuItem</returns>
-		public CMenuItem Add (string selector)
-		{
-			return Add (selector, null);
-		}
-
-		/// <summary>
-		/// Creates a new CMenuItem using the specified keyword, behavior and help text.
-		/// </summary>
-		/// <param name="selector">Keyword</param>
-		/// <param name="execute">Behavior when selected.</param>
-		/// <param name="help">Descriptive help text</param>
-		/// <returns>The added CMenuItem</returns>
-		public CMenuItem Add (string selector, Action<string> execute, string help = null)
-		{
-			var it = new CMenuItem (selector, execute, help);
-			Add (it);
 			return it;
 		}
 
