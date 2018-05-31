@@ -7,8 +7,8 @@ using System.Linq;
 namespace NConsoleMenu
 {
 	/// <summary>
-	/// A single console menu item. It consists of a selector (keyword), a help text and the individual behavior.
-	/// Also offers various ways to add, retrieve and use subitems.
+	/// A single console menu item. It consists of a selector (keyword), a help text and the
+	/// individual behavior. Also offers various ways to add, retrieve and use subitems.
 	///
 	/// <example>
 	/// To create a hello world command:
@@ -19,7 +19,9 @@ namespace NConsoleMenu
 	/// </summary>
 	public class CMenuItem : IEnumerable<CMenuItem>
 	{
-		private Dictionary<string, CMenuItem> _Menu = new Dictionary<string, CMenuItem> (StringComparer.InvariantCultureIgnoreCase);
+		private static readonly StringComparer ICIC = StringComparer.InvariantCultureIgnoreCase;
+
+		private Dictionary<string, CMenuItem> _Menu = new Dictionary<string, CMenuItem> (ICIC);
 		private CMenuItem _Default = null;
 		private StringComparison? _StringComparison;
 		private Action<string> _Execute;
@@ -186,7 +188,9 @@ namespace NConsoleMenu
 			}
 			set {
 				_StringComparison = value;
-				_Menu = new Dictionary<string, CMenuItem> (_Menu, value.GetCorrespondingComparer ());
+				_Menu = new Dictionary<string, CMenuItem> (
+					_Menu,
+					value.GetCorrespondingComparer ());
 			}
 		}
 
@@ -413,7 +417,7 @@ namespace NConsoleMenu
 		/// <returns>The added CMenuItem</returns>
 		public CMenuItem Add (string selector, string help)
 		{
-			return Add (selector, (Action<string>) null, help);
+			return Add (selector, null, help);
 		}
 
 		/// <summary>
@@ -467,8 +471,7 @@ namespace NConsoleMenu
 				if (key == null) {
 					return _Default;
 				}
-				CMenuItem it;
-				_Menu.TryGetValue (key, out it);
+				_Menu.TryGetValue (key, out var it);
 				return it;
 			}
 			set {
@@ -505,8 +508,7 @@ namespace NConsoleMenu
 			/*
 			 * Is there a perfect hit?
 			 */
-			CMenuItem mi;
-			_Menu.TryGetValue (cmd, out mi);
+			_Menu.TryGetValue (cmd, out var mi);
 			if (!includeDisabled && mi != null && !mi.IsEnabled ()) {
 				mi = null;
 			}
