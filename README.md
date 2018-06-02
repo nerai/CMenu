@@ -1,3 +1,5 @@
+[![nuget](https://img.shields.io/nuget/v/NConsoleMenu.svg?label=nuget)](https://www.nuget.org/packages/NConsoleMenu/)
+
 # NConsoleMenu
 Console menus are easy to build, complex menus are supported, and using them is simple and quick.
 
