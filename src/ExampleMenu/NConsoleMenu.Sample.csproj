@@ -93,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Examples\MI_ComplexArgument.cs" />
     <Compile Include="Examples\MI_Stopwatch.cs" />
     <Compile Include="Examples\Procedures\MI_Goto.cs" />
     <Compile Include="Examples\ExamplesMenu.cs" />
