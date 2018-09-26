@@ -28,6 +28,9 @@ namespace NConsoleMenu.Sample
 			// Create menu
 			menu = new CMenu ();
 
+			// Let's specify a custom prompt so we later clearly know we're in the tutorial menu.
+			menu.PromptCharacter = "tutorial>";
+
 			// Add simple Hello World command
 			menu.Add ("hello", s => Console.WriteLine ("Hello world!"));
 

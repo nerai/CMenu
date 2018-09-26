@@ -79,13 +79,17 @@ namespace NConsoleMenu.DefaultItems
 			if (!inner) {
 				OnWriteLine ("Available commands:");
 			}
-			var abbreviations = menu.CommandAbbreviations ().OrderBy (it => it.Key);
+			var abbreviations = menu
+				.CommandAbbreviations ()
+				.OrderBy (it => it.Key)
+				.ToArray();
+			var longestAbbreviation = abbreviations.Max (a => a.Value?.Length) ?? 0;
 			foreach (var ab in abbreviations) {
 				if (ab.Value == null) {
-					OnWrite ("      ");
+					OnWrite (new string (' ', longestAbbreviation + 3));
 				}
 				else {
-					OnWrite (ab.Value.PadRight (3) + " | ");
+					OnWrite (ab.Value.PadRight (longestAbbreviation) + " | ");
 				}
 				OnWriteLine (ab.Key);
 			}

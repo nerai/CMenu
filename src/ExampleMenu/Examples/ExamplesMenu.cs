@@ -18,6 +18,7 @@ namespace NConsoleMenu.Sample.Examples
 			Add (new MI_Add ());
 
 			Add (new MI_Echo ());
+			Add (new MI_ComplexArgument ());
 			Add (new MI_If ());
 			Add (new MI_Pause ());
 			Add (new MI_Stopwatch ());

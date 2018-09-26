@@ -28,6 +28,19 @@ namespace NConsoleMenu
 		private Func<bool> _Enabled;
 		private CommandQueue _CQ;
 
+		/// <summary>
+		/// A factory method that constructs menu items when calling one of the Add methods.
+		/// 
+		/// This factory applies to Add methods of this instance as well as all its children
+		/// (unless they override it with their own), so the factory should usually be set
+		/// on the root of a menu tree.
+		/// 
+		/// By default, it simply constructs a CMenuItem, but you can replace
+		/// that with any subclass of CMenuItem.
+		/// </summary>
+		// todo add to documentation
+		public Func<string, Action<string>, string, CMenuItem> MenuItemFactory = null;
+
 		public event Action<string> Write = null;
 
 		public event Action<string> WriteLine = null;
@@ -390,9 +403,32 @@ namespace NConsoleMenu
 		/// <returns>The added CMenuItem</returns>
 		public CMenuItem Add (string selector, Action<string> execute, string help = null)
 		{
-			var it = new CMenuItem (selector, execute, help);
+			CMenuItem it;
+			var factory = ChainToRoot ()
+				.Select (mi => mi.MenuItemFactory)
+				.FirstOrDefault (fac => fac != null);
+			if (factory != null) {
+				it = factory (selector, execute, help);
+			}
+			else {
+				it = new CMenuItem (selector, execute, help);
+			}
+
 			Add (it);
 			return it;
+		}
+
+		/// <summary>
+		/// Enumerates all menu items from this to root.
+		/// </summary>
+		public IEnumerable<CMenuItem> ChainToRoot ()
+		{
+			var p = this;
+			do {
+				yield return p;
+				p = p.Parent;
+			}
+			while (p != null);
 		}
 
 		/// <summary>
